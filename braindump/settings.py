@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'rest_framework',
     'storages',
     'south',
+    'django_nose',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -89,3 +90,6 @@ STATICFILES_DIRS = (
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
