@@ -5,5 +5,5 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', include(include('braindump.apps.brainstorming.urls'))),
+    url(r'', include(include('api.urls'))),
 )

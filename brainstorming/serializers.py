@@ -1,4 +1,4 @@
-from apps.brainstorming.models import Brainstorming, Idea
+from brainstorming.models import Brainstorming, Idea
 from rest_framework import serializers, fields
 
 
