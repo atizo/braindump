@@ -3,13 +3,9 @@ from rest_framework import serializers, fields
 
 
 class BrainstormingSerializer(serializers.ModelSerializer):
-    creatorEmail = fields.Field(source='creator_email')
-
-    def convert_object(self, obj):
-        """Remove email field when serializing an object"""
-        del self.fields['creatorEmail']
-
-        return super(BrainstormingSerializer, self).convert_object(obj)
+    question = fields.WritableField()
+    details = fields.WritableField()
+    creatorEmail = fields.WritableField(source='creator_email', write_only=True)
 
     class Meta:
         model = Brainstorming
@@ -24,6 +20,9 @@ class BrainstormingSerializer(serializers.ModelSerializer):
 
 
 class IdeaSerializer(serializers.ModelSerializer):
+    title = fields.WritableField()
+    text = fields.WritableField()
+
     class Meta:
         model = Idea
         fields = (
