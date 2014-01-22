@@ -4,8 +4,9 @@ from rest_framework import serializers, fields
 
 class BrainstormingSerializer(serializers.ModelSerializer):
     question = fields.WritableField()
-    details = fields.WritableField()
-    creatorEmail = fields.WritableField(source='creator_email', write_only=True)
+    details = fields.WritableField(required=False)
+    creatorEmail = fields.WritableField(source='creator_email',
+        write_only=True, required=False)
 
     class Meta:
         model = Brainstorming
