@@ -4,7 +4,6 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    # url(r'^$', 'braindump.views.home', name='home'),
-
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^$', include(include('braindump.apps.brainstorming.urls'))),
 )

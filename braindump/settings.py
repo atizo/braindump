@@ -41,6 +41,7 @@ INSTALLED_APPS = (
     'storages',
     'south',
     'django_nose',
+    'braindump.apps.brainstorming',
 )
 
 MIDDLEWARE_CLASSES = (
