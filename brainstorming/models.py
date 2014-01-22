@@ -4,8 +4,8 @@ from django_extensions.db.models import TimeStampedModel
 
 class Brainstorming(TimeStampedModel):
     question = models.CharField(max_length=200)
-    details = models.TextField(null=True)
-    creator_email = models.EmailField(null=True)
+    details = models.TextField(blank=True)
+    creator_email = models.EmailField(blank=True)
     #image = models.ImageField()
 
     class Meta:
@@ -14,7 +14,7 @@ class Brainstorming(TimeStampedModel):
 
 class Idea(TimeStampedModel):
     brainstorming = models.ForeignKey('brainstorming.Brainstorming', unique=False)
-    title = models.CharField(max_length=200, null=True)
+    title = models.CharField(max_length=200, blank=True)
     text = models.TextField()
     #image = models.ImageField()
 
