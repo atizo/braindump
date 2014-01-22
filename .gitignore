@@ -33,7 +33,7 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
-.idea/workspace.xml
+.idea
 
 venv
 *.pyc
