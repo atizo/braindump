@@ -1,0 +1,50 @@
+.header {
+  padding: 0 15px;
+  text-align: center;
+}
+
+div.start{
+  h1{
+    color: #5C604D;
+  }
+
+  .btn{
+    width: 100%;
+  }
+}
+
+/* Custom page footer */
+.footer {
+  margin-top: $padding-large-vertical;
+  padding-top: $padding-small-vertical;
+  border-top: 1px solid $gray-lighter;
+}
+
+
+.well {
+  padding: 19px;
+  margin-bottom: 20px;
+  background-color: $well-bg;
+  border: 1px solid darken($well-bg, 7%);
+  -webkit-box-shadow: 0 2px 1px rgba(0,0,0,0.04);
+  box-shadow: 0 2px 1px rgba(0,0,0,0.04);
+}
+
+/* form animation */
+.form-show {
+  -webkit-transition:all linear .5s;
+  transition:all linear .5s;
+  opacity:1;
+  max-height: 800px;
+  overflow: hidden;
+}
+
+.form-show.ng-hide-add,
+.form-show.ng-hide-remove {
+  display:block!important;
+}
+
+.form-show.ng-hide {
+  opacity:0;
+  max-height: 0px;
+}

@@ -1,34 +1,30 @@
 <div class="header">
-  <ul class="nav nav-pills pull-right">
-    <li class="active"><a ng-href="#">Home</a></li>
-    <li><a ng-href="#">About</a></li>
-    <li><a ng-href="#">Contact</a></li>
-  </ul>
-  <h3 class="text-muted">braindump</h3>
+  <img src="static/images/logo.png" alt="braindump.me">
 </div>
 
-<div class="jumbotron">
-  <h1>'Allo, 'Allo!</h1>
-  <p class="lead">
-    <img src="static/images/brain.png" alt="I'm Yeoman"><br>
-    Connect your brains
-  </p>
-  <p><a class="btn btn-lg btn-success" ng-href="#">Splendid!</a></p>
-</div>
+<div class="start text-center">
+  <h1>connect your brains</h1>
 
-<div class="row marketing">
-  <h4>Start</h4>
-  <p>
-    Start new brainstorming
-  </p>
-
-  <h4>Find</h4>
-  <p>
-    Find your brainstormings
-  </p>
-
+  <form name="form" class="well text-left" role="form" ng-init="checked=false" novalidate>
+    <div ng-class="{'form-group': fullform}">
+      <input ng-model="bs.question" ng-click="fullform=true" type="text" class="form-control input-bold"
+             placeholder="Add question" required="required">
+    </div>
+    <div ng-show="fullform" class="form-show">
+      <div class="form-group">
+        <input ng-model="bs.creatorEmail" type="email" class="form-control"
+               placeholder="Your email" required="required">
+        <span class="help-block">Used to manage your brainstorming. Will not be shown to others.</span>
+      </div>
+      <div class="form-group">
+        <textarea rows="1" ng-model="bs.details" class="form-control msd-elastic"
+                  placeholder="Add details (optional)"></textarea>
+      </div>
+      <button ng-click="create()" ng-disabled="form.$invalid" type="button" class="btn btn-info">Create</button>
+    </div>
+  </form>
 </div>
 
 <div class="footer">
-  <p>♥ from the atizo team</p>
+  <small class="text-muted">braindump powered by <a href="http://www.atizo360.com">atizo 360°</a></small>
 </div>

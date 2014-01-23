@@ -1,16 +1,20 @@
 'use strict';
 
-angular.module('clientApp', [
-  'ngCookies',
-  'ngResource',
-  'ngSanitize',
-  'ngRoute'
-])
-  .config(['$routeProvider', function ($routeProvider) {
+angular.module('braind', [
+    'ngCookies',
+    'ngResource',
+    'ngSanitize',
+    'ngRoute',
+    'ngAnimate',
+    'restangular',
+    'monospaced.elastic'
+  ])
+  .config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
+    $locationProvider.html5Mode(true);
     $routeProvider
       .when('/', {
         templateUrl: 'static/views/main.html',
-        controller: 'MainCtrl'
+        controller: 'StartCtrl'
       })
       .otherwise({
         redirectTo: '/'
