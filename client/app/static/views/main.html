@@ -1,11 +1,11 @@
 <div class="header">
-  <img src="static/images/logo.png" alt="braindump.me">
+  <img ng-click="fullform=false" src="static/images/logo.png" alt="braindump.me">
 </div>
 
 <div class="start text-center">
   <h1>connect your brains</h1>
 
-  <form name="form" class="well text-left" role="form" ng-init="checked=false" novalidate>
+  <form name="form" class="well text-left" role="form" novalidate>
     <div ng-class="{'form-group': fullform}">
       <input ng-model="bs.question" ng-click="fullform=true" type="text" class="form-control input-bold"
              placeholder="Add question" required="required">

@@ -11,12 +11,11 @@ class BrainstormingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Brainstorming
         fields = (
-            'id',
+            'slug',
             'created',
             'question',
             'details',
             'creatorEmail',
-            #'image',
         )
 
 
@@ -31,5 +30,4 @@ class IdeaSerializer(serializers.ModelSerializer):
             'created',
             'title',
             'text',
-            #'image',
         )
