@@ -7,7 +7,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '%g#i3#6@*6v%81z)xsx6a*4zb3k^%3!b5*aof38^w7f8c6l6=q'
+SECRET_KEY = os.environ.get('DJANGO_SECRET', '%g#i3#6@*6v%81z)xsx6a*4zb3k^%3!b5*aof38^w7f8c6l6=q')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = not bool(os.environ.get('DJANGO_NO_DEBUG', ''))
@@ -95,13 +95,6 @@ else:
         os.path.join(BASE_DIR, 'templates'),
     )
 
-TEMPLATE_LOADERS = (
-    ('django.template.loaders.cached.Loader', (
-        'django.template.loaders.filesystem.Loader',
-        'django.template.loaders.app_directories.Loader',
-    )),
-)
-
 # Mail settings
 if 'SENDGRID_USERNAME' in os.environ:
     EMAIL_HOST_USER = os.environ.get('SENDGRID_USERNAME')
@@ -141,14 +134,9 @@ LOGGING = {
     }
 }
 
-if 'MEMCACHEDCLOUD_SERVERS' in os.environ:
-    CACHES = {
-        'default': {
-            'BACKEND': 'django_bmemcached.memcached.BMemcached',
-            'LOCATION': os.environ.get('MEMCACHEDCLOUD_SERVERS').split(','),
-            'OPTIONS': {
-                        'username': os.environ.get('MEMCACHEDCLOUD_USERNAME'),
-                        'password': os.environ.get('MEMCACHEDCLOUD_PASSWORD')
-                }
-        }
-    }
+TEMPLATE_LOADERS = (
+    ('django.template.loaders.cached.Loader', (
+        'django.template.loaders.filesystem.Loader',
+        'django.template.loaders.app_directories.Loader',
+    )),
+)
