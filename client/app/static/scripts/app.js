@@ -9,8 +9,10 @@ angular.module('braind', [
     'restangular',
     'monospaced.elastic'
   ])
-  .config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
+  .config(['$routeProvider', '$locationProvider', '$httpProvider', function ($routeProvider, $locationProvider, $httpProvider) {
     $locationProvider.html5Mode(true);
+    $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+    $httpProvider.defaults.xsrfCookieName = 'csrftoken';
     $routeProvider
       .when('/', {
         templateUrl: 'static/views/main.html',
