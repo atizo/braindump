@@ -6,10 +6,8 @@
   <h1>connect your brains</h1>
 
   <form name="form" class="well text-left" role="form" novalidate>
-    <div ng-class="{'form-group': fullform}">
       <input ng-model="bs.question" ng-click="fullform=true" type="text" class="form-control input-bold"
              placeholder="Add question" required="required">
-    </div>
     <div ng-show="fullform" class="form-show">
       <div class="form-group">
         <input ng-model="bs.creatorEmail" type="email" class="form-control"

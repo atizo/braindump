@@ -1,0 +1,6 @@
+You have initiated a brainstorming "{{brain.question}}" at braindump. The link to your brainstorming is:
+
+{{brain.get_absolute_url}}
+
+Share this link with all those who should submit their ideas. Do not forget to enter your own ideas, too.
+(If you did not initiate this brainstorming, somebody must accidentally have used your e-mail address; simply ignore this e-mail, please.)

@@ -39,6 +39,10 @@ div.start{
   overflow: hidden;
 }
 
+.form-show > div.form-group:first-child{
+  margin-top: 15px;
+}
+
 .form-show.ng-hide-add,
 .form-show.ng-hide-remove {
   display:block!important;

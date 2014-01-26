@@ -9,14 +9,14 @@ class BrainstormingTestCase(unittest2.TestCase):
         serializer = BrainstormingSerializer(obj)
 
         # 'creatorEmail' should be write-only
-        self.assertEqual(set(['id', 'created', 'question', 'details']),
+        self.assertEqual(set(['slug', 'created', 'question', 'details']),
             set(serializer.data.keys()))
 
     def test_creation(self):
         serializer = BrainstormingSerializer(data={})
         self.assertFalse(serializer.is_valid())
 
-        serializer = BrainstormingSerializer(data={'question': 'q'})
+        serializer = BrainstormingSerializer(data={'question': 'q', 'creatorEmail': 'john@example.org'})
         self.assertTrue(serializer.is_valid())
 
         serializer = BrainstormingSerializer(data={'question': 'q', 'details': 'd', 'creatorEmail': 'john@example.org'})

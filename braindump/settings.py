@@ -26,6 +26,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'django_extensions',
     'rest_framework',
     'storages',
@@ -61,7 +62,7 @@ DATABASES = {
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Zurich'
 
 USE_I18N = True
 
@@ -140,3 +141,5 @@ TEMPLATE_LOADERS = (
         'django.template.loaders.app_directories.Loader',
     )),
 )
+
+SITE_ID = 1
