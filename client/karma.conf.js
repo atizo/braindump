@@ -11,12 +11,16 @@ module.exports = function (config) {
 
     // list of files / patterns to load in the browser
     files: [
+      'app/static/bower_components/lodash/dist/lodash.js',
       'app/static/bower_components/angular/angular.js',
       'app/static/bower_components/angular-mocks/angular-mocks.js',
       'app/static/bower_components/angular-resource/angular-resource.js',
       'app/static/bower_components/angular-cookies/angular-cookies.js',
       'app/static/bower_components/angular-sanitize/angular-sanitize.js',
       'app/static/bower_components/angular-route/angular-route.js',
+      'app/static/bower_components/angular-animate/angular-animate.js',
+      'app/static/bower_components/angular-elastic/elastic.js',
+      'app/static/bower_components/restangular/dist/restangular.js',
       'app/static/scripts/*.js',
       'app/static/scripts/**/*.js',
       'test/mock/**/*.js',
