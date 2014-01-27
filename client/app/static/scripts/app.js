@@ -18,6 +18,10 @@ angular.module('braind', [
         templateUrl: 'static/views/main.html',
         controller: 'StartCtrl'
       })
+      .when('/invite', {
+        templateUrl: 'static/views/invite.html',
+        controller: 'InviteCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });

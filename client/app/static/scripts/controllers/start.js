@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('braind')
-  .controller('StartCtrl', ['$scope', 'Restangular', function ($scope, Restangular) {
+  .controller('StartCtrl', ['$scope', '$location', 'Restangular', function ($scope, $location, Restangular) {
     var brainstormings = Restangular.all('api/brainstormings/');
 
     $scope.reset = function () {
@@ -12,7 +12,9 @@ angular.module('braind')
       };
     };
     $scope.create = function () {
-      brainstormings.post($scope.bs);
+      brainstormings.post($scope.bs).then(function (brainstorming) {
+        $location.path('/invite');
+      });
     };
     $scope.reset();
   }]);
