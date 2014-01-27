@@ -16,7 +16,7 @@ module.exports = function (grunt) {
   require('time-grunt')(grunt);
 
   // Define the configuration for all the tasks
-  grunt.initConfig({
+  var config = grunt.initConfig({
 
     // Project settings
     yeoman: {
@@ -335,8 +335,7 @@ module.exports = function (grunt) {
     // Test settings
     karma: {
       unit: {
-        configFile: 'karma.conf.js',
-        singleRun: true
+        configFile: 'karma.conf.js'
       }
     }
   });
@@ -361,13 +360,20 @@ module.exports = function (grunt) {
     grunt.task.run(['serve']);
   });
 
-  grunt.registerTask('test', [
-    'clean:server',
-    'concurrent:test',
-    'autoprefixer',
-    'connect:test',
-    'karma'
-  ]);
+  grunt.registerTask('test', function (target) {
+    if (target === 'debug') {
+      config.karma.unit.singleRun = false;
+      config.karma.unit.browsers = ['Chrome'];
+    }
+
+    return grunt.task.run([
+      'clean:server',
+      'concurrent:test',
+      'autoprefixer',
+      'connect:test',
+      'karma'
+    ]);
+  });
 
   grunt.registerTask('build', [
     'clean:dist',
