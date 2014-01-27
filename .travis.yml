@@ -6,9 +6,13 @@ addons:
 services: postgresql
 env:
   - DATABASE_URL="postgres://postgres@localhost/braindump"
-install: "pip install -r requirements.txt"
+install:
+  - "pip install -r requirements.txt"
+  - "cd client && npm install && bower install"
 before_script:
   - "psql -c 'create database braindump;' -U postgres"
   - "python manage.py syncdb --noinput"
   - "python manage.py migrate --noinput"
-script: "python manage.py test"
+script:
+  - "python manage.py test"
+  - "cd client && grunt test"
