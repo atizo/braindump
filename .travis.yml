@@ -8,11 +8,11 @@ env:
   - DATABASE_URL="postgres://postgres@localhost/braindump"
 install:
   - "pip install -r requirements.txt"
-  - "cd client && npm install && npm install bower && bower install"
+  - "cd client && npm install && npm install bower && npm install grunt-cli && bower install && cd .."
 before_script:
   - "psql -c 'create database braindump;' -U postgres"
   - "python manage.py syncdb --noinput"
   - "python manage.py migrate --noinput"
 script:
   - "python manage.py test"
-  - "cd client && grunt test"
+  - "cd client && grunt test && cd .."
