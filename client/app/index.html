@@ -13,8 +13,21 @@
     <!-- build:css({.tmp,app}) static/styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
+    <meta property="og:title" content="Brainstorming" />
+    <meta property="og:site_name" content="Braindump" />
+    <meta property="og:url" content="http://samples.ogp.me/136756249803614" />
+    <meta property="og:description" content="http://samples.ogp.me/390580850990722" />
+    <meta property="fb:app_id" content="123456" />
   </head>
   <body ng-app="braind">
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=264323110399549";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->

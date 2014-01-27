@@ -7,10 +7,8 @@ import os
 admin.autodiscover()
 
 urlpatterns = patterns('',
-                       url(r'^$', 'brainstorming.views.index', name='home'),
-
                        # REST API
-                       url(r'', include(include('api.urls'))),
+                       url(r'', include('api.urls')),
 
                        # admin interface
                        url(r'^admin/', include(admin.site.urls)),
@@ -19,6 +17,8 @@ urlpatterns = patterns('',
                        url(r'^(?P<path>favicon\.ico|apple-touch-icon\.png)$',
                            'django.views.static.serve',
                            kwargs={'document_root': os.path.join(settings.BASE_DIR, 'root')}),
+
+                       url(r'', include('brainstorming.urls'))
 )
 
 if settings.DEBUG:
