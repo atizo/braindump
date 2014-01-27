@@ -11,7 +11,7 @@ install:
   - sudo apt-get update && sudo apt-get install ruby
   - gem install compass --version "=0.12.2"
   - npm install -g grunt-cli bower
-  - cd client && npm install && cd ..
+  - cd client && npm install && bower install && cd ..
 before_script:
   - psql -c 'create database braindump;' -U postgres
   - python manage.py syncdb --noinput
