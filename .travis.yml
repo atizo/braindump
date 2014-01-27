@@ -6,4 +6,5 @@ env: DATABASE_URL = "postgres://postgres@localhost/braindump"
 install: "pip install -r requirements.txt"
 before_script:
   - "psql -c 'create database braindump;' -U postgres"
+  - "python manage.py syncdb --noinput"
 script: "python manage.py test"
