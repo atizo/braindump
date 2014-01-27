@@ -35,6 +35,7 @@ nosetests.xml
 .pydevproject
 .idea
 prod.env
+*~
 
 venv
 *.pyc
