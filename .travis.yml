@@ -7,12 +7,15 @@ services: postgresql
 env:
   - DATABASE_URL="postgres://postgres@localhost/braindump"
 install:
-  - "pip install -r requirements.txt"
-  - "cd client && npm install && npm install bower && npm install grunt-cli && bower install && cd .."
+  - pip install -r requirements.txt
+  - apt-get update && apt-get install ruby
+  - gem install compass --version "=0.12.2"
+  - npm install -g grunt-cli bower
+  - cd client && npm install && cd ..
 before_script:
-  - "psql -c 'create database braindump;' -U postgres"
-  - "python manage.py syncdb --noinput"
-  - "python manage.py migrate --noinput"
+  - psql -c 'create database braindump;' -U postgres
+  - python manage.py syncdb --noinput
+  - python manage.py migrate --noinput
 script:
-  - "python manage.py test"
-  - "cd client && grunt test && cd .."
+  - python manage.py test
+  - cd client && grunt test && cd ..
