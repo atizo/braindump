@@ -44,11 +44,11 @@
     <![endif]-->
 
     <script>
-        {% if brainstorming %}
-            window.brainstorming = {{ brainstorming|safe }};
+        {% if initial_brainstorming %}
+            window.initialBrainstorming = {{ initial_brainstorming|safe }};
         {% endif %}
-        {% if ideas %}
-            window.ideas = {{ ideas|safe }};
+        {% if initial_ideas %}
+            window.initialIdeas = {{ initial_ideas|safe }};
         {% endif %}
     </script>
 

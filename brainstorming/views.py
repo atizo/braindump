@@ -20,15 +20,15 @@ def brainstorming(request, brainstorming_slug):
     # find existing brainstomings in the current session
     brainstorming = get_object_or_404(Brainstorming, pk=brainstorming_slug)
 
-    brainstorming_data = BrainstormingViewSet.as_view({'get': 'retrieve'})(
+    initial_brainstorming = BrainstormingViewSet.as_view({'get': 'retrieve'})(
         request, pk=brainstorming.pk).data
-    ideas_data = IdeaViewSet.as_view({'get': 'list'})(
+    initial_ideas = IdeaViewSet.as_view({'get': 'list'})(
         request, brainstorming=brainstorming.pk).data
 
 
     context = {
-        'brainstorming': json.dumps(brainstorming_data),
-        'ideas': json.dumps(ideas_data),
+        'initial_brainstorming': json.dumps(initial_brainstorming),
+        'initial_ideas': json.dumps(initial_ideas),
     }
 
     return render(request, 'index.html', context)
