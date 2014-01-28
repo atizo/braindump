@@ -17,11 +17,11 @@ describe('Controller: MainCtrl', function () {
   }));
 
   it('should attach an empty brainstorming to the scope', function () {
-    var bs = {
+    var empty = {
       question: '',
       creatorEmail: '',
       details: ''
     };
-    expect(scope.bs).toEqual(bs);
+    expect(scope.formData).toEqual(empty);
   });
 });
