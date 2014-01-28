@@ -21,6 +21,8 @@ module.exports = function (config) {
       'app/static/bower_components/angular-animate/angular-animate.js',
       'app/static/bower_components/angular-elastic/elastic.js',
       'app/static/bower_components/restangular/dist/restangular.js',
+      'app/static/bower_components/zeroclipboard/ZeroClipboard.js',
+      'app/static/bower_components/ng-clip/src/ngClip.js',
       'app/static/scripts/*.js',
       'app/static/scripts/**/*.js',
       'test/mock/**/*.js',
