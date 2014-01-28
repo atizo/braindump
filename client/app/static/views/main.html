@@ -5,7 +5,7 @@
 <div class="start text-center">
   <h1>connect your brains</h1>
 
-  <form name="form" class="well text-left" role="form" novalidate>
+  <form name="form" class="well text-left" role="form" ng-submit="create()" novalidate>
       <input ng-model="bs.question" ng-click="fullform=true" type="text" class="form-control input-bold"
              placeholder="Add question" required="required">
     <div ng-show="fullform" class="form-show">
@@ -18,7 +18,7 @@
         <textarea rows="1" ng-model="bs.details" class="form-control msd-elastic"
                   placeholder="Add details (optional)"></textarea>
       </div>
-      <button ng-click="create()" ng-disabled="form.$invalid" type="button" class="btn btn-info">Create</button>
+      <button ng-disabled="form.$invalid" type="submit" class="btn btn-info">Create</button>
     </div>
   </form>
 </div>
