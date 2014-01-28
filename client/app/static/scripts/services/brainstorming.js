@@ -15,7 +15,6 @@ angular.module('braind')
       if (initialBrainstorming) {
         currentBrainstorming = $q.when(Restangular.restangularizeElement(null,
           initialBrainstorming, brainstormingRoute + initialBrainstorming.slug));
-
         if (initialIdeas) {
           $q.when(Restangular.restangularizeCollection(currentBrainstorming,
             initialIdeas, 'ideas'));
@@ -25,8 +24,10 @@ angular.module('braind')
       }
 
       service.create = function (data) {
-        currentBrainstorming = Restangular.all(brainstormingRoute).post(data);
-        initIdeas();
+        currentBrainstorming = Restangular.all(brainstormingRoute).post(data)
+          .then(function () {
+            initIdeas();
+          });
         return currentBrainstorming;
       };
 
