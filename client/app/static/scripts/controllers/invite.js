@@ -3,11 +3,15 @@
 angular.module('braind')
   .controller('InviteCtrl', ['$scope', '$location', 'brainstormingService',
     function ($scope, $location, brainstormingService) {
-      $scope.bs = brainstormingService.getBrainstorming();
+      var brainstorming = brainstormingService.getBrainstorming();
 
-      if (!$scope.bs) {
+      if (!brainstorming) {
         $location.path('/');
       }
+
+      brainstorming.then(function (bs) {
+        $scope.bs = bs;
+      });
 
       $scope.hallo = function () {
         return 'sdfgsfdgs';
