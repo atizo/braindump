@@ -5,7 +5,7 @@ from django.views.generic import TemplateView
 admin.autodiscover()
 
 urlpatterns = patterns('brainstorming.views',
-                       url(r'^$', 'index', name='home'),
-                       url(r'^(?P<brainstorming_slug>\w{12})(/.*)*$', 'brainstorming', name='brainstorming'),
-                       url(r'^.*$', TemplateView.as_view(template_name="index.html")),
-)
+    url(r'^$', 'index', name='home'),
+    url(r'^(?P<brainstorming_slug>\w{12})/?', 'brainstorming', name='brainstorming'),
+    url(r'^.*$', TemplateView.as_view(template_name="index.html")),
+) 
