@@ -13,8 +13,8 @@ angular.module('braind')
       }
 
       if (initialBrainstorming) {
-        currentBrainstorming = $q.when(Restangular.restangularizeElement(null,
-          initialBrainstorming, brainstormingRoute + initialBrainstorming.slug));
+        currentBrainstorming = Restangular.restangularizeElement(null,
+          initialBrainstorming, brainstormingRoute + initialBrainstorming.slug);
         if (initialIdeas) {
           $q.when(Restangular.restangularizeCollection(currentBrainstorming,
             initialIdeas, 'ideas'));
@@ -24,15 +24,16 @@ angular.module('braind')
       }
 
       service.create = function (data) {
-        currentBrainstorming = Restangular.all(brainstormingRoute).post(data)
-          .then(function () {
+        return Restangular.all(brainstormingRoute).post(data)
+          .then(function (obj) {
+            currentBrainstorming = obj;
             initIdeas();
+            return obj;
           });
-        return currentBrainstorming;
       };
 
       service.getBrainstorming = function () {
-        return currentBrainstorming;
+        return $q.when(currentBrainstorming);
       };
 
       service.getIdeas = function () {
@@ -40,7 +41,9 @@ angular.module('braind')
       };
 
       service.createIdea = function (data) {
-        return ideas.post(data);
+        var newIdea = ideas.post(data);
+        console.log(ideas, newIdea);
+        return newIdea;
       };
 
       return service;

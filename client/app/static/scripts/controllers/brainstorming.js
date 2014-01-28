@@ -2,8 +2,12 @@
 
 angular.module('braind')
   .controller('BrainstormingCtrl', ['$scope', 'brainstormingService', function ($scope, brainstormingService) {
-    $scope.brainstorming = brainstormingService.getBrainstorming();
-    $scope.ideas = brainstormingService.getIdeas();
+    brainstormingService.getBrainstorming().then(function (obj) {
+      $scope.brainstorming = obj;
+    });
+    brainstormingService.getIdeas().then(function(obj) {
+      $scope.ideas = obj;
+    });
 
     $scope.create = function () {
 
