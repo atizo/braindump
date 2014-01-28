@@ -10,7 +10,9 @@ angular.module('braind')
     });
 
     $scope.create = function () {
-
+      brainstormingService.createIdea($scope.formData);
+      $scope.reset();
+      $scope.fullform = false;
     };
 
     $scope.reset = function () {

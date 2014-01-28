@@ -3,7 +3,7 @@ from brainstorming.models import Brainstorming
 
 
 class BrainstormingAdmin(admin.ModelAdmin):
-    readonly_fields = ('slug', 'created', 'modified')
+    readonly_fields = ('id', 'created', 'modified')
 
 
 admin.site.register(Brainstorming, BrainstormingAdmin)

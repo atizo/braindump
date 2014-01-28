@@ -10,12 +10,12 @@ class Migration(SchemaMigration):
     def forwards(self, orm):
         # Adding model 'Brainstorming'
         db.create_table(u'brainstorming_brainstorming', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('created', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now, blank=True)),
             ('modified', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now, blank=True)),
+            ('id', self.gf('django.db.models.fields.SlugField')(max_length=50, primary_key=True)),
             ('question', self.gf('django.db.models.fields.CharField')(max_length=200)),
-            ('details', self.gf('django.db.models.fields.TextField')(null=True)),
-            ('creator_email', self.gf('django.db.models.fields.EmailField')(max_length=75, null=True)),
+            ('creator_email', self.gf('django.db.models.fields.EmailField')(max_length=75)),
+            ('details', self.gf('django.db.models.fields.TextField')(blank=True)),
         ))
         db.send_create_signal(u'brainstorming', ['Brainstorming'])
 
@@ -25,7 +25,7 @@ class Migration(SchemaMigration):
             ('created', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now, blank=True)),
             ('modified', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now, blank=True)),
             ('brainstorming', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['brainstorming.Brainstorming'])),
-            ('title', self.gf('django.db.models.fields.CharField')(max_length=200, null=True)),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=200, blank=True)),
             ('text', self.gf('django.db.models.fields.TextField')()),
         ))
         db.send_create_signal(u'brainstorming', ['Idea'])
@@ -62,9 +62,9 @@ class Migration(SchemaMigration):
         u'brainstorming.brainstorming': {
             'Meta': {'ordering': "['-created']", 'object_name': 'Brainstorming'},
             'created': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now', 'blank': 'True'}),
-            'creator_email': ('django.db.models.fields.EmailField', [], {'max_length': '75', 'null': 'True'}),
-            'details': ('django.db.models.fields.TextField', [], {'null': 'True'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'creator_email': ('django.db.models.fields.EmailField', [], {'max_length': '75'}),
+            'details': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
+            'id': ('django.db.models.fields.SlugField', [], {'max_length': '50', 'primary_key': 'True'}),
             'modified': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now', 'blank': 'True'}),
             'question': ('django.db.models.fields.CharField', [], {'max_length': '200'})
         },
@@ -83,7 +83,7 @@ class Migration(SchemaMigration):
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'modified': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now', 'blank': 'True'}),
             'text': ('django.db.models.fields.TextField', [], {}),
-            'title': ('django.db.models.fields.CharField', [], {'max_length': '200', 'null': 'True'})
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '200', 'blank': 'True'})
         }
     }
 

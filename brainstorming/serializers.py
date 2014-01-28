@@ -14,7 +14,7 @@ class BrainstormingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Brainstorming
         fields = (
-            'slug',
+            'id',
             'created',
             'question',
             'details',
@@ -25,7 +25,7 @@ class BrainstormingSerializer(serializers.ModelSerializer):
 
 class IdeaSerializer(serializers.ModelSerializer):
     created = TimeZoneAwareDateTimeField(read_only=True)
-    title = fields.WritableField()
+    title = fields.WritableField(required=False)
     text = fields.WritableField()
 
     class Meta:
@@ -33,6 +33,7 @@ class IdeaSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'created',
+            'brainstorming',
             'title',
             'text',
         )

@@ -16,14 +16,14 @@ def index(request):
 
 
 @ensure_csrf_cookie
-def brainstorming(request, brainstorming_slug):
+def brainstorming(request, brainstorming_id):
     # find existing brainstomings in the current session
-    brainstorming = get_object_or_404(Brainstorming, pk=brainstorming_slug)
+    brainstorming = get_object_or_404(Brainstorming, pk=brainstorming_id)
 
     initial_brainstorming = BrainstormingViewSet.as_view({'get': 'retrieve'})(
         request, pk=brainstorming.pk).data
     initial_ideas = IdeaViewSet.as_view({'get': 'list'})(
-        request, brainstorming=brainstorming.pk).data
+        request, brainstorming_id=brainstorming.pk).data
 
 
     context = {

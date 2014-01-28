@@ -14,21 +14,21 @@ MAX_TRIES = 1024
 
 
 class Brainstorming(TimeStampedModel):
-    slug = models.SlugField(primary_key=True, editable=False, blank=True)
+    id = models.SlugField(primary_key=True, editable=False, blank=True)
     question = models.CharField(max_length=200)
     creator_email = models.EmailField()
     details = models.TextField(blank=True)
 
     def __unicode__(self):
-        return '{question} ({slug})'.format(question=self.question, slug=self.slug)
+        return '{question} ({id})'.format(question=self.question, id=self.id)
 
     def save(self, *args, **kwargs):
         loop_num = 0
-        while not self.slug:
+        while not self.id:
             if loop_num < MAX_TRIES:
-                newslug = ''.join(random.sample(CHARSET, LENGTH))
-                if Brainstorming.objects.filter(pk=newslug).count() == 0:
-                    self.slug = newslug
+                newid = ''.join(random.sample(CHARSET, LENGTH))
+                if Brainstorming.objects.filter(pk=newid).count() == 0:
+                    self.id = newid
                 loop_num += 1
             else:
                 raise ValueError("Couldn't generate a unique code.")
@@ -36,7 +36,7 @@ class Brainstorming(TimeStampedModel):
         super(Brainstorming, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return get_full_url(self.slug)
+        return get_full_url(self.id)
 
     class Meta:
         ordering = ['-created']

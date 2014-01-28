@@ -4,20 +4,22 @@ angular.module('braind')
   .factory('brainstormingService', ['Restangular', '$q', 'initialBrainstorming', 'initialIdeas',
     function (Restangular, $q, initialBrainstorming, initialIdeas) {
       var service = {},
-        brainstormingRoute = 'api/brainstormings/',
+        brainstormingRoute = 'api/brainstormings',
         ideas = null,
         currentBrainstorming = null;
 
       function initIdeas() {
-        ideas = currentBrainstorming.getList('ideas');
+        currentBrainstorming.getList('ideas').then(function (obj) {
+          ideas = obj;
+        });
       }
 
       if (initialBrainstorming) {
         currentBrainstorming = Restangular.restangularizeElement(null,
-          initialBrainstorming, brainstormingRoute + initialBrainstorming.slug);
+          initialBrainstorming, brainstormingRoute);
         if (initialIdeas) {
-          $q.when(Restangular.restangularizeCollection(currentBrainstorming,
-            initialIdeas, 'ideas'));
+          ideas = Restangular.restangularizeCollection(currentBrainstorming,
+            initialIdeas, 'ideas');
         } else {
           initIdeas();
         }
@@ -37,13 +39,14 @@ angular.module('braind')
       };
 
       service.getIdeas = function () {
-        return ideas;
+        return $q.when(ideas);
       };
 
       service.createIdea = function (data) {
-        var newIdea = ideas.post(data);
-        console.log(ideas, newIdea);
-        return newIdea;
+        return ideas.post(data).then(function (obj) {
+          ideas.push(obj);
+          return obj;
+        });
       };
 
       return service;
