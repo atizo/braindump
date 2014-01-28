@@ -9,6 +9,6 @@ admin.autodiscover()
 
 urlpatterns = patterns('brainstorming.views',
                        url(r'^$', 'index', name='home'),
-                       url(r'^invite$', TemplateView.as_view(template_name="index.html"), name='home'),
-                       url(r'^(?P<brainstorming_id>\w{12})$', 'brain', name='home'),
+                       url(r'^invite$', TemplateView.as_view(template_name="index.html"), name='invite'),
+                       url(r'^(?P<brainstorming_slug>\w{12})$', 'brainstorming', name='brainstorming'),
 )

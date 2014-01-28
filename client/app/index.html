@@ -21,6 +21,14 @@
   </head>
   <body ng-app="braind">
     <div id="fb-root"></div>
+    <script>
+        {% if brainstorming %}
+            window.brainstorming = {{ brainstorming|safe }};
+        {% endif %}
+        {% if ideas %}
+            window.ideas = {{ ideas|safe }};
+        {% endif %}
+    </script>
     <script>(function(d, s, id) {
       var js, fjs = d.getElementsByTagName(s)[0];
       if (d.getElementById(id)) return;

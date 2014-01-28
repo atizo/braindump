@@ -1,5 +1,7 @@
+import json
 import logging
 from brainstorming.models import Brainstorming
+from brainstorming.viewsets import BrainstormingViewSet, IdeaViewSet
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.csrf import ensure_csrf_cookie
 
@@ -12,8 +14,21 @@ def index(request):
 
     return render(request, 'index.html', {})
 
+
 @ensure_csrf_cookie
-def brain(request, brainstorming_id):
+def brainstorming(request, brainstorming_slug):
     # find existing brainstomings in the current session
-    get_object_or_404(Brainstorming, pk=brainstorming_id)
-    return render(request, 'index.html', {})
+    brainstorming = get_object_or_404(Brainstorming, pk=brainstorming_slug)
+
+    brainstorming_data = BrainstormingViewSet.as_view({'get': 'retrieve'})(
+        request, pk=brainstorming.pk).data
+    ideas_data = IdeaViewSet.as_view({'get': 'list'})(
+        request, brainstorming=brainstorming.pk).data
+
+
+    context = {
+        'brainstorming': json.dumps(brainstorming_data),
+        'ideas': json.dumps(ideas_data),
+    }
+
+    return render(request, 'index.html', context)
