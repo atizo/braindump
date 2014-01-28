@@ -1,8 +1,10 @@
+from api.forms import TimeZoneAwareDateTimeField
 from brainstorming.models import Brainstorming, Idea
 from rest_framework import serializers, fields
 
 
 class BrainstormingSerializer(serializers.ModelSerializer):
+    created = TimeZoneAwareDateTimeField(read_only=True)
     question = fields.WritableField()
     details = fields.WritableField(required=False)
     creatorEmail = fields.WritableField(source='creator_email',
@@ -20,6 +22,7 @@ class BrainstormingSerializer(serializers.ModelSerializer):
 
 
 class IdeaSerializer(serializers.ModelSerializer):
+    created = TimeZoneAwareDateTimeField(read_only=True)
     title = fields.WritableField()
     text = fields.WritableField()
 
