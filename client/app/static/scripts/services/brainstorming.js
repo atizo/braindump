@@ -44,7 +44,7 @@ angular.module('braind')
 
       service.createIdea = function (data) {
         return ideas.post(data).then(function (obj) {
-          ideas.push(obj);
+          ideas.unshift(obj);
           return obj;
         });
       };
