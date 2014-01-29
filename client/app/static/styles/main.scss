@@ -1,4 +1,6 @@
-$icon-font-path: "/static/bower_components/sass-bootstrap/fonts/";
+$icon-font-path: "/static/styles/fonts/";
+
+@import "compass/css3/images";
 
 // Core variables and mixins
 @import "variables";
@@ -35,10 +37,14 @@ $icon-font-path: "/static/bower_components/sass-bootstrap/fonts/";
   padding: 0.2em 0;
 }
 
-/* Space out content a bit */
+html {
+  height: 100%;
+}
+
 body {
-  padding-top: 20px;
-  padding-bottom: 20px;
+  height: 100%;
+  background-color: #DDD;
+  @include background-image(radial-gradient(center center, #FDFDFD, #DFDFDF));
 }
 
 ::-webkit-scrollbar {
