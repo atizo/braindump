@@ -26,7 +26,7 @@ angular.module('braind')
           return 'length-300';
         }
         return '';
-      }
+      };
 
       $scope.create = function () {
         brainstormingService.createIdea($scope.formData).then(function () {
