@@ -1,0 +1,16 @@
+.zeroclipboard-is-hover {
+  color: $btn-default-color;
+  background-color: darken($btn-default-bg, 8%);
+  border-color: darken($btn-default-border, 12%);
+}
+
+.share-link{
+  background-color: #fff;
+  padding: $padding-base-vertical $padding-base-horizontal;
+  display: block;
+}
+
+.invite-grid{
+
+  margin-bottom: $padding-large-vertical;
+}

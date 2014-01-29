@@ -24,8 +24,12 @@
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
-    <!-- Add your site or application content here -->
     <div ng-view=""></div>
+    <div class="footer">
+      <div class="container">
+        <small class="text-muted">braindump powered by <a href="http://www.atizo360.com">atizo 360°</a></small>
+      </div>
+    </div>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
      <script>
@@ -67,7 +71,6 @@
     <script src="/static/bower_components/restangular/dist/restangular.js"></script>
     <script src="/static/bower_components/angular-elastic/elastic.js"></script>
     <script src="/static/bower_components/zeroclipboard/ZeroClipboard.js"></script>
-    <script src="/static/bower_components/ng-clip/src/ngClip.js"></script>
     <script src="/static/bower_components/momentjs/moment.js"></script>
     <!-- endbuild -->
 
@@ -79,6 +82,8 @@
     <script src="/static/scripts/services/brainstorming.js"></script>
     <script src="/static/scripts/services/date.js"></script>
     <script src="/static/scripts/directives/fromnow.js"></script>
+    <script src="/static/scripts/directives/bdclip.js"></script>
+    <script src="/static/scripts/directives/bdheader.js"></script>
     <!-- endbuild -->
 </body>
 </html>
