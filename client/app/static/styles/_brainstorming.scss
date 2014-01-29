@@ -11,6 +11,7 @@
     max-height: 360px - $padding-large-vertical * 2;
     overflow: hidden;
 
+    /* custom font sizes for the idea cards */
     font-family: $font-family-serif;
     font-weight: 100;
     font-size: 14px;
@@ -44,11 +45,6 @@
   .footer {
     margin-top: $padding-large-vertical * 2;
 
-    .name, .date {
-      font-size: $font-size-small;
-      display: block;
-      text-align: right;
-    }
     .date {
       @include opacity(0.5);
     }
