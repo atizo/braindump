@@ -5,7 +5,7 @@ angular.module('braind')
 
     return {
       restrict: 'E',
-      templateUrl: '/static/scripts/directives/templates/bdheader.html',
+      templateUrl: '/static/views/directives/bdheader.html',
       scope:{
         title: '@',
         action: '&',
