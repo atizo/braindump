@@ -27,6 +27,7 @@ class IdeaSerializer(serializers.ModelSerializer):
     created = TimeZoneAwareDateTimeField(read_only=True)
     title = fields.WritableField(required=False)
     text = fields.WritableField()
+    creatorName = fields.WritableField(source="creator_name", required=False)
 
     class Meta:
         model = Idea
@@ -36,4 +37,5 @@ class IdeaSerializer(serializers.ModelSerializer):
             'brainstorming',
             'title',
             'text',
+            'creatorName',
         )

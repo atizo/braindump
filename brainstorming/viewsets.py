@@ -7,6 +7,15 @@ class BrainstormingViewSet(viewsets.ModelViewSet):
     queryset = Brainstorming.objects.all()
     serializer_class = BrainstormingSerializer
 
+    def create(self, request, *args, **kwargs):
+        self.creator_ip = request.META.get('REMOTE_ADDR', None)
+        return super(IdeaViewSet, self).create(request, *args, **kwargs)
+
+    def pre_save(self, obj):
+        if self.creator_ip:
+            obj.creator_ip = self.creator_ip
+        super(BrainstormingViewSet, self).pre_save(obj)
+
 
 class IdeaViewSet(viewsets.ModelViewSet):
     queryset = Idea.objects.all()
@@ -25,4 +34,12 @@ class IdeaViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         # read brainstorming id from url
         request.DATA['brainstorming'] = kwargs.get('brainstorming_id', None)
+
+        self.creator_ip = request.META.get('REMOTE_ADDR', None)
+
         return super(IdeaViewSet, self).create(request, *args, **kwargs)
+
+    def pre_save(self, obj):
+        if self.creator_ip:
+            obj.creator_ip = self.creator_ip
+        super(IdeaViewSet, self).pre_save(obj)

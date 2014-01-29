@@ -17,6 +17,7 @@ class Brainstorming(TimeStampedModel):
     id = models.SlugField(primary_key=True, editable=False, blank=True)
     question = models.CharField(max_length=200)
     creator_email = models.EmailField()
+    creator_ip = models.CharField(max_length=100, blank=True)
     details = models.TextField(blank=True)
 
     def __unicode__(self):
@@ -52,6 +53,8 @@ class Idea(TimeStampedModel):
     brainstorming = models.ForeignKey('brainstorming.Brainstorming', unique=False)
     title = models.CharField(max_length=200, blank=True)
     text = models.TextField()
+    creator_name = models.CharField(max_length=200, blank=True)
+    creator_ip = models.CharField(max_length=100, blank=True)
     #image = models.ImageField()
 
     class Meta:
