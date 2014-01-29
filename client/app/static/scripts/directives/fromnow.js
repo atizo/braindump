@@ -20,18 +20,24 @@ angular.module('braind')
           }
         }
 
-        scope.$watch(attr.value, function (value) {
-          if (!angular.isDefined(value) || value === null) {
-            return;
-          }
-
+        function destroyTimeout() {
           if (activeTimeout) {
             $timeout.cancel(activeTimeout);
             activeTimeout = null;
           }
+        }
+
+        scope.$watch(attr.value, function (value) {
+          destroyTimeout();
+
+          if (!angular.isDefined(value) || value === null) {
+            return;
+          }
 
           updateTime(value);
         });
+
+        scope.$on('destroy', destroyTimeout);
       }
     };
   }]);
