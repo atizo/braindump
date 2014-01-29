@@ -5,9 +5,10 @@ div.start {
 }
 
 /* Custom page footer */
-.footer {
+body > .footer {
   margin-top: $padding-large-vertical * 2;
   padding-top: $padding-small-vertical;
+  padding-bottom: $padding-small-vertical;
   border-top: 1px solid #DDD;
 }
 

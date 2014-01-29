@@ -1,18 +1,56 @@
 .idea {
   background-color: #fff;
-  margin: 1em;
-  padding: 1em;
+  margin: $padding-large-vertical;
+  padding: $padding-large-vertical * 2;
+  width: 250px - $padding-large-vertical * 2;
+  @include box-shadow(0 2px 1px rgba(0, 0, 0, 0.08));
+  float: left;
 
-  .title {
-    font-weight: bold;
-    margin-bottom: 0.2em;
+  .content {
+    min-height: 100px - $padding-large-vertical * 2;
+    max-height: 360px - $padding-large-vertical * 2;
+    overflow: hidden;
+
+    font-family: $font-family-serif;
+    font-weight: 100;
+    font-size: 14px;
+    line-height: 22px;
+
+    &.length-25 {
+      font-size: 48px;
+      line-height: 60px;
+    }
+    &.length-50 {
+      font-size: 36px;
+      line-height: 48px;
+    }
+    &.length-150 {
+      font-size: 24px;
+      line-height: 36px;
+    }
+    &.length-300 {
+      font-size: 18px;
+      line-height: 28px;
+    }
+
+    .title {
+      font-weight: 400;
+    }
+    .title, .text {
+      word-wrap: break-word;
+    }
   }
-  .name, .date {
-    font-size: 0.8em;
-    display: block;
-    text-align: right;
-  }
-  .date {
-    @include opacity(0.5);
+
+  .footer {
+    margin-top: $padding-large-vertical * 2;
+
+    .name, .date {
+      font-size: $font-size-small;
+      display: block;
+      text-align: right;
+    }
+    .date {
+      @include opacity(0.5);
+    }
   }
 }

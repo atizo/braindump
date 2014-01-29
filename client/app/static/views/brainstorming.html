@@ -23,13 +23,17 @@
   </form>
 
   <div ng-repeat="idea in ideas" class="idea">
-    <div ng-if="idea.title" ng-bind="idea.title"
-        class="title"></div>
-    <div ng-bind="idea.text"
-         class="text"></div>
-    <div ng-if="idea.creatorName" ng-bind="idea.creatorName"
-         class="name"></div>
-    <bd-from-now value="idea.created"
-                 class="date"></bd-from-now>
+    <div class="content" ng-class="getIdeaSizeClassName(idea)">
+      <div ng-if="idea.title" ng-bind="idea.title"
+          class="title"></div>
+      <div ng-bind="idea.text"
+           class="text"></div>
+    </div>
+    <div class="footer">
+      <div ng-if="idea.creatorName"
+           class="name">by <span ng-bind="idea.creatorName"></span></div>
+      <bd-from-now value="idea.created"
+                   class="date"></bd-from-now>
+    </div>
   </div>
 </div>
