@@ -1,7 +1,7 @@
 <h2 ng-bind="brainstorming.question"></h2>
 <div ng-if="brainstorming.details"
    ng-bind="brainstorming.details"></div>
-<div ng-bind="brainstorming.created"></div>
+<div ng-bind="brainstorming.createdFormatted"></div>
 
 <form name="form" class="well text-left" role="form" ng-submit="create()" novalidate>
   <div ng-show="fullform" class="form-show form-group">
@@ -22,6 +22,6 @@
   <li ng-repeat="idea in ideas">
     <h3 ng-bind="idea.title"></h3>
     <div ng-bind="idea.text"></div>
-    <div ng-bind="idea.created"></div>
+    <bd-from-now value="idea.created"></bd-from-now>
   </li>
 </ul>
