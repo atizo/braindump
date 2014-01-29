@@ -1,9 +1,12 @@
-<div class="header nav">
-  <div class="layer v1"></div>
-  <div class="layer r1"></div>
-  <div class="layer bar"><h3>connect your brains</h3></div>
-  <div class="layer logo">
-    <a href="/"><span class="icon-logo"></span></a>
+<div class="header">
+  <div style="position: relative;">
+    <div class="layer v1"></div>
+    <div class="layer r1"></div>
   </div>
-  <div class="layer content" ng-transclude></div>
+  <div class="bar nav">
+    <div class="container" ng-click="action()">
+      <a class="nav-logo" href="{{ href }}"><span class="icon-logo"></span></a>
+      <a class="nav-title" href="{{ href }}"> {{ title }}</a>
+    </div>
+  </div>
 </div>
