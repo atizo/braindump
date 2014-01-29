@@ -29,6 +29,8 @@ def brainstorming(request, brainstorming_id):
     context = {
         'initial_brainstorming': json.dumps(initial_brainstorming),
         'initial_ideas': json.dumps(initial_ideas),
+        'email': request.session.get('email', ''),
+        'name': request.session.get('name', ''),
     }
 
     return render(request, 'index.html', context)

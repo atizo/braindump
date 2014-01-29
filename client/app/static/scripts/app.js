@@ -39,4 +39,11 @@ angular.module('braind', [
 
       var ideas = angular.copy(window.initialIdeas);
       $provide.constant('initialIdeas', ideas);
-    }]);
+    }])
+
+  .run(['$rootScope', function ($rootScope) {
+    $rootScope.user = {
+      'email': angular.copy(window.email),
+      'name': angular.copy(window.name)
+    };
+  }]);

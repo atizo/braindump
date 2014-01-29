@@ -50,6 +50,8 @@
         {% if initial_ideas %}
             window.initialIdeas = {{ initial_ideas|safe }};
         {% endif %}
+        window.email = '{{ email }}';
+        window.name = '{{ name }}';
     </script>
 
     <!-- build:js /static/scripts/vendor.js -->

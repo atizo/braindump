@@ -13,6 +13,7 @@ angular.module('braind')
 
       $scope.create = function () {
         brainstormingService.createIdea($scope.formData);
+        $scope.user.name = $scope.formData.creatorName;
         $scope.reset();
         $scope.fullform = false;
       };
@@ -21,7 +22,7 @@ angular.module('braind')
         $scope.formData = {
           title: '',
           text: '',
-          creatorName: ''
+          creatorName: $scope.user.name
         };
       };
 
