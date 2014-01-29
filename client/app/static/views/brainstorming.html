@@ -15,18 +15,21 @@
 
     <div ng-show="fullform" class="form-show">
       <div class="form-group">
-
+        <input ng-model="formData.creatorName" type="text" class="form-control"
+               placeholder="Name (optional)">
       </div>
       <button ng-disabled="form.$invalid" type="submit" class="btn btn-info">Add</button>
     </div>
   </form>
 
-  <ul>
-    <li ng-repeat="idea in ideas">
-      <h3 ng-bind="idea.title"></h3>
-
-      <div ng-bind="idea.text"></div>
-      <bd-from-now value="idea.created"></bd-from-now>
-    </li>
-  </ul>
+  <div ng-repeat="idea in ideas" class="idea">
+    <div ng-if="idea.title" ng-bind="idea.title"
+        class="title"></div>
+    <div ng-bind="idea.text"
+         class="text"></div>
+    <div ng-if="idea.creatorName" ng-bind="idea.creatorName"
+         class="name"></div>
+    <bd-from-now value="idea.created"
+                 class="date"></bd-from-now>
+  </div>
 </div>

@@ -20,7 +20,8 @@ angular.module('braind')
       $scope.reset = function () {
         $scope.formData = {
           title: '',
-          text: ''
+          text: '',
+          creatorName: ''
         };
       };
 
