@@ -1,4 +1,5 @@
 import random
+import re
 
 from braindump.env import get_full_url
 from brainstorming.notifications import new_brainstorming
@@ -37,6 +38,18 @@ class Brainstorming(TimeStampedModel):
 
     def get_absolute_url(self):
         return get_full_url(self.id)
+
+    def get_safe_question(self):
+        """
+        Transform text links to prevent them from being linkified by mail clients
+        """
+        return re.sub(r'http(s)?://(www\.)?', '', self.question)
+
+    def get_safe_question(self):
+        """
+        Transform text links to prevent them from being linkified by mail clients
+        """
+        return re.sub(r'http(s)?://(www\.)?', '', self.question)
 
     class Meta:
         ordering = ['-created']

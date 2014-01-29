@@ -8,10 +8,10 @@ angular.module('braind', [
     'ngAnimate',
     'restangular',
     'monospaced.elastic',
-    'ngClipboard'
+    'bdDirectives'
   ])
-  .config(['$routeProvider', '$locationProvider', '$httpProvider', '$provide', 'ngClipProvider',
-    function ($routeProvider, $locationProvider, $httpProvider, $provide, ngClipProvider) {
+  .config(['$routeProvider', '$locationProvider', '$httpProvider', '$provide', 'bdClipProvider',
+    function ($routeProvider, $locationProvider, $httpProvider, $provide, bdClipProvider) {
       $locationProvider.html5Mode(true);
       $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
       $httpProvider.defaults.xsrfCookieName = 'csrftoken';
@@ -31,8 +31,8 @@ angular.module('braind', [
         .otherwise({
           redirectTo: '/'
         });
-      ngClipProvider.setPath('/static/bower_components/zeroclipboard/ZeroClipboard.swf');
 
+      bdClipProvider.setPath('/static/bower_components/zeroclipboard/ZeroClipboard.swf');
 
       var brainstorming = angular.copy(window.initialBrainstorming);
       $provide.constant('initialBrainstorming', brainstorming);

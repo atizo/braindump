@@ -23,8 +23,8 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
-.icon-thunder:before {
-	content: "\e601";
+.icon-logo:before {
+        content: "\e600";
 }
 
 .header {
@@ -44,7 +44,8 @@
 
   .v1 {
     z-index: 1;
-    @include background-image(linear-gradient(rgba(255, 255, 255, 0), #d5453d));
+    @include background-image(linear-gradient(rgba(213, 69, 61, 0), rgba(213, 69, 61, 1)));
+
   }
 
   .r1 {
@@ -52,7 +53,7 @@
     width: 100%;
     top: -60%;
     z-index: 2;
-    @include background-image(radial-gradient(center right, #9b325b, rgba(255, 255, 255, 0) 50%));
+    @include background-image(radial-gradient(center right, rgba(155, 50, 91, 1), rgba(155, 50, 91, 0) 50%));
   }
 
   .bar {

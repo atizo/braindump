@@ -1,4 +1,4 @@
-You have initiated a brainstorming "{{brain.question}}" at braindump. The link to your brainstorming is:
+You have initiated a brainstorming "{{brain.get_safe_question}}" at braindump. The link to your brainstorming is:
 
 {{brain.get_absolute_url}}
 
