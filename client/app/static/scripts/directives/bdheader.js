@@ -1,14 +1,15 @@
 'use strict';
 
 angular.module('braind')
-  .directive('bdHeader', ['$timeout', 'bdDate', function ($timeout, bdDate) {
+  .directive('bdHeader', [function () {
 
     return {
       restrict: 'E',
-      templateUrl: '/static/scripts/directives/templates/bdheader.html',
-      transclude: true,
-      link: function (scope, element, attr) {
-
+      templateUrl: '/static/views/directives/bdheader.html',
+      scope:{
+        title: '@',
+        action: '&',
+        href: '@'
       }
     };
   }]);

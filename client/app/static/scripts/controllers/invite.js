@@ -13,10 +13,13 @@ angular.module('braind')
         $scope.bs = bs;
 
         $scope.subject = window.encodeURIComponent($scope.bs.question);
-        $scope.body = window.encodeURIComponent('I would like to invite you to the brainstorming "' + $scope.bs.question +'"\nPlease follow the link in order to participate in the poll:');
+        $scope.body = window.encodeURIComponent('I would like to invite you to the brainstorming "' +
+          $scope.bs.question +
+          '"\n\nPlease follow the link in order to participate in the brainstorming:\n' +
+          $scope.bs.url
+        );
 
       });
-
 
       $scope.getLink = function () {
         return $scope.bs.url;

@@ -1,4 +1,12 @@
-<bd-header></bd-header>
+<div class="header banner">
+  <div class="layer v1"></div>
+  <div class="layer r1"></div>
+  <div class="layer bar"><h3>connect your brains</h3></div>
+  <div class="layer logo">
+    <span ng-click="fullform=false; reset()" class="icon-logo"></span>
+  </div>
+</div>
+
 <div class="container start text-center">
   <form name="form" class="well text-left" role="form" ng-submit="create()" novalidate>
     <input ng-model="formData.question" ng-click="fullform=true" type="text" class="form-control input-bold"
