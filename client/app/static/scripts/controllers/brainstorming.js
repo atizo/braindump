@@ -12,10 +12,11 @@ angular.module('braind')
       });
 
       $scope.create = function () {
-        brainstormingService.createIdea($scope.formData);
-        $scope.user.name = $scope.formData.creatorName;
-        $scope.reset();
-        $scope.fullform = false;
+        brainstormingService.createIdea($scope.formData).then(function () {
+          $scope.user.name = $scope.formData.creatorName;
+          $scope.reset();
+          $scope.fullform = false;
+        });
       };
 
       $scope.reset = function () {

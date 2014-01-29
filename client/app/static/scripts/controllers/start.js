@@ -1,13 +1,11 @@
 'use strict';
 
 angular.module('braind')
-  .controller('StartCtrl', ['$scope', '$rootScope', '$location', 'Restangular', 'brainstormingService',
-    function ($scope, $rootScope, $location, Restangular, brainstormingService) {
+  .controller('StartCtrl', ['$scope', '$location', 'Restangular', 'brainstormingService',
+    function ($scope, $location, Restangular, brainstormingService) {
 
     $scope.create = function () {
-      $rootScope.user = {
-        email: $scope.formData.creatorEmail
-      };
+      $scope.user.email = $scope.formData.creatorEmail;
       brainstormingService.create($scope.formData).then(function (brainstorming) {
         $location.path('/' + brainstorming.id + '/invite');
       });
@@ -16,7 +14,7 @@ angular.module('braind')
     $scope.reset = function () {
       $scope.formData = {
         question: '',
-        creatorEmail: '',
+        creatorEmail: $scope.user.email,
         details: ''
       };
     };

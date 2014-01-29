@@ -12,7 +12,11 @@ logger = logging.getLogger(__name__)
 def index(request):
     # find existing brainstomings in the current session
 
-    return render(request, 'index.html', {})
+    context = {
+        'email': request.session.get('email', ''),
+        'name': request.session.get('name', ''),
+    }
+    return render(request, 'index.html', context)
 
 
 @ensure_csrf_cookie
