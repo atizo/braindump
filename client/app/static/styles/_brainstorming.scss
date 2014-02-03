@@ -4,7 +4,7 @@
   padding: $padding-large-vertical * 2;
   width: 250px - $padding-large-vertical * 2;
   @include box-shadow(0 2px 1px rgba(0, 0, 0, 0.08));
-  float: left;
+  position: absolute;
 
   .content {
     min-height: 100px - $padding-large-vertical * 2;
