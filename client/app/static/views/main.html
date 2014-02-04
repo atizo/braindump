@@ -25,4 +25,10 @@
       <button ng-disabled="form.$invalid" type="submit" class="btn btn-info">Create</button>
     </div>
   </form>
+
+  <h3>Recent brainstromings</h3>
+  <div ng-repeat="b in rb">
+    <a class="btn btn-link" href="{{ b.url }}">{{ b.question }}</a>
+   </div>
+
 </div>

@@ -34,11 +34,9 @@ angular.module('braind', [
 
       bdClipProvider.setPath('/static/bower_components/zeroclipboard/ZeroClipboard.swf');
 
-      var brainstorming = angular.copy(window.initialBrainstorming);
-      $provide.constant('initialBrainstorming', brainstorming);
-
-      var ideas = angular.copy(window.initialIdeas);
-      $provide.constant('initialIdeas', ideas);
+      $provide.constant('brainstormingStore', angular.copy(window.brainstormingStore));
+      $provide.constant('ideaStore', angular.copy(window.ideaStore));
+      $provide.constant('recentBrainstormings', angular.copy(window.recentBrainstormings));
     }])
 
   .run(['$rootScope', function ($rootScope) {
@@ -47,3 +45,4 @@ angular.module('braind', [
       'name': angular.copy(window.name)
     };
   }]);
+

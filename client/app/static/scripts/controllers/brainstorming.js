@@ -1,13 +1,16 @@
 'use strict';
 
 angular.module('braind')
-  .controller('BrainstormingCtrl', ['$scope', 'brainstormingService', 'bdDate',
-    function ($scope, brainstormingService, bdDate) {
-      brainstormingService.getBrainstorming().then(function (obj) {
+  .controller('BrainstormingCtrl', ['$scope', '$routeParams', 'brainstormingService', 'bdDate',
+    function ($scope, $routeParams, brainstormingService, bdDate) {
+
+      var bsid = $routeParams.brainstorming;
+
+      brainstormingService.get(bsid).then(function (obj) {
         obj.createdFormatted = bdDate.format(obj.created);
         $scope.brainstorming = obj;
       });
-      brainstormingService.getIdeas().then(function(obj) {
+      brainstormingService.getIdeas(bsid).then(function(obj) {
         $scope.ideas = obj;
       });
 
@@ -29,7 +32,7 @@ angular.module('braind')
       };
 
       $scope.create = function () {
-        brainstormingService.createIdea($scope.formData).then(function () {
+        brainstormingService.postIdea(bsid, $scope.formData).then(function () {
           $scope.user.name = $scope.formData.creatorName;
           $scope.reset();
           $scope.fullform = false;

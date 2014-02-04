@@ -5,7 +5,7 @@ from django.template.loader import render_to_string
 
 
 def new_brainstorming(brainstorming, language=settings.LANGUAGE_CODE):
-    send_mail('Link for brainstorming "{0}"'.format(truncatechars(brainstorming.get_safe_question(), 20)),
+    send_mail(u'Link for brainstorming "{0}"'.format(truncatechars(brainstorming.get_safe_question(), 20)),
               render_to_string('brainstroming/mails/new.txt', {'brain': brainstorming}),
               'braindump@heroku.com',
               [brainstorming.creator_email],

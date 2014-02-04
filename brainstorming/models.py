@@ -46,12 +46,6 @@ class Brainstorming(TimeStampedModel):
         """
         return re.sub(r'http(s)?://(www\.)?', '', self.question)
 
-    def get_safe_question(self):
-        """
-        Transform text links to prevent them from being linkified by mail clients
-        """
-        return re.sub(r'http(s)?://(www\.)?', '', self.question)
-
     class Meta:
         ordering = ['-created']
 

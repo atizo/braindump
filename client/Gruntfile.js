@@ -305,7 +305,14 @@ module.exports = function (grunt) {
             expand: true,
             cwd: '<%= yeoman.dist %>/static',
             dest: '<%= yeoman.backend %>/static',
-            src: ['images/**', 'scripts/**', 'styles/**', 'views/**', 'bower_components/es5-shim/es5-shim.js', 'bower_components/json3/lib/json3.min.js']
+            src: ['images/**',
+              'scripts/**',
+              'styles/**',
+              'views/**',
+              'bower_components/es5-shim/es5-shim.js',
+              'bower_components/json3/lib/json3.min.js',
+              'bower_components/zeroclipboard/ZeroClipboard.swf'
+            ]
           },
           {
             expand: true,

@@ -48,12 +48,9 @@
     <![endif]-->
 
     <script>
-        {% if initial_brainstorming %}
-            window.initialBrainstorming = {{ initial_brainstorming|safe }};
-        {% endif %}
-        {% if initial_ideas %}
-            window.initialIdeas = {{ initial_ideas|safe }};
-        {% endif %}
+        window.brainstormingStore = {{ brainstormingStore|safe }};
+        window.ideaStore = {{ ideaStore|safe }};
+        window.recentBrainstormings = {{ recentBrainstormings|safe }};
         window.email = '{{ email }}';
         window.name = '{{ name }}';
     </script>
