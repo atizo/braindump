@@ -97,6 +97,7 @@ else:
     )
 
 # Mail settings
+FORM_MAIL = 'braindump@heroku.com'
 if 'SENDGRID_USERNAME' in os.environ:
     EMAIL_HOST_USER = os.environ.get('SENDGRID_USERNAME')
     EMAIL_HOST = 'smtp.sendgrid.net'

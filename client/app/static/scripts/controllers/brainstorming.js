@@ -1,16 +1,18 @@
 'use strict';
 
 angular.module('braind')
-  .controller('BrainstormingCtrl', ['$scope', '$routeParams', 'brainstormingService', 'bdDate',
-    function ($scope, $routeParams, brainstormingService, bdDate) {
+  .controller('BrainstormingCtrl', ['$scope', '$routeParams', '$location', 'brainstormingService', 'bdDate',
+    function ($scope, $routeParams, $location, brainstormingService, bdDate) {
 
       var bsid = $routeParams.brainstorming;
 
       brainstormingService.get(bsid).then(function (obj) {
         obj.createdFormatted = bdDate.format(obj.created);
         $scope.brainstorming = obj;
+      }, function () {
+        $location.path('/').replace();
       });
-      brainstormingService.getIdeas(bsid).then(function(obj) {
+      brainstormingService.getIdeas(bsid).then(function (obj) {
         $scope.ideas = obj;
       });
 
@@ -38,6 +40,11 @@ angular.module('braind')
           $scope.fullform = false;
         });
       };
+
+      $scope.toolBar = [
+        {href: '/' + bsid + '/notification', class: 'star'},
+        {href: '/' + bsid + '/edit', class: 'edit'}
+      ];
 
       $scope.reset = function () {
         $scope.formData = {

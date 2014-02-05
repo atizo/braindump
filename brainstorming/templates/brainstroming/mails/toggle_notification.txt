@@ -1,0 +1,5 @@
+Click on the following link to {{ action }} the email notifications for the brainstorming "{{brain.get_safe_question}}":
+
+{{ url }}
+
+(If you did not request this notification, somebody must accidentally have used your e-mail address; simply ignore this e-mail, please.)

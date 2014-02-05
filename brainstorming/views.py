@@ -1,6 +1,8 @@
 import json
 import logging
-from brainstorming.models import Brainstorming, Idea
+from braindump.functions import get_object_or_None
+from brainstorming.email_verification import get_verified_email
+from brainstorming.models import Brainstorming, Idea, BrainstormingWatcher
 from brainstorming.serializers import BrainstormingSerializer, IdeaSerializer
 from brainstorming.user_session import update_bs_history, BS_HISTORY_KEY
 from django.shortcuts import render
@@ -10,7 +12,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 logger = logging.getLogger(__name__)
 
 
-def get_context(session, brainstorming_id=None):
+def _get_context(session, brainstorming_id=None):
     # copy history pks to append current
     bs_pks = session.get(BS_HISTORY_KEY, [])[:]
     if brainstorming_id:
@@ -38,9 +40,13 @@ def get_context(session, brainstorming_id=None):
     return context
 
 
+def _set_error(context, msg):
+    context['error'] = msg
+
+
 @ensure_csrf_cookie
 def index(request):
-    return render(request, 'index.html', get_context(request.session))
+    return render(request, 'index.html', _get_context(request.session))
 
 
 @ensure_csrf_cookie
@@ -50,4 +56,26 @@ def brainstorming(request, brainstorming_id):
 
     update_bs_history(request.session, brainstorming_id)
 
-    return render(request, 'index.html', get_context(request.session, brainstorming_id))
+    return render(request, 'index.html', _get_context(request.session, brainstorming_id))
+
+
+@ensure_csrf_cookie
+def notification(request, brainstorming_id):
+    if not Brainstorming.objects.filter(pk=brainstorming_id).count():
+        raise Http404
+
+    update_bs_history(request.session, brainstorming_id)
+    context = _get_context(request.session, brainstorming_id)
+
+    email = get_verified_email(request)
+
+    if not email:
+        _set_error(context, 'Invalid activation request')
+    else:
+        watcher = get_object_or_None(BrainstormingWatcher, brainstorming__id=brainstorming_id, email=email)
+        if watcher:
+            watcher.delete()
+        else:
+            BrainstormingWatcher.objects.create(brainstorming=brainstorming_id, email=email)
+
+    return render(request, 'index.html', context)

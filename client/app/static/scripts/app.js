@@ -24,6 +24,14 @@ angular.module('braind', [
           templateUrl: '/static/views/invite.html',
           controller: 'InviteCtrl'
         })
+        .when('/:brainstorming/edit', {
+          templateUrl: '/static/views/edit.html',
+          controller: 'EditCtrl'
+        })
+        .when('/:brainstorming/notification', {
+          templateUrl: '/static/views/notification.html',
+          controller: 'NotificationCtrl'
+        })
         .when('/:brainstorming', {
           templateUrl: '/static/views/brainstorming.html',
           controller: 'BrainstormingCtrl'

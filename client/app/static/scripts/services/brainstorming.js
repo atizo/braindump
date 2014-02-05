@@ -15,7 +15,7 @@ angular.module('braind')
         return recentBrainstormings;
       }
 
-      function addIdea(bsid, idea) {
+      function addIdeaToStore(bsid, idea) {
         if (!_.has(ideaStore, bsid)) {
           ideaStore[bsid] = {};
         }
@@ -98,7 +98,7 @@ angular.module('braind')
           return $q.when(ideaStore[bsid][iid]);
         } else {
           return Restangular.one(ideasURL(bsid), iid).get().then(function (idea) {
-            return addIdea(bsid, idea);
+            return addIdeaToStore(bsid, idea);
           });
         }
       };
@@ -106,7 +106,7 @@ angular.module('braind')
       bsResource.postIdea = function (bsid, data) {
         return Restangular.all(ideasURL(bsid)).post(data)
           .then(function (idea) {
-            return addIdea(bsid, idea);
+            return addIdeaToStore(bsid, idea);
           });
       };
 

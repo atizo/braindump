@@ -1,0 +1,15 @@
+<bd-header title="Brainstorming" ng-href="/{{ bs.id }}"></bd-header>
+<div class="container">
+  <h2>Email notifications</h2>
+  <p>Enable or disable notifiactions for this brainstroming.</p>
+  <form name="form" class="well text-left" role="form" ng-submit="create()" novalidate>
+
+    <div class="form-group">
+      <input ng-model="formData.creatorEmail" type="email" class="form-control"
+             placeholder="Your email" required="required">
+    </div>
+
+    <button ng-disabled="form.$invalid" type="submit" class="btn btn-info">Submit</button>
+
+  </form>
+</div>

@@ -1,13 +1,18 @@
 from brainstorming.models import Brainstorming, Idea
-from brainstorming.serializers import BrainstormingSerializer, IdeaSerializer
+from brainstorming.notifications import toggle_notification
+from brainstorming.permissions import BrainstromPermissions
+from brainstorming.serializers import BrainstormingSerializer, IdeaSerializer, BrainstormingWatcherSerializer
 from brainstorming.user_session import update_bs_history
 from rest_framework import viewsets
-from rest_framework.generics import get_object_or_404
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.decorators import action
 
 
 class BrainstormingViewSet(viewsets.ModelViewSet):
     queryset = Brainstorming.objects.all()
     serializer_class = BrainstormingSerializer
+    permission_classes = (BrainstromPermissions, )
 
     def pre_save(self, obj):
         # store user's ip address
@@ -21,6 +26,16 @@ class BrainstormingViewSet(viewsets.ModelViewSet):
         update_bs_history(self.request.session, obj.pk)
 
         return super(BrainstormingViewSet, self).post_save(obj, created)
+
+    @action()
+    def notification(self, request, pk=None):
+        brainstorming = self.get_object()
+        serializer = BrainstormingWatcherSerializer(data=request.DATA)
+        if serializer.is_valid():
+            return Response(toggle_notification(brainstorming, serializer.object.email))
+        else:
+            return Response(serializer.errors,
+                            status=status.HTTP_400_BAD_REQUEST)
 
 
 class IdeaViewSet(viewsets.ModelViewSet):
