@@ -21,14 +21,14 @@ class Brainstorming(TimeStampedModel):
     details = models.TextField(blank=True)
 
     def __unicode__(self):
-        return '{question} ({id})'.format(question=self.question, id=self.id)
+        return u'{question} ({id})'.format(question=self.question, id=self.id)
 
     def save(self, *args, **kwargs):
         loop_num = 0
         while not self.id:
             if loop_num < MAX_TRIES:
                 newid = ''.join(random.sample(CHARSET, LENGTH))
-                if Brainstorming.objects.filter(pk=newid).count() == 0:
+                if not Brainstorming.objects.filter(pk=newid).exists():
                     self.id = newid
                 loop_num += 1
             else:
@@ -87,7 +87,7 @@ class EmailVerification(TimeStampedModel):
         while not self.id:
             if loop_num < MAX_TRIES:
                 newid = ''.join(random.sample(CHARSET, LENGTH))
-                if EmailVerification.objects.filter(pk=newid).count() == 0:
+                if not EmailVerification.objects.filter(pk=newid).exists():
                     self.id = newid
                 loop_num += 1
             else:

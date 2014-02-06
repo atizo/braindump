@@ -1,6 +1,6 @@
 from brainstorming.models import Brainstorming, Idea
 from brainstorming.notifications import toggle_notification
-from brainstorming.permissions import BrainstromPermissions
+from brainstorming.permissions import BrainstromPermissions, edit_mode, set_edit_permission
 from brainstorming.serializers import BrainstormingSerializer, IdeaSerializer, BrainstormingWatcherSerializer
 from brainstorming.user_session import update_bs_history
 from rest_framework import viewsets
@@ -22,7 +22,7 @@ class BrainstormingViewSet(viewsets.ModelViewSet):
     def post_save(self, obj, created=False):
         # remember email for next time
         self.request.session['email'] = obj.creator_email
-
+        set_edit_permission(self.request, obj.pk)
         update_bs_history(self.request.session, obj.pk)
 
         return super(BrainstormingViewSet, self).post_save(obj, created)
@@ -33,6 +33,16 @@ class BrainstormingViewSet(viewsets.ModelViewSet):
         serializer = BrainstormingWatcherSerializer(data=request.DATA)
         if serializer.is_valid():
             return Response(toggle_notification(brainstorming, serializer.object.email))
+        else:
+            return Response(serializer.errors,
+                            status=status.HTTP_400_BAD_REQUEST)
+
+    @action()
+    def edit(self, request, pk=None):
+        brainstorming = self.get_object()
+        serializer = BrainstormingWatcherSerializer(data=request.DATA)
+        if serializer.is_valid():
+            return Response(edit_mode(brainstorming, serializer.object.email))
         else:
             return Response(serializer.errors,
                             status=status.HTTP_400_BAD_REQUEST)

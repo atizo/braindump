@@ -1,8 +1,12 @@
-from brainstorming.models import Brainstorming, BrainstormingWatcher
+from brainstorming.models import Brainstorming, BrainstormingWatcher, EmailVerification
+from brainstorming.notifications import toggle_notification
 from brainstorming.tests.factories import BrainstormingFactory
+from brainstorming.views import notification
 from brainstorming.viewsets import BrainstormingViewSet
+from django.test import RequestFactory
 from rest_framework.test import APIRequestFactory
 import unittest2
+from django.core import mail
 
 
 class NotificationTestCase(unittest2.TestCase):
@@ -13,29 +17,39 @@ class NotificationTestCase(unittest2.TestCase):
         request = factory.post('', {'email': 'test@example.com'}, format='json')
         response = view(request, pk=obj.pk)
         response.render()
-        #self.assertEqual(response.content, '{"status": "updated"}')
-
+        self.assertEqual(response.content, '{"status": "add"}')
 
     def test_watcher(self):
         creator_email = 'creator@example.com'
+        watcher_email = 'watcher@example.com'
+        factory = RequestFactory()
         bs = Brainstorming.objects.create(creator_email=creator_email, question='Wat?')
 
         # Creator is a watcher by default
-        self.assertEqual(BrainstormingWatcher.objects.filter(email=creator_email, brainstorming=bs).count(), 1)
+        self.assertTrue(BrainstormingWatcher.objects.filter(email=creator_email, brainstorming=bs).exists())
 
         # Add another watcher
+        mail.outbox = []
+        toggle_notification(bs, watcher_email)
+        self.assertEqual(len(mail.outbox), 1)
 
+        verification = EmailVerification.objects.get(email=watcher_email).pk
+        request = factory.get('test?ev={0}'.format(verification))
+        request.session = {}
+        notification(request, bs.pk)
+        self.assertTrue(BrainstormingWatcher.objects.filter(email=watcher_email, brainstorming=bs).exists(),
+                        'BrainstormingWatcher entry missing')
 
+        # Remove watcher
+        mail.outbox = []
+        toggle_notification(bs, watcher_email)
+        self.assertEqual(len(mail.outbox), 1)
 
-        # add watcher
-        # email = 'me@axample.com'
-        # ev = EmailVerification.objects.create(email=email)
-        #
-        # pk = ev.pk
-        # factory = RequestFactory()
-        #
-        # request = factory.get('test?ev={0}'.format(pk))
-        #
-        # verified_email = get_verified_email(request)
-        # self.assertEqual(EmailVerification.objects.filter(pk=pk).count(), 0)
-        # self.assertEqual(verified_email, email)
+        verification = EmailVerification.objects.get(email=watcher_email).pk
+        request = factory.get('test?ev={0}'.format(verification))
+        request.session = {}
+        notification(request, bs.pk)
+        self.assertFalse(BrainstormingWatcher.objects.filter(email=watcher_email, brainstorming=bs).exists(),
+                        'BrainstormingWatcher entry still there')
+
+        bs.delete()

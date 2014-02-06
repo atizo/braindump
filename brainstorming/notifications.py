@@ -19,16 +19,18 @@ def toggle_notification(brainstorming, email):
     url = reverse('notification', kwargs={'brainstorming_id': brainstorming.pk})
     status = 'add'
     action = 'activate'
+    subject = 'Activate brainstroming notifications'
 
     if BrainstormingWatcher.objects.filter(brainstorming=brainstorming, email=email).exists():
         status = 'remove'
         action = 'deactivate'
+        subject = 'Deactivate brainstroming notifications'
 
     send_email_verification(to=email,
-                            subject='Test',
+                            subject=subject,
                             callback=url,
                             template='brainstroming/mails/toggle_notification.txt',
-                            context={'action': action}
+                            context={'action': action, 'brain': brainstorming}
     )
 
     return {'status': status}

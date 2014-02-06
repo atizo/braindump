@@ -26,8 +26,8 @@ class EmailVerificationTestCase(unittest2.TestCase):
 
         self.assertEqual(len(mail.outbox), 1)
         self.assertTrue(url in body, '{0} not in email'.format(url))
-        self.assertEqual(EmailVerification.objects.filter(pk=ev_id.group('ev_id')).count(), 1,
-                         'Email Verification not found')
+        self.assertTrue(EmailVerification.objects.filter(pk=ev_id.group('ev_id')).exists(),
+                        'Email Verification not found')
 
     def test_resolve(self):
         email = 'me@axample.com'
@@ -39,5 +39,5 @@ class EmailVerificationTestCase(unittest2.TestCase):
         request = factory.get('test?ev={0}'.format(pk))
 
         verified_email = get_verified_email(request)
-        self.assertEqual(EmailVerification.objects.filter(pk=pk).count(), 0)
+        self.assertFalse(EmailVerification.objects.filter(pk=pk).exists())
         self.assertEqual(verified_email, email)

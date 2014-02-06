@@ -20,6 +20,10 @@ angular.module('braind', [
           templateUrl: '/static/views/main.html',
           controller: 'StartCtrl'
         })
+        .when('/glitch', {
+          templateUrl: '/static/views/glitch.html',
+          controller: 'GlitchCtrl'
+        })
         .when('/:brainstorming/invite', {
           templateUrl: '/static/views/invite.html',
           controller: 'InviteCtrl'
@@ -45,9 +49,16 @@ angular.module('braind', [
       $provide.constant('brainstormingStore', angular.copy(window.brainstormingStore));
       $provide.constant('ideaStore', angular.copy(window.ideaStore));
       $provide.constant('recentBrainstormings', angular.copy(window.recentBrainstormings));
+      $provide.constant('errorMsg', angular.copy(window.errorMsg));
+      $provide.constant('infoMsg', angular.copy(window.infoMsg));
     }])
 
-  .run(['$rootScope', function ($rootScope) {
+  .run(['$rootScope', '$location', 'errorMsg', function ($rootScope, $location, errorMsg) {
+
+    if (errorMsg.length > 0) {
+      $location.path('/glitch').replace();
+    }
+
     $rootScope.user = {
       'email': angular.copy(window.email),
       'name': angular.copy(window.name)

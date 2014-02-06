@@ -1,9 +1,46 @@
-<bd-header title="Edit" href="/"></bd-header>
+<bd-header title="Brainstorming" ng-href="/{{ bs.id }}"></bd-header>
 <div class="container">
-  <h2>Edit brainstorming</h2>
+  <h2>Edit</h2>
 
-  <div>
-    <p>Send this link to anyone you wish to invite.</p>
+  <div ng-hide="bs.canEdit">
+    <div ng-hide="status">
+      <p>Get your edit link by email</p>
 
+      <form name="form" class="well text-left" role="form" ng-submit="submit()" novalidate>
+
+        <div class="form-group">
+          <input ng-model="nuser.email" type="email" class="form-control"
+                 placeholder="Your email" required="required">
+        </div>
+
+        <button ng-disabled="form.$invalid" type="submit" class="btn btn-info">Submit</button>
+
+      </form>
+    </div>
+    <div ng-show="status">
+      <p ng-show="status.action == 'ban'">The email "{{ status.email }}" is not assigned to this brainstorming. Please
+        provide the email you used to crate the brainstorming</p>
+
+      <p ng-show="status.action == 'edit'">We sent an email to "{{ status.email }}". Click on the link in this email to
+        edit your brainstroming.</p>
+    </div>
+  </div>
+
+  <div ng-show="bs.canEdit">
+    <form name="editform" class="well text-left" role="form" ng-submit="update()" novalidate>
+
+      <div class="form-group">
+        <input ng-model="formData.question" ng-click="fullform=true" type="text" class="form-control input-bold"
+           placeholder="Ask a question to start" required="required">
+      </div>
+
+      <div class="form-group">
+        <textarea rows="1" ng-model="formData.details" class="form-control msd-elastic"
+                  placeholder="Add details (optional)"></textarea>
+      </div>
+
+      <button ng-disabled="editform.$invalid" type="submit" class="btn btn-info">Save</button>
+
+    </form>
   </div>
 </div>

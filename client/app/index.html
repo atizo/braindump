@@ -51,6 +51,8 @@
         window.brainstormingStore = {{ brainstormingStore|safe }};
         window.ideaStore = {{ ideaStore|safe }};
         window.recentBrainstormings = {{ recentBrainstormings|safe }};
+        window.errorMsg = '{{ errorMsg|safe }}';
+        window.infoMsg = '{{ infoMsg|safe }}';
         window.email = '{{ email }}';
         window.name = '{{ name }}';
     </script>
@@ -78,8 +80,10 @@
     <script src="/static/scripts/controllers/brainstorming.js"></script>
     <script src="/static/scripts/controllers/notification.js"></script>
     <script src="/static/scripts/controllers/edit.js"></script>
+    <script src="/static/scripts/controllers/glitch.js"></script>
     <script src="/static/scripts/services/brainstorming.js"></script>
     <script src="/static/scripts/services/date.js"></script>
+    <script src="/static/scripts/services/message.js"></script>
     <script src="/static/scripts/directives/fromnow.js"></script>
     <script src="/static/scripts/directives/bdclip.js"></script>
     <script src="/static/scripts/directives/bdheader.js"></script>

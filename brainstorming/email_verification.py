@@ -46,7 +46,10 @@ def send_email_verification(to, subject, callback, template, context={}):
 
 
 def get_verified_email(request):
-    ev = get_object_or_None(EmailVerification, pk=request.GET.get(CALLBACK_VERIFICATION_PARAM, ''))
-    if ev:
-        ev.delete()
-        return ev.email
+    if CALLBACK_VERIFICATION_PARAM in request.GET:
+        ev = get_object_or_None(EmailVerification, pk=request.GET[CALLBACK_VERIFICATION_PARAM])
+        if ev:
+            ev.delete()
+            return ev.email
+        else:
+            raise ValueError('Invalid verification code')

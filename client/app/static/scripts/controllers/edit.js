@@ -5,21 +5,32 @@ angular.module('braind')
     function ($scope, $rootScope, $location, $routeParams, brainstormingService) {
       var brainstorming = brainstormingService.get($routeParams.brainstorming);
 
+      $scope.nuser = {email: ''};
+
       brainstorming.then(function (bs) {
         $scope.bs = bs;
 
-        $scope.subject = window.encodeURIComponent($scope.bs.question);
-        $scope.body = window.encodeURIComponent('I would like to invite you to the brainstorming "' +
-          $scope.bs.question +
-          '"\n\nPlease follow the link in order to participate in the brainstorming:\n' +
-          $scope.bs.url
-        );
-
+        if (bs.canEdit) {
+          $scope.formData = {
+            question: bs.question,
+            details: bs.details
+          };
+          $scope.update = function () {
+            brainstormingService.update(bs.id, $scope.formData).then(function () {
+              $location.path('/' + bs.id);
+            });
+          };
+        } else {
+          $scope.submit = function () {
+            bs.post('edit', $scope.nuser).then(function (r) {
+              $scope.status = {
+                email: $scope.nuser.email,
+                action: r.status
+              };
+            });
+          };
+        }
       }, function () {
         $location.path('/').replace();
       });
-
-      $scope.getLink = function () {
-        return $scope.bs.url;
-      };
     }]);

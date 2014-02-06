@@ -1,20 +1,29 @@
-from brainstorming.permissions import PERMISSION_MAP, PERMISSION_PROJECT
+from brainstorming.models import Brainstorming, EmailVerification
+from brainstorming.permissions import PERMISSION_MAP, PERMISSION_PROJECT, set_edit_permission, edit_mode
 from brainstorming.serializers import BrainstormingSerializer
 from brainstorming.tests.factories import BrainstormingFactory
+from brainstorming.views import edit
 from brainstorming.viewsets import BrainstormingViewSet
+from django.conf import settings
 from django.contrib.auth.models import User
+from django.core import mail
+from django.test import RequestFactory
+from django.utils.importlib import import_module
 from rest_framework import status
 from rest_framework.test import APIRequestFactory
 import unittest2
 
 
 class BrainstormingTestCase(unittest2.TestCase):
+    def _session(self):
+        return import_module(settings.SESSION_ENGINE).SessionStore()
+
     def test_retrieval(self):
         obj = BrainstormingFactory.build()
         serializer = BrainstormingSerializer(obj)
 
         # 'creatorEmail' should be write-only
-        self.assertEqual(set(['id', 'created', 'question', 'details', 'url']),
+        self.assertEqual(set(['id', 'created', 'question', 'details', 'url', 'canEdit']),
                          set(serializer.data.keys()))
 
     def test_creation(self):
@@ -42,13 +51,14 @@ class BrainstormingTestCase(unittest2.TestCase):
 
         # Staff can list brainstromings
         request.user = User(is_staff=True)
+        request.session = self._session()
         response = view(request)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         # Guest can post
         view = BrainstormingViewSet.as_view({'post': 'create'})
         request = factory.post('', {'creatorEmail': 'test@example.com', 'question': 'Was?'}, format='json')
-        request.session = {}
+        request.session = self._session()
         response = view(request)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
@@ -56,15 +66,40 @@ class BrainstormingTestCase(unittest2.TestCase):
         obj = BrainstormingFactory()
         view = BrainstormingViewSet.as_view({'patch': 'partial_update'})
         request = factory.patch('', {'question': 'Aha?'}, format='json')
-        request.session = {}
+        request.session = self._session()
         response = view(request, pk=obj.pk).render()
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
         # Owner can update
-        request.session = {
-            PERMISSION_MAP: {
-                PERMISSION_PROJECT: [obj.id]
-            }
-        }
+        set_edit_permission(request, obj.pk)
+
         response = view(request, pk=obj.pk).render()
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_edit_mode(self):
+        factory = RequestFactory()
+        creator_email = 'creator@example.com'
+        bs = Brainstorming.objects.create(creator_email=creator_email, question='Wat?')
+        mail.outbox = []
+
+        # Only creator can edit
+        ret = edit_mode(bs, 'wrong@example.com')
+        self.assertEqual(len(mail.outbox), 0)
+        self.assertEqual(ret, {'status': 'ban'})
+
+        # Creator edit
+        ret = edit_mode(bs, creator_email)
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(ret, {'status': 'edit'})
+
+        verification = EmailVerification.objects.get(email=creator_email).pk
+        request = factory.get('test?ev={0}'.format(verification))
+        request.session = self._session()
+        edit(request, bs.pk)
+
+        self.assertTrue(bs.pk in request.session[PERMISSION_MAP][PERMISSION_PROJECT])
+
+        serializer = BrainstormingSerializer(bs, context={'request': request})
+        self.assertTrue(serializer.data['canEdit'])
+
+        bs.delete()

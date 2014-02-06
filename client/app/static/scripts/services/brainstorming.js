@@ -77,6 +77,17 @@ angular.module('braind')
           });
       };
 
+      bsResource.update = function (bsid, data) {
+        return bsResource.get(bsid).then(function (bs){
+          return bs.patch(data).then(function(updatedBS){
+            // add to store
+            addRecentBrainstorming(updatedBS.id);
+            brainstormingStore[updatedBS.id] = updatedBS;
+            return updatedBS;
+          });
+        });
+      };
+
 
       bsResource.getIdeas = function (bsid) {
         if (_.has(ideaStore, bsid)) {

@@ -1,5 +1,6 @@
 from api.forms import TimeZoneAwareDateTimeField
 from brainstorming.models import Brainstorming, Idea, BrainstormingWatcher
+from brainstorming.permissions import can_edit_bs
 from rest_framework import serializers, fields
 
 
@@ -10,6 +11,7 @@ class BrainstormingSerializer(serializers.ModelSerializer):
     creatorEmail = fields.WritableField(source='creator_email',
         write_only=True)
     url = fields.Field('get_absolute_url')
+    canEdit = serializers.SerializerMethodField('get_can_edit')
 
     class Meta:
         model = Brainstorming
@@ -19,8 +21,12 @@ class BrainstormingSerializer(serializers.ModelSerializer):
             'question',
             'details',
             'creatorEmail',
-            'url'
+            'url',
+            'canEdit'
         )
+
+    def get_can_edit(self, obj):
+        return can_edit_bs(self.context.get('request', None), obj.pk)
 
 
 class IdeaSerializer(serializers.ModelSerializer):
