@@ -44,12 +44,12 @@ class BrainstormingTestCase(unittest2.TestCase):
         factory = APIRequestFactory()
         request = factory.get('')
 
-        # Guest can not list brainstromings
+        # Guest can not list brainstormings
         response = view(request)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
 
-        # Staff can list brainstromings
+        # Staff can list brainstormings
         request.user = User(is_staff=True)
         request.session = self._session()
         response = view(request)

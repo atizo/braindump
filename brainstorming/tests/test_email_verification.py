@@ -16,7 +16,7 @@ class EmailVerificationTestCase(unittest2.TestCase):
         send_email_verification(to='me@example.com',
                                 subject='Test',
                                 callback=url,
-                                template='brainstroming/mails/toggle_notification.txt',
+                                template='brainstorming/mails/toggle_notification.txt',
                                 context={'action': 'activate'}
         )
 

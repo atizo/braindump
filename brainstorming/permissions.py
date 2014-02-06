@@ -53,7 +53,7 @@ def edit_mode(brainstorming, email):
         send_email_verification(to=email,
                                 subject='Edit your brainstorming',
                                 callback=url,
-                                template='brainstroming/mails/edit.txt',
+                                template='brainstorming/mails/edit.txt',
                                 context={'brain': brainstorming}
         )
 
