@@ -2,6 +2,7 @@ $icon-font-path: "/static/styles/fonts/";
 
 @import "compass/css3/images";
 @import "compass/css3/inline-block";
+@import "compass/css3/transition";
 
 // Core variables and mixins
 @import "variables";
@@ -81,3 +82,4 @@ h1, h2, h3, h4{
 @import "start";
 @import "invite";
 @import "brainstorming";
+@import "masonry";

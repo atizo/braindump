@@ -23,7 +23,7 @@
     </div>
   </form>
 
-  <div masonry column-width="200">
+  <div masonry column-width="230" gap="10">
     <div ng-repeat="idea in ideas" class="idea masonry-brick">
       <div class="content" ng-class="getIdeaSizeClassName(idea)">
         <div ng-if="idea.title" ng-bind="idea.title"
