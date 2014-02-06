@@ -55,7 +55,7 @@ angular.module('braind', [
 
   .run(['$rootScope', '$location', 'errorMsg', function ($rootScope, $location, errorMsg) {
 
-    if (errorMsg.length > 0) {
+    if (errorMsg && errorMsg.length > 0) {
       $location.path('/glitch').replace();
     }
 
