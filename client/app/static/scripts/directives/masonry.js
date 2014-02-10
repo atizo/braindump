@@ -2,7 +2,7 @@
   'use strict';
 
   angular.module('braind')
-    .controller('MasonryCtrl',function controller($scope, $element, $timeout) {
+    .controller('MasonryCtrl',function controller($scope, $element, $timeout, $window) {
       var bricks = {};
       var destroyed = false;
       var self = this;
@@ -20,12 +20,33 @@
 
 
         timeout = $timeout(function runMasonry() {
-          var i = 0;
-          _.forOwn(bricks, function (brick, id) {
-              brick.css('transform', 'translate(' + (i * (self.columnWidth + self.gap)) + 'px, 0px)');
-              i += 1;
+          var columnsCount = Math.floor(($element.width() + self.gap) / (self.columnWidth + self.gap)) || 1,
+            columnsWidth = columnsCount * self.columnWidth + (columnsCount - 1) * self.gap,
+            columns = Array.apply(null, new Array(columnsCount)).map(Number.prototype.valueOf, 0),
+            shortestColumn = null,
+            initialGap = columnsCount > 1 ? Math.floor(($element.width() - columnsWidth) / 2) : 0;
+
+          _.forOwn(bricks, function (brick) {
+              shortestColumn = columns.indexOf(Math.min.apply(Math, columns));
+
+              if (columnsCount > 1) {
+                brick.css('transform', 'translate(' +
+                  (initialGap + shortestColumn * (self.columnWidth + self.gap)) + 'px, ' +
+                  columns[shortestColumn] + 'px)');
+              } else {
+                brick.css('transform', '');
+              }
+              brick.toggleClass('fluid', columnsCount === 1);
+
+              columns[shortestColumn] += brick.outerHeight() + self.gap;
             }
           );
+
+          if (columnsCount > 1) {
+            $element.css('height', Math.max.apply(Math, columns) + 'px');
+          } else {
+            $element.css('height', '');
+          }
         }, 30);
       };
 
@@ -60,6 +81,8 @@
       this.destroy = function destroy() {
         destroyed = true;
 
+        angular.element($window).unbind('resize', self.scheduleMasonry);
+
         if ($element.data('masonry')) {
           // Gently uninitialize if still present
           $element.masonry('destroy');
@@ -74,7 +97,7 @@
         $scope.$emit('masonry.reloaded');
       };
 
-
+      angular.element($window).bind('resize', self.scheduleMasonry);
     }).directive('masonry',function masonryDirective() {
       return {
         restrict: 'AE',
