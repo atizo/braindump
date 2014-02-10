@@ -13,7 +13,7 @@ angular.module('bdDirectives', []).
           path: self.path
         };
       }
-    }
+    };
   }).
   run(['$document', 'bdClip', function ($document, bdClip) {
     ZeroClipboard.config({
@@ -23,7 +23,7 @@ angular.module('bdDirectives', []).
       forceHandCursor: true
     });
   }]).
-  directive('bdClipCopy', ['$window', 'bdClip', function ($window, bdClip) {
+  directive('bdClipCopy', [function () {
     return {
       scope: {
         bdClipCopy: '&',

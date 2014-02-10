@@ -1,4 +1,4 @@
-<bd-header title="Brainstorming" href="/"></bd-header>
+<bd-header tools="toolBar" href="/"></bd-header>
 <div class="container">
   <h2 ng-bind="brainstorming.question"></h2>
 
@@ -23,18 +23,20 @@
     </div>
   </form>
 
-  <div ng-repeat="idea in ideas" class="idea">
-    <div class="content" ng-class="getIdeaSizeClassName(idea)">
-      <div ng-if="idea.title" ng-bind="idea.title"
-          class="title"></div>
-      <div ng-bind="idea.text"
-           class="text"></div>
-    </div>
-    <div class="footer small text-right">
-      <div ng-if="idea.creatorName"
-           class="name">by <span ng-bind="idea.creatorName"></span></div>
-      <bd-from-now value="idea.created"
-                   class="date"></bd-from-now>
+  <div masonry column-width="230" gap="10">
+    <div ng-repeat="idea in ideas" class="idea masonry-brick">
+      <div class="content" ng-class="getIdeaSizeClassName(idea)">
+        <div ng-if="idea.title" ng-bind="idea.title"
+             class="title"></div>
+        <div ng-bind="idea.text"
+             class="text"></div>
+      </div>
+      <div class="footer">
+        <div ng-if="idea.creatorName"
+             class="name">by <span ng-bind="idea.creatorName"></span></div>
+        <bd-from-now value="idea.created"
+                     class="date"></bd-from-now>
+      </div>
     </div>
   </div>
 </div>

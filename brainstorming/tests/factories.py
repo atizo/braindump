@@ -1,9 +1,10 @@
 from brainstorming.models import Brainstorming, Idea
 import factory
 from factory import fuzzy
+from factory.django import DjangoModelFactory
 
 
-class BrainstormingFactory(factory.Factory):
+class BrainstormingFactory(DjangoModelFactory):
     FACTORY_FOR = Brainstorming
 
     question = fuzzy.FuzzyText()

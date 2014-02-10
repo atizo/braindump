@@ -24,7 +24,7 @@
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
-    <div ng-view=""></div>
+    <div ng-view></div>
     <div class="footer">
       <div class="container">
         <small class="text-muted">braindump powered by <a href="http://www.atizo360.com">atizo 360°</a></small>
@@ -48,12 +48,11 @@
     <![endif]-->
 
     <script>
-        {% if initial_brainstorming %}
-            window.initialBrainstorming = {{ initial_brainstorming|safe }};
-        {% endif %}
-        {% if initial_ideas %}
-            window.initialIdeas = {{ initial_ideas|safe }};
-        {% endif %}
+        window.brainstormingStore = {{ brainstormingStore|safe }};
+        window.ideaStore = {{ ideaStore|safe }};
+        window.recentBrainstormings = {{ recentBrainstormings|safe }};
+        window.errorMsg = '{{ errorMsg|safe }}';
+        window.infoMsg = '{{ infoMsg|safe }}';
         window.email = '{{ email }}';
         window.name = '{{ name }}';
     </script>
@@ -74,16 +73,21 @@
     <script src="/static/bower_components/momentjs/moment.js"></script>
     <!-- endbuild -->
 
-    <!-- build:js({.tmp,app}) static/scripts/scripts.js -->
+    <!-- build:js({.tmp,app}) /static/scripts/scripts.js -->
     <script src="/static/scripts/app.js"></script>
     <script src="/static/scripts/controllers/start.js"></script>
     <script src="/static/scripts/controllers/invite.js"></script>
     <script src="/static/scripts/controllers/brainstorming.js"></script>
+    <script src="/static/scripts/controllers/notification.js"></script>
+    <script src="/static/scripts/controllers/edit.js"></script>
+    <script src="/static/scripts/controllers/glitch.js"></script>
     <script src="/static/scripts/services/brainstorming.js"></script>
     <script src="/static/scripts/services/date.js"></script>
+    <script src="/static/scripts/services/message.js"></script>
     <script src="/static/scripts/directives/fromnow.js"></script>
     <script src="/static/scripts/directives/bdclip.js"></script>
     <script src="/static/scripts/directives/bdheader.js"></script>
+    <script src="/static/scripts/directives/masonry.js"></script>
     <!-- endbuild -->
 </body>
 </html>

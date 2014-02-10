@@ -20,9 +20,21 @@ angular.module('braind', [
           templateUrl: '/static/views/main.html',
           controller: 'StartCtrl'
         })
+        .when('/glitch', {
+          templateUrl: '/static/views/glitch.html',
+          controller: 'GlitchCtrl'
+        })
         .when('/:brainstorming/invite', {
           templateUrl: '/static/views/invite.html',
           controller: 'InviteCtrl'
+        })
+        .when('/:brainstorming/edit', {
+          templateUrl: '/static/views/edit.html',
+          controller: 'EditCtrl'
+        })
+        .when('/:brainstorming/notification', {
+          templateUrl: '/static/views/notification.html',
+          controller: 'NotificationCtrl'
         })
         .when('/:brainstorming', {
           templateUrl: '/static/views/brainstorming.html',
@@ -34,16 +46,22 @@ angular.module('braind', [
 
       bdClipProvider.setPath('/static/bower_components/zeroclipboard/ZeroClipboard.swf');
 
-      var brainstorming = angular.copy(window.initialBrainstorming);
-      $provide.constant('initialBrainstorming', brainstorming);
-
-      var ideas = angular.copy(window.initialIdeas);
-      $provide.constant('initialIdeas', ideas);
+      $provide.constant('brainstormingStore', angular.copy(window.brainstormingStore));
+      $provide.constant('ideaStore', angular.copy(window.ideaStore));
+      $provide.constant('recentBrainstormings', angular.copy(window.recentBrainstormings));
+      $provide.constant('errorMsg', angular.copy(window.errorMsg));
+      $provide.constant('infoMsg', angular.copy(window.infoMsg));
     }])
 
-  .run(['$rootScope', function ($rootScope) {
+  .run(['$rootScope', '$location', 'errorMsg', function ($rootScope, $location, errorMsg) {
+
+    if (errorMsg && errorMsg.length > 0) {
+      $location.path('/glitch').replace();
+    }
+
     $rootScope.user = {
       'email': angular.copy(window.email),
       'name': angular.copy(window.name)
     };
   }]);
+

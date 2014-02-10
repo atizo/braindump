@@ -1,13 +1,9 @@
 'use strict';
 
 angular.module('braind')
-  .controller('InviteCtrl', ['$scope', '$rootScope', '$location', 'brainstormingService',
-    function ($scope, $rootScope, $location, brainstormingService) {
-      var brainstorming = brainstormingService.getBrainstorming();
-
-      if (!brainstorming) {
-        $location.path('/');
-      }
+  .controller('InviteCtrl', ['$scope', '$rootScope', '$location', '$routeParams', 'brainstormingService',
+    function ($scope, $rootScope, $location, $routeParams, brainstormingService) {
+      var brainstorming = brainstormingService.get($routeParams.brainstorming);
 
       brainstorming.then(function (bs) {
         $scope.bs = bs;
@@ -19,9 +15,8 @@ angular.module('braind')
           $scope.bs.url
         );
 
+      }, function () {
+        $location.path('/').replace();
       });
 
-      $scope.getLink = function () {
-        return $scope.bs.url;
-      };
     }]);

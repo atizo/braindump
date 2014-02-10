@@ -14,7 +14,6 @@
   font-variant: normal;
   text-transform: none;
   line-height: 1;
-
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -28,31 +27,7 @@
   position: relative;
   overflow: hidden;
   color: #fff;
-
-  &.banner {
-    height: 140px;
-    text-align: center;
-
-    .bar {
-      height: auto;
-      bottom: 0;
-      z-index: 3;
-
-      h3 {
-        font-weight: 300;
-        font-family: 'Roboto Slab', serif;
-        margin: 0;
-        padding: 5px 0px 9px;
-        color: #fff;
-      }
-    }
-
-    .logo {
-      z-index: 4;
-      text-align: center;
-      font-size: 80px;
-    }
-  }
+  height: 42px;
 
   .layer {
     position: absolute;
@@ -67,38 +42,72 @@
   }
 
   .r1 {
+    z-index: 2;
+    @include background-image(radial-gradient(center right, rgba(155, 50, 91, 1), rgba(155, 50, 91, 0) 50%));
     height: 200%;
     width: 100%;
     top: -60%;
-    z-index: 2;
-    @include background-image(radial-gradient(center right, rgba(155, 50, 91, 1), rgba(155, 50, 91, 0) 50%));
   }
 
   .bar {
+    z-index: 3;
     @include background-image(linear-gradient(rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.10)));
-    border-top: 1px solid rgba(255, 255, 255, 0.35);
-    font-weight: 300;
+    font-size: $font-size-h4;
     font-family: 'Roboto Slab', serif;
+    font-weight: 300;
 
-    &.nav {
-      font-size: $font-size-h4;
+    a {
+      @include inline-block;
+      color: #fff;
+      line-height: 30px;
+      padding: 5px 0;
 
-      a {
-        display: block;
+      &:hover {
         color: #fff;
-        line-height: 30px;
-        padding: 5px 0;
-        &:hover {
-          color: #fff;
-        }
-        &.nav-logo {
-          font-size: 30px;
-          float: left;
-          width: 40px;
-        }
-        &.nav-title {
-          margin-left: 40px;
-        }
+      }
+
+      &.nav-logo {
+        font-size: 30px;
+        width: 40px;
+      }
+    }
+
+    .tools {
+      @include inline-block;
+
+      .btn {
+        width: 48px;
+        font-size: 18px;
+      }
+    }
+  }
+
+  &.banner {
+    height: 140px;
+    text-align: center;
+
+    .bar {
+      border-top: 1px solid rgba(255, 255, 255, 0.35);
+      font-weight: 300;
+      bottom: 0;
+      height: auto;
+
+      h3 {
+        font-weight: 300;
+        font-family: 'Roboto Slab', serif;
+        margin: 0;
+        padding: 5px 0px 9px;
+        color: #fff;
+      }
+    }
+
+    .logo {
+      z-index: 4;
+      text-align: center;
+      font-size: 80px;
+      top: -5px;
+      span {
+        cursor: pointer;
       }
     }
   }

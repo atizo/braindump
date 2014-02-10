@@ -1,8 +1,7 @@
 import random
-import re
 
+import re
 from braindump.env import get_full_url
-from brainstorming.notifications import new_brainstorming
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -22,14 +21,14 @@ class Brainstorming(TimeStampedModel):
     details = models.TextField(blank=True)
 
     def __unicode__(self):
-        return '{question} ({id})'.format(question=self.question, id=self.id)
+        return u'{question} ({id})'.format(question=self.question, id=self.id)
 
     def save(self, *args, **kwargs):
         loop_num = 0
         while not self.id:
             if loop_num < MAX_TRIES:
                 newid = ''.join(random.sample(CHARSET, LENGTH))
-                if Brainstorming.objects.filter(pk=newid).count() == 0:
+                if not Brainstorming.objects.filter(pk=newid).exists():
                     self.id = newid
                 loop_num += 1
             else:
@@ -46,12 +45,6 @@ class Brainstorming(TimeStampedModel):
         """
         return re.sub(r'http(s)?://(www\.)?', '', self.question)
 
-    def get_safe_question(self):
-        """
-        Transform text links to prevent them from being linkified by mail clients
-        """
-        return re.sub(r'http(s)?://(www\.)?', '', self.question)
-
     class Meta:
         ordering = ['-created']
 
@@ -59,6 +52,8 @@ class Brainstorming(TimeStampedModel):
 @receiver(post_save, sender=Brainstorming)
 def send_new_mail(sender, instance, created, **kwargs):
     if created:
+        from brainstorming.notifications import new_brainstorming
+        BrainstormingWatcher.objects.create(brainstorming=instance, email=instance.creator_email)
         new_brainstorming(instance)
 
 
@@ -80,4 +75,25 @@ class BrainstormingWatcher(TimeStampedModel):
 
     class Meta:
         unique_together = (("brainstorming", "email"),)
+        ordering = ['-created']
+
+
+class EmailVerification(TimeStampedModel):
+    id = models.SlugField(primary_key=True, editable=False, blank=True)
+    email = models.EmailField()
+
+    def save(self, *args, **kwargs):
+        loop_num = 0
+        while not self.id:
+            if loop_num < MAX_TRIES:
+                newid = ''.join(random.sample(CHARSET, LENGTH))
+                if not EmailVerification.objects.filter(pk=newid).exists():
+                    self.id = newid
+                loop_num += 1
+            else:
+                raise ValueError("Couldn't generate a unique code.")
+
+        super(EmailVerification, self).save(*args, **kwargs)
+
+    class Meta:
         ordering = ['-created']

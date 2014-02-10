@@ -1,54 +1,126 @@
 'use strict';
 
 angular.module('braind')
-  .factory('brainstormingService', ['Restangular', '$q', 'initialBrainstorming', 'initialIdeas',
-    function (Restangular, $q, initialBrainstorming, initialIdeas) {
-      var service = {},
-        brainstormingRoute = 'api/brainstormings',
-        ideas = null,
-        currentBrainstorming = null;
+  .factory('brainstormingService', ['Restangular', '$q', 'brainstormingStore', 'ideaStore', 'recentBrainstormings',
+    function (Restangular, $q, brainstormingStore, ideaStore, recentBrainstormings) {
+      var brainstormingRoute = 'api/brainstormings';
 
-      function initIdeas() {
-        currentBrainstorming.getList('ideas').then(function (obj) {
-          ideas = obj;
-        });
+      function ideasURL(bsid) {
+        return brainstormingRoute + '/' + bsid + '/ideas';
       }
 
-      if (initialBrainstorming) {
-        currentBrainstorming = Restangular.restangularizeElement(null,
-          initialBrainstorming, brainstormingRoute);
-        if (initialIdeas) {
-          ideas = Restangular.restangularizeCollection(currentBrainstorming,
-            initialIdeas, 'ideas');
-        } else {
-          initIdeas();
+      function addRecentBrainstorming(bsid) {
+        recentBrainstormings = _.without(recentBrainstormings, bsid);
+        recentBrainstormings.unshift(bsid);
+        return recentBrainstormings;
+      }
+
+      function addIdeaToStore(bsid, idea) {
+        if (!_.has(ideaStore, bsid)) {
+          ideaStore[bsid] = {};
         }
+        ideaStore[bsid][idea.id] = idea;
+        return idea;
       }
 
-      service.create = function (data) {
+      // restangularize brainstormingStore
+      _.forOwn(brainstormingStore, function (bs, bsid) {
+          brainstormingStore[bsid] = Restangular.restangularizeElement(null,
+            bs, brainstormingRoute);
+        }
+      );
+
+      // restangularize ideaStore
+      _.forOwn(ideaStore, function (ideas, bsid) {
+          _.forOwn(ideas, function (idea, iid) {
+              ideaStore[bsid][iid] = Restangular.restangularizeElement(null,
+                idea, ideasURL(bsid));
+            }
+          );
+        }
+      );
+
+      var bsResource = {};
+
+      bsResource.get = function (bsid) {
+        if (_.has(brainstormingStore, bsid)) {
+          addRecentBrainstorming(bsid);
+          return $q.when(brainstormingStore[bsid]);
+        } else {
+          return Restangular.one(brainstormingRoute, bsid).get().then(function (bs) {
+            // add to store
+            addRecentBrainstorming(bs.id);
+            brainstormingStore[bs.id] = bs;
+            return bs;
+          });
+        }
+      };
+
+      bsResource.getRecent = function () {
+        var i, max = 10, bs = [];
+        _(recentBrainstormings).forEach(function (bsid) {
+          if (i > max) {
+            return false;
+          }
+          bs.push(bsResource.get(bsid));
+          i += 1;
+        });
+        return $q.all(bs);
+      };
+
+      bsResource.post = function (data) {
         return Restangular.all(brainstormingRoute).post(data)
-          .then(function (obj) {
-            currentBrainstorming = obj;
-            initIdeas();
-            return obj;
+          .then(function (bs) {
+            addRecentBrainstorming(bs.id);
+            brainstormingStore[bs.id] = bs;
+            return bs;
           });
       };
 
-      service.getBrainstorming = function () {
-        return $q.when(currentBrainstorming);
-      };
-
-      service.getIdeas = function () {
-        return $q.when(ideas);
-      };
-
-      service.createIdea = function (data) {
-        return ideas.post(data).then(function (obj) {
-          ideas.unshift(obj);
-          return obj;
+      bsResource.update = function (bsid, data) {
+        return bsResource.get(bsid).then(function (bs){
+          return bs.patch(data).then(function(updatedBS){
+            // add to store
+            addRecentBrainstorming(updatedBS.id);
+            brainstormingStore[updatedBS.id] = updatedBS;
+            return updatedBS;
+          });
         });
       };
 
-      return service;
+
+      bsResource.getIdeas = function (bsid) {
+        if (_.has(ideaStore, bsid)) {
+          return $q.when(ideaStore[bsid]);
+        } else {
+          return Restangular.all(ideasURL(bsid)).getList().then(function (ideas) {
+            ideaStore[bsid] = {};
+            _(ideas).forEach(function (idea) {
+                ideaStore[bsid][idea.id] = idea;
+              }
+            );
+            return ideaStore[bsid];
+          });
+        }
+      };
+
+      bsResource.getIdea = function (bsid, iid) {
+        if (_.has(ideaStore, bsid) && _.has(ideaStore[bsid], iid)) {
+          return $q.when(ideaStore[bsid][iid]);
+        } else {
+          return Restangular.one(ideasURL(bsid), iid).get().then(function (idea) {
+            return addIdeaToStore(bsid, idea);
+          });
+        }
+      };
+
+      bsResource.postIdea = function (bsid, data) {
+        return Restangular.all(ideasURL(bsid)).post(data)
+          .then(function (idea) {
+            return addIdeaToStore(bsid, idea);
+          });
+      };
+
+      return bsResource;
     }
   ]);

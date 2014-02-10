@@ -1,0 +1,5 @@
+Click on the following link to editr the brainstorming "{{brain.get_safe_question}}":
+
+{{ url }}
+
+(If you did not request this edit link, somebody must accidentally have used your e-mail address; simply ignore this e-mail, please.)

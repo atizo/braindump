@@ -1,0 +1,33 @@
+<bd-header title="Brainstorming" ng-href="/{{ bs.id }}"></bd-header>
+<div class="container">
+  <h2>Email notifications</h2>
+
+  <div ng-hide="infoMsg">
+    <div ng-hide="status">
+      <p>Enable or disable notifications for this brainstorming.</p>
+
+      <form name="form" class="well text-left" role="form" ng-submit="submit()" novalidate>
+
+        <div class="form-group">
+          <input ng-model="nuser.email" type="email" class="form-control"
+                 placeholder="Your email" required="required">
+        </div>
+
+        <button ng-disabled="form.$invalid" type="submit" class="btn btn-info">Submit</button>
+
+      </form>
+    </div>
+    <div ng-show="status">
+      <p ng-show="status.action == 'add'">We sent an email to {{ status.email }}. Click on the link in this email to
+        activate the notifications.</p>
+
+      <p ng-show="status.action == 'remove'">We sent an email to {{ status.email }}. Click on the link in this email to
+        deactivate the notifications.</p>
+    </div>
+  </div>
+
+  <div ng-show="infoMsg">
+    <p>{{ infoMsg }}</p>
+  </div>
+
+</div>

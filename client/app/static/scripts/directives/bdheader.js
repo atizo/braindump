@@ -9,6 +9,7 @@ angular.module('braind')
       scope:{
         title: '@',
         action: '&',
+        tools: '=',
         href: '@'
       }
     };

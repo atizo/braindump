@@ -1,6 +1,8 @@
 $icon-font-path: "/static/styles/fonts/";
 
 @import "compass/css3/images";
+@import "compass/css3/inline-block";
+@import "compass/css3/transition";
 
 // Core variables and mixins
 @import "variables";
@@ -13,18 +15,12 @@ $icon-font-path: "/static/styles/fonts/";
 // Core CSS
 @import "scaffolding";
 @import "sass-bootstrap/lib/type";
-@import "sass-bootstrap/lib/code";
 @import "sass-bootstrap/lib/grid";
-@import "sass-bootstrap/lib/tables";
 @import "forms";
 @import "buttons";
 
 // Components
-@import "sass-bootstrap/lib/component-animations";
 @import "sass-bootstrap/lib/glyphicons";
-@import "sass-bootstrap/lib/dropdowns";
-@import "sass-bootstrap/lib/button-groups";
-@import "sass-bootstrap/lib/input-groups";
 
 // Utility classes
 @import "sass-bootstrap/lib/utilities";
@@ -86,3 +82,4 @@ h1, h2, h3, h4{
 @import "start";
 @import "invite";
 @import "brainstorming";
+@import "masonry";
