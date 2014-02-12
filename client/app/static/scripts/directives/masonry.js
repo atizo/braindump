@@ -7,7 +7,7 @@
         destroyed = false,
         self = this,
         timeout = null,
-        previousColumnsCount = 0;
+        previousColumnsCount = null;
 
       this.minColumnWidth = 100;
       this.gapPercentage = 5;
@@ -26,7 +26,8 @@
           columns = null,
           shortestColumn = null;
 
-        if (columnsCount !== previousColumnsCount) {
+        if (columnsCount !== previousColumnsCount ||
+            Object.keys(bricks).length !== $element.find('> .column > *')) {
           columns = Array.apply(null, new Array(columnsCount)).map(Number.prototype.valueOf, 0);
 
           while ($element.find('> .column').size() < columnsCount) {
