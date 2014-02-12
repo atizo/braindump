@@ -23,15 +23,15 @@ describe('Controller: MasonryCtrl', function () {
       {name: 'mango', height: '50px'}
     ];
 
-    masonryElement = angular.element('<div style="width: 435px;"></div>');
+    masonryElement = angular.element('<div style="width: 400px;"></div>');
     angular.element($window.document.body).append(masonryElement);
 
     MasonryCtrl = $controller('MasonryCtrl', {
       $scope: scope,
       $element: masonryElement
     });
-    MasonryCtrl.columnWidth = 100;
-    MasonryCtrl.gap = 5;
+    MasonryCtrl.minColumnWidth = 100;
+    MasonryCtrl.columnGap = 5;
 
     spyOn(MasonryCtrl, 'scheduleMasonry').andCallThrough();
     spyOn(MasonryCtrl, 'runMasonry').andCallThrough();
@@ -43,7 +43,7 @@ describe('Controller: MasonryCtrl', function () {
         localScope = scope.$new();
         localScope.fruit = scope.fruits[i];
 
-        brickElement = angular.element('<div class="fruit" ng-bind="fruit.name" ' +
+        brickElement = angular.element('<div class="fruit {{fruit.name}}" ng-bind="fruit.name" ' +
           'ng-style="{width: \'100px\', height: fruit.height}"></div>');
         masonryElement.append(brickElement);
         $compile(brickElement)(localScope);
@@ -58,11 +58,59 @@ describe('Controller: MasonryCtrl', function () {
       $timeout.flush();
       expect(MasonryCtrl.runMasonry.calls.length).toEqual(1);
 
-      expect($('.fruit:nth(0)').css('transform')).toBe('matrix(1, 0, 0, 1, 10, 0)');
-      expect($('.fruit:nth(1)').css('transform')).toBe('matrix(1, 0, 0, 1, 115, 0)');
-      expect($('.fruit:nth(2)').css('transform')).toBe('matrix(1, 0, 0, 1, 220, 0)');
-      expect($('.fruit:nth(3)').css('transform')).toBe('matrix(1, 0, 0, 1, 325, 0)');
-      expect($('.fruit:nth(4)').css('transform')).toBe('matrix(1, 0, 0, 1, 115, 55)');
+      expect(masonryElement.find('.column').size()).toBe(4);
+      expect(masonryElement.find('.column:nth(0)')[0].style.width).toBe('25%');
+      expect(masonryElement.find('.column:nth(1)')[0].style.width).toBe('25%');
+      expect(masonryElement.find('.column:nth(2)')[0].style.width).toBe('25%');
+      expect(masonryElement.find('.column:nth(3)')[0].style.width).toBe('25%');
+
+      expect(masonryElement.find('.column:nth(0) .fruit.apple').size()).toBe(1);
+      expect(masonryElement.find('.column:nth(1) .fruit.banana').size()).toBe(1);
+      expect(masonryElement.find('.column:nth(2) .fruit.strawberry').size()).toBe(1);
+      expect(masonryElement.find('.column:nth(3) .fruit.ananas').size()).toBe(1);
+      expect(masonryElement.find('.column:nth(1) .fruit.mango').size()).toBe(1);
+
+      expect(masonryElement.find('.fruit.apple')[0].style.marginRight).toBe('5%');
+      expect(masonryElement.find('.fruit.apple')[0].style.marginBottom).toBe('5%');
+
+      masonryElement.css('width', '450px');
+      angular.element($window).resize();
+      $timeout.flush();
+      expect(MasonryCtrl.runMasonry.calls.length).toEqual(2);
+      expect(masonryElement.find('.column').size()).toBe(4);
+
+      masonryElement.css('width', '500px');
+      angular.element($window).resize();
+      $timeout.flush();
+      expect(MasonryCtrl.runMasonry.calls.length).toEqual(3);
+
+      expect(masonryElement.find('.column').size()).toBe(5);
+      expect(masonryElement.find('.column:nth(0)')[0].style.width).toBe('20%');
+      expect(masonryElement.find('.column:nth(1)')[0].style.width).toBe('20%');
+      expect(masonryElement.find('.column:nth(2)')[0].style.width).toBe('20%');
+      expect(masonryElement.find('.column:nth(3)')[0].style.width).toBe('20%');
+      expect(masonryElement.find('.column:nth(4)')[0].style.width).toBe('20%');
+
+      expect(masonryElement.find('.column:nth(0) .fruit.apple').size()).toBe(1);
+      expect(masonryElement.find('.column:nth(1) .fruit.banana').size()).toBe(1);
+      expect(masonryElement.find('.column:nth(2) .fruit.strawberry').size()).toBe(1);
+      expect(masonryElement.find('.column:nth(3) .fruit.ananas').size()).toBe(1);
+      expect(masonryElement.find('.column:nth(4) .fruit.mango').size()).toBe(1);
+
+      masonryElement.css('width', '350px');
+      angular.element($window).resize();
+      $timeout.flush();
+      expect(MasonryCtrl.runMasonry.calls.length).toEqual(4);
+      expect(masonryElement.find('.column').size()).toBe(3);
+      expect(masonryElement.find('.column:nth(0)')[0].style.width.substr(0, 4)).toBe('33.3');
+      expect(masonryElement.find('.column:nth(1)')[0].style.width.substr(0, 4)).toBe('33.3');
+      expect(masonryElement.find('.column:nth(2)')[0].style.width.substr(0, 4)).toBe('33.3');
+
+      expect(masonryElement.find('.column:nth(0) .fruit.apple').size()).toBe(1);
+      expect(masonryElement.find('.column:nth(1) .fruit.banana').size()).toBe(1);
+      expect(masonryElement.find('.column:nth(2) .fruit.strawberry').size()).toBe(1);
+      expect(masonryElement.find('.column:nth(1) .fruit.ananas').size()).toBe(1);
+      expect(masonryElement.find('.column:nth(0) .fruit.mango').size()).toBe(1);
     }
   ));
 });

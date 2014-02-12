@@ -1,15 +1,14 @@
+.idea-masonry {
+  .column {
+    display: inline-block;
+    vertical-align: top;
+  }
+}
+
 .idea {
   background-color: #fff;
   padding: $padding-large-vertical * 2;
-  width: 250px - $padding-large-vertical * 2;
   @include box-shadow(0 2px 1px rgba(0, 0, 0, 0.08));
-  position: absolute;
-
-  &.fluid {
-    position: static;
-    width: 100%;
-    margin-bottom: $padding-large-vertical;
-  }
 
   .content {
     min-height: 100px - $padding-large-vertical * 2;

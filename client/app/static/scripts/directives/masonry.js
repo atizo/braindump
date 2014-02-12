@@ -3,13 +3,14 @@
 
   angular.module('braind')
     .controller('MasonryCtrl',function controller($scope, $element, $timeout, $window) {
-      var bricks = {};
-      var destroyed = false;
-      var self = this;
-      var timeout = null;
+      var bricks = {},
+        destroyed = false,
+        self = this,
+        timeout = null,
+        previousColumnsCount = 0;
 
-      this.columnWidth = 100;
-      this.gap = 5;
+      this.minColumnWidth = 100;
+      this.gapPercentage = 5;
 
       // Make sure it's only executed once within a reasonable time-frame in
       // case multiple elements are removed or added at once.
@@ -21,32 +22,38 @@
       };
 
       this.runMasonry = function () {
-        var columnsCount = Math.floor(($element.width() + self.gap) / (self.columnWidth + self.gap)) || 1,
-          columnsWidth = columnsCount * self.columnWidth + (columnsCount - 1) * self.gap,
-          columns = Array.apply(null, new Array(columnsCount)).map(Number.prototype.valueOf, 0),
-          shortestColumn = null,
-          initialGap = columnsCount > 1 ? Math.floor(($element.width() - columnsWidth) / 2) : 0;
+        var columnsCount = Math.floor($element.width() / self.minColumnWidth) || 1,
+          columns = null,
+          shortestColumn = null;
 
-        _.forOwn(bricks, function (brick) {
-            shortestColumn = columns.indexOf(Math.min.apply(Math, columns));
+        if (columnsCount !== previousColumnsCount) {
+          columns = Array.apply(null, new Array(columnsCount)).map(Number.prototype.valueOf, 0);
 
-            if (columnsCount > 1) {
-              brick.css('transform', 'translate(' +
-                (initialGap + shortestColumn * (self.columnWidth + self.gap)) + 'px, ' +
-                columns[shortestColumn] + 'px)');
-            } else {
-              brick.css('transform', '');
-            }
-            brick.toggleClass('fluid', columnsCount === 1);
-
-            columns[shortestColumn] += brick.outerHeight() + self.gap;
+          while ($element.find('> .column').size() < columnsCount) {
+            // need to add columns
+            $element.append('<div class="column"></div>');
           }
-        );
 
-        if (columnsCount > 1) {
-          $element.css('height', Math.max.apply(Math, columns) + 'px');
-        } else {
-          $element.css('height', '');
+          _.forOwn(bricks, function (brick) {
+              shortestColumn = columns.indexOf(Math.min.apply(Math, columns));
+
+              // move brick to shortest column
+              $element.find('> .column:nth(' + shortestColumn + ')').append(brick);
+
+              columns[shortestColumn] += brick.outerHeight() + self.gapPercentage;
+            }
+          );
+
+          // remove possible unused columns
+          $element.find('> .column:gt(' + (columnsCount - 1) + ')').remove();
+
+          // apply new percentages
+          $element.find('> .column').css('width', (100 / columnsCount) + '%');
+          $element.find('> .column:lt(' + (columnsCount - 1) + ') > *').css('margin-right', self.gapPercentage + '%');
+          $element.find('> .column:nth(' + (columnsCount - 1) + ') > *').css('margin-right', '');
+          $element.find('> .column > *').css('margin-bottom', self.gapPercentage + '%');
+
+          previousColumnsCount = columnsCount;
         }
       };
 
@@ -99,8 +106,8 @@
         controller: 'MasonryCtrl',
         link: {
           pre: function preLink(scope, element, attrs, ctrl) {
-            ctrl.columnWidth = parseInt(attrs.columnWidth, 10);
-            ctrl.gap = parseInt(attrs.gap, 10);
+            ctrl.minColumnWidth = parseInt(attrs.minColumnWidth, 10);
+            ctrl.gapPercentage = parseInt(attrs.gapPercentage, 10);
             scope.$on('$destroy', ctrl.destroy);
           }
         }
@@ -113,7 +120,6 @@
         link: {
           pre: function preLink(scope, element, attrs, ctrl) {
             var id = scope.$id, index;
-            console.log(id);
 
             ctrl.appendBrick(element, id);
             element.on('$destroy', function () {
