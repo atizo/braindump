@@ -2,7 +2,7 @@
   'use strict';
 
   angular.module('braind')
-    .controller('MasonryCtrl',function controller($scope, $element, $timeout, $window) {
+    .controller('MasonryCtrl', ['$scope', '$element', '$timeout', '$window', function ($scope, $element, $timeout, $window) {
       var bricks = {},
         destroyed = false,
         self = this,
@@ -100,7 +100,7 @@
       };
 
       angular.element($window).bind('resize', self.scheduleMasonry);
-    }).directive('masonry',function masonryDirective() {
+    }]).directive('masonry', function () {
       return {
         restrict: 'AE',
         controller: 'MasonryCtrl',
@@ -112,7 +112,7 @@
           }
         }
       };
-    }).directive('masonryBrick', function masonryBrickDirective() {
+    }).directive('masonryBrick', function () {
       return {
         restrict: 'AC',
         require: '^masonry',
