@@ -13,7 +13,7 @@ install:
   - gem uninstall -aIx sass --version 3.3.0.rc.3
   - gem install sass --version 3.2.13
   - npm install -g grunt-cli git://github.com/neoziro/bower.git#v1.2.8-patched
-  - cd client && npm install && bower install && cd ..
+  - cd client && npm install && yes no | bower install && cd ..
 before_script:
   - psql -c 'create database braindump;' -U postgres
   - python manage.py syncdb --noinput
