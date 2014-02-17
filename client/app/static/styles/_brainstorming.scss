@@ -60,19 +60,31 @@ bd-idea {
     .date {
       @include opacity(0.5);
     }
+
+    .rate-up {
+      color: #000;
+      @include opacity(0.5);
+
+      &:hover {
+        @include opacity(1);
+      }
+    }
   }
 }
 
 .modal-dialog {
   .tools {
     a {
-      margin-right: 1em;
-      font-size: $font-size-large;
+      margin-right:  $padding-large-horizontal * 2;
       color: #000;
-      @include opacity(0.6);
+      @include opacity(0.5);
 
       &:hover {
         @include opacity(1);
+      }
+
+      .glyphicon {
+        font-size: $font-size-large;
       }
     }
   }

@@ -71,13 +71,13 @@
         self.scheduleMasonry();
       };
 
-      this.removeBrick = function (id, element) {
+      this.removeBrick = function (id) {
         if (destroyed) {
           return;
         }
 
         delete bricks[id];
-        $element.masonry('remove', element);
+
         self.scheduleMasonry();
       };
 
@@ -86,10 +86,6 @@
 
         angular.element($window).unbind('resize', self.scheduleMasonry);
 
-        if ($element.data('masonry')) {
-          // Gently uninitialize if still present
-          $element.masonry('destroy');
-        }
         $scope.$emit('masonry.destroyed');
 
         bricks = [];

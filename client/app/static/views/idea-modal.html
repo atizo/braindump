@@ -1,18 +1,19 @@
 <div class="modal-body">
-  <bd-idea resource="idea" ng-show="!editMode"></bd-idea>
+  <bd-idea resource="idea" hide-ratings="true" ng-show="!editMode"></bd-idea>
   <div ng-show="editMode">
       edit form
   </div>
 </div>
 <div class="modal-footer">
   <div class="pull-left tools" ng-show="idea.id">
-    <a href="" alt="Rate up" ng-click="rate()">
+    <a href="" alt="Rate up" title="Rate up" ng-click="rate()">
       <i class="glyphicon glyphicon-thumbs-up"></i>
+      <span class="small" ng-bind="idea.ratings"></span>
     </a>
-    <a href="" alt="Edit" ng-click="editMode = true" ng-show="!editMode">
+    <a href="" alt="Edit" title="Edit" ng-click="editMode = true" ng-show="!editMode">
       <i class="glyphicon glyphicon-pencil"></i>
     </a>
-    <a href="" alt="Delete" ng-click="delete(idea.id)">
+    <a href="" alt="Delete" title="Delete" ng-click="delete(idea.id)">
       <i class="glyphicon glyphicon-trash"></i>
     </a>
   </div>

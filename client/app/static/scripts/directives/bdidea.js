@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('braind')
-  .directive('bdIdea', [function () {
+  .directive('bdIdea', ['brainstormingService', function (brainstormingService) {
 
     return {
       restrict: 'E',
@@ -9,7 +9,8 @@ angular.module('braind')
       scope:{
         resource: '=',
         limitText: '@',
-        dynamicTextSize: '@'
+        dynamicTextSize: '@',
+        hideRatings: '@'
       },
       link: function (scope) {
         var titleTextWatch = null;
@@ -35,6 +36,11 @@ angular.module('braind')
         } else {
           scope.sizeClass = '';
         }
+
+        scope.rate = function (event) {
+          event.stopPropagation();
+          brainstormingService.rateIdea(scope.resource.brainstorming, scope.resource.id);
+        };
       }
     };
   }]);

@@ -142,6 +142,21 @@ angular.module('braind')
           });
       };
 
+      bsResource.rateIdea = function (bsid, iid) {
+        // optimistically update ratings
+        if (_.has(ideaStore, bsid) && _.has(ideaStore[bsid], iid)) {
+          if (!ideaStore[bsid][iid].ratings) {
+            ideaStore[bsid][iid].ratings = 0;
+          }
+          ideaStore[bsid][iid].ratings = ideaStore[bsid][iid].ratings += 1;
+        }
+
+        return Restangular.one(ideasURL(bsid), iid).post('rate')
+          .then(function (idea) {
+            return addIdeaToStore(bsid, idea);
+          });
+      };
+
       return bsResource;
     }
   ]);
