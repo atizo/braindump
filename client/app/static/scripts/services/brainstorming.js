@@ -23,6 +23,13 @@ angular.module('braind')
         return idea;
       }
 
+      function removeIdeaFromStore(bsid, iid) {
+        if (!_.has(ideaStore, bsid)) {
+          return;
+        }
+        delete ideaStore[bsid][iid];
+      }
+
       // restangularize brainstormingStore
       _.forOwn(brainstormingStore, function (bs, bsid) {
           brainstormingStore[bsid] = Restangular.restangularizeElement(null,
@@ -118,6 +125,20 @@ angular.module('braind')
         return Restangular.all(ideasURL(bsid)).post(data)
           .then(function (idea) {
             return addIdeaToStore(bsid, idea);
+          });
+      };
+
+      bsResource.updateIdea = function (bsid, iid, data) {
+        return Restangular.one(ideasURL(bsid), iid).patch(data)
+          .then(function (idea) {
+            return addIdeaToStore(bsid, idea);
+          });
+      };
+
+      bsResource.deleteIdea = function (bsid, iid) {
+        return Restangular.one(ideasURL(bsid), iid).remove()
+          .then(function () {
+            return removeIdeaFromStore(bsid, iid);
           });
       };
 

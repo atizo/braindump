@@ -62,3 +62,18 @@ bd-idea {
     }
   }
 }
+
+.modal-dialog {
+  .tools {
+    a {
+      margin-right: 1em;
+      font-size: $font-size-large;
+      color: #000;
+      @include opacity(0.6);
+
+      &:hover {
+        @include opacity(1);
+      }
+    }
+  }
+}

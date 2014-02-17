@@ -49,8 +49,24 @@ angular.module('braind')
 
       $scope.reset();
     }])
-  .controller('IdeaDetailCtrl', ['$scope', '$modalInstance', function ($scope, $modalInstance) {
-    $scope.done = function () {
-      $modalInstance.close();
-    };
-  }]);
+  .controller('IdeaDetailCtrl', ['$scope', '$routeParams', '$modalInstance', '$window', 'brainstormingService',
+    function ($scope, $routeParams, $modalInstance, $window, brainstormingService) {
+      var bsid = $routeParams.brainstorming;
+
+      $scope.editMode = false;
+
+      $scope.done = function () {
+        $modalInstance.close();
+      };
+
+      $scope.rate = function () {
+
+      };
+
+      $scope.delete = function (iid) {
+        if ($window.confirm('Do you really want to delete this idea?')) {
+          brainstormingService.deleteIdea(bsid, iid);
+          $modalInstance.close();
+        }
+      };
+    }]);
