@@ -3,39 +3,47 @@
     display: inline-block;
     vertical-align: top;
   }
+  .masonry-brick {
+    background-color: #fff;
+    padding: $padding-large-vertical * 2;
+    @include box-shadow(0 2px 1px rgba(0, 0, 0, 0.08));
+    cursor: pointer;
+  }
 }
 
-.idea {
-  background-color: #fff;
-  padding: $padding-large-vertical * 2;
-  @include box-shadow(0 2px 1px rgba(0, 0, 0, 0.08));
-
+bd-idea {
   .content {
-    min-height: 100px - $padding-large-vertical * 2;
-    max-height: 360px - $padding-large-vertical * 2;
-    overflow: hidden;
+    &.limit-text {
+      min-height: 100px - $padding-large-vertical * 2;
+      max-height: 360px - $padding-large-vertical * 2;
+      overflow: hidden;
+    }
 
     /* custom font sizes for the idea cards */
-    font-family: $font-family-serif;
-    font-weight: 100;
-    font-size: 14px;
-    line-height: 22px;
+    &.size-1, &.size-2, &.size-3, &.size-4, &.size-5 {
+      font-family: $font-family-serif;
+      font-weight: 100;
+    }
 
-    &.length-25 {
-      font-size: 48px;
-      line-height: 60px;
+    &.size-1 {
+      font-size: 14px;
+      line-height: 22px;
     }
-    &.length-50 {
-      font-size: 36px;
-      line-height: 48px;
+    &.size-2 {
+      font-size: 18px;
+      line-height: 28px;
     }
-    &.length-150 {
+    &.size-3 {
       font-size: 24px;
       line-height: 36px;
     }
-    &.length-300 {
-      font-size: 18px;
-      line-height: 28px;
+    &.size-4 {
+      font-size: 36px;
+      line-height: 48px;
+    }
+    &.size-5 {
+      font-size: 48px;
+      line-height: 60px;
     }
 
     .title {

@@ -1,0 +1,12 @@
+<div class="content" ng-class="[sizeClass, limitText ? 'limit-text' : '']">
+  <div ng-if="resource.title" ng-bind="resource.title"
+       class="title"></div>
+  <div ng-bind="resource.text"
+       class="text"></div>
+</div>
+<div class="footer">
+  <div ng-if="resource.creatorName"
+       class="name">by <span ng-bind="resource.creatorName"></span></div>
+  <bd-from-now value="resource.created"
+               class="date"></bd-from-now>
+</div>
