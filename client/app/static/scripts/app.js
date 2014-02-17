@@ -8,6 +8,8 @@ angular.module('braind', [
     'ngAnimate',
     'restangular',
     'monospaced.elastic',
+    'ui.bootstrap.modal',
+    'ui.bootstrap.transition',
     'bdDirectives'
   ])
   .config(['$routeProvider', '$locationProvider', '$httpProvider', '$provide', 'bdClipProvider',

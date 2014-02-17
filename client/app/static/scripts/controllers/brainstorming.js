@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('braind')
-  .controller('BrainstormingCtrl', ['$scope', '$routeParams', '$location', 'brainstormingService', 'bdDate',
-    function ($scope, $routeParams, $location, brainstormingService, bdDate) {
+  .controller('BrainstormingCtrl', ['$scope', '$routeParams', '$location', '$modal', 'brainstormingService', 'bdDate',
+    function ($scope, $routeParams, $location, $modal, brainstormingService, bdDate) {
 
       var bsid = $routeParams.brainstorming;
 
@@ -24,6 +24,16 @@ angular.module('braind')
         });
       };
 
+      $scope.openDetail = function (idea) {
+        var modalScope = $scope.$new();
+        modalScope.idea = idea;
+        $modal.open({
+          templateUrl: '/static/views/idea-modal.html',
+          controller: 'IdeaDetailCtrl',
+          scope: modalScope
+        });
+      };
+
       $scope.toolBar = [
         {href: '/' + bsid + '/notification', class: 'star'},
         {href: '/' + bsid + '/edit', class: 'edit'}
@@ -38,4 +48,9 @@ angular.module('braind')
       };
 
       $scope.reset();
-    }]);
+    }])
+  .controller('IdeaDetailCtrl', ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+    $scope.done = function () {
+      $modalInstance.close();
+    };
+  }]);
