@@ -1,3 +1,5 @@
+@import "compass/css3/transform";
+
 .idea-masonry {
   .column {
     display: inline-block;
@@ -13,49 +15,35 @@
 
 bd-idea {
   .content {
+    font-family: $font-family-serif;
+
+    .title {
+      font-weight: 700;
+    }
+    .title, .text {
+      word-wrap: break-word;
+    }
+
     &.limit-text {
       min-height: 100px - $padding-large-vertical * 2;
       max-height: 360px - $padding-large-vertical * 2;
       overflow: hidden;
     }
 
-    /* custom font sizes for the idea cards */
+    /* custom font for the idea cards */
     &.size-1, &.size-2, &.size-3, &.size-4, &.size-5 {
       font-family: $font-family-serif;
       font-weight: 100;
-    }
 
-    &.size-1 {
-      font-size: 14px;
-      line-height: 22px;
-    }
-    &.size-2 {
-      font-size: 18px;
-      line-height: 28px;
-    }
-    &.size-3 {
-      font-size: 24px;
-      line-height: 36px;
-    }
-    &.size-4 {
-      font-size: 36px;
-      line-height: 48px;
-    }
-    &.size-5 {
-      font-size: 48px;
-      line-height: 60px;
-    }
-
-    .title {
-      font-weight: 400;
-    }
-    .title, .text {
-      word-wrap: break-word;
+      .title {
+        font-weight: 400;
+      }
     }
   }
 
   .footer {
     margin-top: $padding-large-vertical * 2;
+    position: relative; // see .rate-up below
 
     .date {
       @include opacity(0.5);
@@ -68,7 +56,60 @@ bd-idea {
       &:hover {
         @include opacity(1);
       }
+
+      /* for touch: make clickable area roughly 40x40 wide */
+      padding: 15px;
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      @include translate(15px, 15px);
     }
+  }
+}
+
+/* custom font sizes for the idea cards, with a wide and a narrow setting */
+.wide bd-idea .content {
+  &.size-1 {
+    font-size: 14px;
+    line-height: 22px;
+  }
+  &.size-2 {
+    font-size: 18px;
+    line-height: 28px;
+  }
+  &.size-3 {
+    font-size: 24px;
+    line-height: 36px;
+  }
+  &.size-4 {
+    font-size: 36px;
+    line-height: 48px;
+  }
+  &.size-5 {
+    font-size: 48px;
+    line-height: 60px;
+  }
+}
+.narrow bd-idea .content {
+  &.size-1 {
+    font-size: 10px;
+    line-height: 16px;
+  }
+  &.size-2 {
+    font-size: 13px;
+    line-height: 22px;
+  }
+  &.size-3 {
+    font-size: 18px;
+    line-height: 25px;
+  }
+  &.size-4 {
+    font-size: 28px;
+    line-height: 38px;
+  }
+  &.size-5 {
+    font-size: 38px;
+    line-height: 50px;
   }
 }
 

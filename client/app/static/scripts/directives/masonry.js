@@ -54,6 +54,12 @@
           $element.find('> .column:nth(' + (columnsCount - 1) + ') > *').css('margin-right', '');
           $element.find('> .column > *').css('margin-bottom', self.gapPercentage + '%');
 
+          // apply brick size classes
+          $element.find('> .column > *').toggleClass('narrow',
+            $element.width() / self.minColumnWidth % 1 <= 0.5);
+          $element.find('> .column > *').toggleClass('wide',
+            $element.width() / self.minColumnWidth % 1 > 0.5);
+
           previousColumnsCount = columnsCount;
         }
       };

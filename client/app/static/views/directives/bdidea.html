@@ -9,7 +9,7 @@
        class="name">by <span ng-bind="resource.creatorName"></span></div>
   <bd-from-now value="resource.created"
                class="date"></bd-from-now>
-  <a href="" alt="Rate up" title="Rate up" ng-click="rate($event)" class="rate-up pull-right" ng-if="resource.id && !hideRatings">
+  <a href="" alt="Rate up" title="Rate up" ng-click="rate($event)" class="rate-up" ng-if="resource.id && !hideRatings">
     <i class="glyphicon glyphicon-thumbs-up"></i>
     <span class="small" ng-bind="resource.ratings"></span>
   </a>
