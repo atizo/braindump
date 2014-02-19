@@ -1,4 +1,5 @@
 import random
+from django.db.models import F
 
 import re
 from braindump.env import get_full_url
@@ -63,7 +64,12 @@ class Idea(TimeStampedModel):
     text = models.TextField()
     creator_name = models.CharField(max_length=200, blank=True)
     creator_ip = models.CharField(max_length=100, blank=True)
+    ratings = models.IntegerField(default=0)
     #image = models.ImageField()
+
+    def rate(self):
+        self.ratings = F('ratings') + 1
+        self.save()
 
     class Meta:
         ordering = ['-created']

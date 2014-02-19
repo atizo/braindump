@@ -63,6 +63,21 @@ class IdeaViewSet(viewsets.ModelViewSet):
 
         return queryset.none()
 
+    @action(methods=['POST'])
+    def rate(self, request, brainstorming_id=None, pk=None):
+        idea = self.get_object()
+
+        if idea.pk not in request.session.get('rated_ideas', []):
+            idea.rate()
+
+            # remember idea, so the user can rate it only once
+            if request.session.get('rated_ideas', None) is None:
+                request.session['rated_ideas'] = []
+            request.session['rated_ideas'].append(idea.pk)
+
+        idea = Idea.objects.get(pk=idea.pk)
+        return Response(IdeaSerializer(idea, context={'request': request}).data)
+
     def create(self, request, *args, **kwargs):
         # read brainstorming id from url
         request.DATA['brainstorming'] = kwargs.get('brainstorming_id', None)

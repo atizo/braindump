@@ -44,6 +44,7 @@ class IdeaSerializer(serializers.ModelSerializer):
             'title',
             'text',
             'creatorName',
+            'ratings',
         )
 
 
