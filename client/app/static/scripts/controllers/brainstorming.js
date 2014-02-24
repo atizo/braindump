@@ -49,11 +49,11 @@ angular.module('braind')
 
       $scope.reset();
     }])
-  .controller('IdeaDetailCtrl', ['$scope', '$modalInstance', '$window', 'brainstormingService',
-    function ($scope, $modalInstance, $window, brainstormingService) {
+  .controller('IdeaDetailCtrl', ['$scope', '$modalInstance', '$window', '$timeout', 'brainstormingService',
+    function ($scope, $modalInstance, $window, $timeout, brainstormingService) {
       $scope.editMode = false;
 
-      $scope.done = function () {
+      $scope.close = function () {
         $modalInstance.close();
       };
 
@@ -66,5 +66,32 @@ angular.module('braind')
           brainstormingService.deleteIdea($scope.idea.brainstorming, $scope.idea.id);
           $modalInstance.close();
         }
+      };
+
+      $scope.startEdit = function () {
+        var doc = angular.element($window.document);
+
+        $scope.formData = _.clone($scope.idea);
+        $scope.editMode = true;
+
+        // select first field with content, after digest loop is finished
+        $timeout(function () {
+          if ($scope.formData.title) {
+            doc.find('.modal form .title').focus();
+          } else if ($scope.formData.text) {
+            doc.find('.modal form .text').focus();
+          }
+        }, 0);
+      };
+
+      $scope.cancelEdit = function () {
+        $scope.editMode = false;
+      };
+
+      $scope.saveEdit = function () {
+        brainstormingService.updateIdea($scope.idea.brainstorming, $scope.idea.id, $scope.formData).then(function () {
+          $scope.user.name = $scope.formData.creatorName;
+          $scope.editMode = false;
+        });
       };
     }]);

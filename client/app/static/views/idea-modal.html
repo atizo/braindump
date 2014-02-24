@@ -1,22 +1,42 @@
-<div class="modal-body">
-  <bd-idea resource="idea" hide-ratings="true" ng-show="!editMode"></bd-idea>
-  <div ng-show="editMode">
-      edit form
+<div ng-if="!editMode">
+  <div class="modal-body">
+    <bd-idea resource="idea" hide-ratings="true" ng-show="!editMode"></bd-idea>
   </div>
-</div>
-<div class="modal-footer">
-  <div class="pull-left tools" ng-show="idea.id">
-    <a href="" alt="Rate up" title="Rate up" ng-click="rate()">
-      <i class="glyphicon glyphicon-thumbs-up"></i>
-      <span class="small" ng-bind="idea.ratings"></span>
-    </a>
-    <a href="" alt="Edit" title="Edit" ng-click="editMode = true" ng-show="!editMode">
-      <i class="glyphicon glyphicon-pencil"></i>
-    </a>
-    <a href="" alt="Delete" title="Delete" ng-click="delete(idea.id)">
-      <i class="glyphicon glyphicon-trash"></i>
-    </a>
-  </div>
+  <div class="modal-footer">
+    <div class="pull-left tools" ng-show="idea.id">
+      <a href="" alt="Rate up" title="Rate up" ng-click="rate()">
+        <i class="glyphicon glyphicon-thumbs-up"></i>
+        <span class="small" ng-bind="idea.ratings"></span>
+      </a>
+      <a href="" alt="Edit" title="Edit" ng-click="startEdit()">
+        <i class="glyphicon glyphicon-pencil"></i>
+      </a>
+      <a href="" alt="Delete" title="Delete" ng-click="delete(idea.id)">
+        <i class="glyphicon glyphicon-trash"></i>
+      </a>
+    </div>
 
-  <button class="btn btn-primary" ng-click="done()">Done</button>
+    <button class="btn btn-primary" ng-click="close()">Done</button>
+  </div>
 </div>
+
+<form ng-if="editMode" name="form" role="form" ng-submit="saveEdit()" novalidate>
+  <div class="modal-body">
+    <div class="form-group">
+      <input ng-model="formData.title" type="text" class="title form-control input-bold"
+          placeholder="Title (optional)">
+    </div>
+    <div class="form-group">
+      <textarea rows="1" ng-model="formData.text"
+          class="text form-control msd-elastic" placeholder="Text" required="required"></textarea>
+    </div>
+    <div class="form-group">
+      <input ng-model="formData.creatorName" type="text" class="form-control"
+          placeholder="Name (optional)">
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-default" ng-click="cancelEdit()">Cancel</button>
+    <button ng-disabled="form.$invalid" type="submit" class="btn btn-primary">Save</button>
+  </div>
+</form>

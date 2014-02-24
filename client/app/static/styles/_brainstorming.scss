@@ -23,6 +23,10 @@ bd-idea {
     .title, .text {
       word-wrap: break-word;
     }
+    pre {
+      font-family: $font-family-serif;
+      margin: 0;
+    }
 
     &.limit-text {
       min-height: 100px - $padding-large-vertical * 2;
@@ -127,6 +131,15 @@ bd-idea {
       .glyphicon {
         font-size: $font-size-large;
       }
+    }
+  }
+
+  form {
+    .modal-body {
+      background-color: $well-bg;
+    }
+    .modal-footer {
+      margin-top: 0;
     }
   }
 }

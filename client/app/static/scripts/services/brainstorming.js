@@ -142,7 +142,7 @@ angular.module('braind')
       bsResource.updateIdea = function (bsid, iid, data) {
         return Restangular.one(ideasURL(bsid), iid).patch(data)
           .then(function (idea) {
-            return addIdeaToStore(bsid, idea);
+            return updateIdeaInStore(bsid, idea);
           });
       };
 

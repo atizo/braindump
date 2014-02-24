@@ -1,8 +1,10 @@
 <div class="content" ng-class="[sizeClass, limitText ? 'limit-text' : '']">
   <div ng-if="resource.title" ng-bind="resource.title"
        class="title"></div>
-  <div ng-bind="resource.text"
+  <div ng-if="limitText" ng-bind="resource.text"
        class="text"></div>
+  <pre ng-if="!limitText" ng-bind="resource.text"
+       class="text"></pre>
 </div>
 <div class="footer small">
   <div ng-if="resource.creatorName"
