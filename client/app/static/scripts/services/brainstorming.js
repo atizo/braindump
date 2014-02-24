@@ -23,6 +23,17 @@ angular.module('braind')
         return idea;
       }
 
+      function updateIdeaInStore(bsid, idea) {
+        if (!_.has(ideaStore, bsid)) {
+          ideaStore[bsid] = {};
+        }
+        if (!_.has(ideaStore[bsid], idea.id)) {
+          ideaStore[bsid][idea.id] = {};
+        }
+        _.merge(ideaStore[bsid][idea.id], idea);
+        return idea;
+      }
+
       function removeIdeaFromStore(bsid, iid) {
         if (!_.has(ideaStore, bsid)) {
           return;
@@ -153,7 +164,7 @@ angular.module('braind')
 
         return Restangular.one(ideasURL(bsid), iid).post('rate')
           .then(function (idea) {
-            return addIdeaToStore(bsid, idea);
+            return updateIdeaInStore(bsid, idea);
           });
       };
 
