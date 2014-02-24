@@ -10,7 +10,8 @@ angular.module('braind', [
     'monospaced.elastic',
     'ui.bootstrap.modal',
     'ui.bootstrap.transition',
-    'bdDirectives'
+    'bdDirectives',
+    'bdFilters'
   ])
   .config(['$routeProvider', '$locationProvider', '$httpProvider', '$provide', 'bdClipProvider',
     function ($routeProvider, $locationProvider, $httpProvider, $provide, bdClipProvider) {
