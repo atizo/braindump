@@ -24,7 +24,7 @@
   </form>
 
   <div class="idea-masonry" masonry min-column-width="150" gap-percentage="5">
-    <div ng-repeat="idea in ideas | bdToArray | orderBy:'-created'" class="masonry-brick">
+    <div ng-repeat="idea in ideas track by idea.id | bdToArray | orderBy:'-created'" class="masonry-brick">
       <bd-idea resource="idea" limit-text="true" dynamic-text-size="true" ng-click="openDetail(idea)"></bd-idea>
     </div>
   </div>

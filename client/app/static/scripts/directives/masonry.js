@@ -24,10 +24,11 @@
       this.runMasonry = function () {
         var columnsCount = Math.floor($element.width() / self.minColumnWidth) || 1,
           columns = null,
-          shortestColumn = null;
+          shortestColumn = null,
+          sortedBricks = null;
 
         if (columnsCount !== previousColumnsCount ||
-            Object.keys(bricks).length !== $element.find('> .column > *')) {
+            Object.keys(bricks).length !== $element.find('> .column > *').size()) {
           columns = Array.apply(null, new Array(columnsCount)).map(Number.prototype.valueOf, 0);
 
           while ($element.find('> .column').size() < columnsCount) {
@@ -35,7 +36,13 @@
             $element.append('<div class="column"></div>');
           }
 
-          _.forOwn(bricks, function (brick) {
+          // sort bricks by index from ng-repeat
+          sortedBricks = _.toArray(bricks).sort(function (a, b) {
+            return a.scope().$index - b.scope().$index;
+          });
+
+          $element.find('> .column > *').append($element);
+          _.forOwn(sortedBricks, function (brick) {
               shortestColumn = columns.indexOf(Math.min.apply(Math, columns));
 
               // move brick to shortest column
@@ -121,12 +128,12 @@
         require: '^masonry',
         scope: true,
         link: {
-          pre: function preLink(scope, element, attrs, ctrl) {
+          pre: function (scope, element, attrs, ctrl) {
             var id = scope.$id, index;
 
             ctrl.appendBrick(element, id);
             element.on('$destroy', function () {
-              ctrl.removeBrick(id, element);
+              ctrl.removeBrick(id);
             });
 
             scope.$watch('$index', function () {
