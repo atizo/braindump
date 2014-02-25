@@ -68,7 +68,7 @@ class IdeaViewSet(viewsets.ModelViewSet):
         idea = self.get_object()
 
         rated_ideas = request.session.get('rated_ideas', [])
-        if idea.pk not in request.session['rated_ideas']:
+        if idea.pk not in rated_ideas:
             idea.rate()
 
             # remember idea, so the user can rate it only once
