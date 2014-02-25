@@ -9,9 +9,8 @@ env:
 install:
   - pip install -r requirements.txt
   - sudo apt-get update && sudo apt-get install ruby
-  - gem install compass --version "=0.12.2"
-  - gem uninstall -aIx sass --version 3.3.0.rc.3
   - gem install sass --version 3.2.13
+  - gem install compass --version "=0.12.2"
   - npm install -g grunt-cli git://github.com/neoziro/bower.git#v1.2.8-patched
   - cd client && npm install && yes no | bower install && cd ..
 before_script:
