@@ -41,7 +41,6 @@
             return a.scope().$index - b.scope().$index;
           });
 
-          $element.find('> .column > *').append($element);
           _.forOwn(sortedBricks, function (brick) {
               shortestColumn = columns.indexOf(Math.min.apply(Math, columns));
 
