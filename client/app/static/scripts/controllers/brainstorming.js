@@ -12,8 +12,19 @@ angular.module('braind')
       }, function () {
         $location.path('/').replace();
       });
-      brainstormingService.getIdeas(bsid).then(function (obj) {
-        $scope.ideas = obj;
+
+      brainstormingService.getIdeas(bsid).then(function (ideas) {
+        $scope.ideasRaw = ideas;
+      });
+
+      $scope.$watchCollection('ideasRaw', function (ideas) {
+        ideas = _.toArray(ideas);
+        _.each(ideas, function (idea) {
+          idea.createdDate = idea.created ? new Date(idea.created) : 0;
+        });
+        $scope.ideas = _.sortBy(ideas, function (o) {
+          return -o.createdDate;
+        });
       });
 
       $scope.create = function () {
@@ -30,7 +41,8 @@ angular.module('braind')
         $modal.open({
           templateUrl: '/static/views/idea-modal.html',
           controller: 'IdeaDetailCtrl',
-          scope: modalScope
+          scope: modalScope,
+          animate: false
         });
       };
 
@@ -58,7 +70,9 @@ angular.module('braind')
       };
 
       $scope.rate = function () {
-        brainstormingService.rateIdea($scope.idea.brainstorming, $scope.idea.id);
+        if (!$scope.idea.isOwn) {
+          brainstormingService.rateIdea($scope.idea.brainstorming, $scope.idea.id);
+        }
       };
 
       $scope.delete = function () {

@@ -1,15 +1,18 @@
-from api.forms import TimeZoneAwareDateTimeField
-from brainstorming.models import Brainstorming, Idea, BrainstormingWatcher
-from brainstorming.permissions import can_edit_bs
+import random
+from api.fields import HTMLTextField, EscapedTextField
+from brainstorming.models import Brainstorming, Idea, BrainstormingWatcher, IDEA_COLORS
+from brainstorming.permissions import can_edit_bs, rated_idea, get_is_own_idea
 from rest_framework import serializers, fields
+from rest_framework.fields import DateTimeField
 
 
 class BrainstormingSerializer(serializers.ModelSerializer):
-    created = TimeZoneAwareDateTimeField(read_only=True)
+    created = DateTimeField(read_only=True)
     question = fields.WritableField()
     details = fields.WritableField(required=False)
-    creatorEmail = fields.WritableField(source='creator_email',
-        write_only=True)
+    detailsHTML = HTMLTextField(source='details', read_only=True)
+    creatorEmail = fields.EmailField(source='creator_email',
+                                     write_only=True)
     url = fields.Field('get_absolute_url')
     canEdit = serializers.SerializerMethodField('get_can_edit')
 
@@ -20,6 +23,7 @@ class BrainstormingSerializer(serializers.ModelSerializer):
             'created',
             'question',
             'details',
+            'detailsHTML',
             'creatorEmail',
             'url',
             'canEdit'
@@ -30,10 +34,15 @@ class BrainstormingSerializer(serializers.ModelSerializer):
 
 
 class IdeaSerializer(serializers.ModelSerializer):
-    created = TimeZoneAwareDateTimeField(read_only=True)
+    created = DateTimeField(read_only=True)
     title = fields.WritableField(required=False)
-    text = fields.WritableField()
-    creatorName = fields.WritableField(source="creator_name", required=False)
+    text = EscapedTextField()
+    textHTML = HTMLTextField(source='text', read_only=True)
+    creatorName = fields.WritableField(source='creator_name', required=False)
+    rated = serializers.SerializerMethodField('get_rated')
+    color = fields.CharField(read_only=True)
+    colorCode = serializers.SerializerMethodField('get_color_code')
+    isOwn = serializers.SerializerMethodField('get_is_own')
 
     class Meta:
         model = Idea
@@ -43,13 +52,29 @@ class IdeaSerializer(serializers.ModelSerializer):
             'brainstorming',
             'title',
             'text',
+            'textHTML',
             'creatorName',
             'ratings',
+            'rated',
+            'color',
+            'colorCode',
+            'isOwn'
         )
+
+    def get_is_own(self, obj):
+        return get_is_own_idea(self.context.get('request', None), obj.pk)
+
+    def get_rated(self, obj):
+        return rated_idea(self.context.get('request', None), obj.pk)
+
+    def get_color_code(self, obj):
+        if obj.color not in IDEA_COLORS:
+            return 'c0'
+        return 'c{0}'.format(IDEA_COLORS.index(obj.color) + 1)
 
 
 class BrainstormingWatcherSerializer(serializers.ModelSerializer):
-    email = fields.WritableField(write_only=True, required=False)
+    email = fields.EmailField(write_only=True, required=False)
 
     class Meta:
         model = BrainstormingWatcher

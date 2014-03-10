@@ -4,9 +4,10 @@ import logging
 from braindump.functions import get_object_or_None
 from brainstorming.email_verification import get_verified_email
 from brainstorming.models import Brainstorming, Idea, BrainstormingWatcher
-from brainstorming.permissions import set_edit_permission, PERMISSION_MAP
+from brainstorming.permissions import bs_set_edit_permission
 from brainstorming.serializers import BrainstormingSerializer, IdeaSerializer
 from brainstorming.user_session import update_bs_history, BS_HISTORY_KEY
+from django.core.serializers.json import DjangoJSONEncoder
 from django.shortcuts import render
 from django.http import Http404
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -28,7 +29,8 @@ def _get_context(request, brainstorming_id=None):
     for bs in brainstorming_serializer.data:
         bid = bs['id']
         brainstorming_store[bid] = bs
-        for idea in IdeaSerializer(Idea.objects.filter(brainstorming__pk=bid), many=True).data:
+        for idea in IdeaSerializer(Idea.objects.filter(brainstorming__pk=bid), many=True,
+                                   context={'request': request}).data:
             if bid not in idea_store:
                 idea_store[bid] = {}
             idea_store[bid][idea['id']] = idea
@@ -36,9 +38,9 @@ def _get_context(request, brainstorming_id=None):
     context = {
         'email': request.session.get('email', ''),
         'name': request.session.get('name', ''),
-        'brainstormingStore': json.dumps(brainstorming_store),
-        'ideaStore': json.dumps(idea_store),
-        'recentBrainstormings': json.dumps(request.session.get(BS_HISTORY_KEY, [])),
+        'brainstormingStore': json.dumps(brainstorming_store, cls=DjangoJSONEncoder),
+        'ideaStore': json.dumps(idea_store, cls=DjangoJSONEncoder),
+        'recentBrainstormings': json.dumps(request.session.get(BS_HISTORY_KEY, []), cls=DjangoJSONEncoder),
         'errorMsg': '',
         'infoMsg': ''
     }
@@ -107,7 +109,7 @@ def edit(request, brainstorming_id):
     try:
         email = get_verified_email(request)
         if email:
-            set_edit_permission(request, brainstorming_id)
+            bs_set_edit_permission(request, brainstorming_id)
         context = _get_context(request, brainstorming_id)
     except ValueError, ve:
         context = _get_context(request, brainstorming_id)

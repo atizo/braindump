@@ -39,7 +39,9 @@ angular.module('braind')
 
         scope.rate = function (event) {
           event.stopPropagation();
-          brainstormingService.rateIdea(scope.resource.brainstorming, scope.resource.id);
+          if(!scope.resource.isOwn){
+            brainstormingService.rateIdea(scope.resource.brainstorming, scope.resource.id);
+          }
         };
       }
     };

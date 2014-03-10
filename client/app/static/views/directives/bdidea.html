@@ -1,10 +1,11 @@
 <div class="content" ng-class="[sizeClass, limitText ? 'limit-text' : '']">
   <div ng-if="resource.title" ng-bind="resource.title"
        class="title"></div>
-  <div ng-if="limitText" ng-bind="resource.text"
+  <div ng-if="limitText" ng-bind-html="resource.textHTML"
        class="text"></div>
-  <pre ng-if="!limitText" ng-bind="resource.text"
+  <pre ng-if="!limitText" ng-bind-html="resource.textHTML"
        class="text"></pre>
+  <div ng-if="limitText" class="fade-out {{ resource.colorCode }}"></div>
 </div>
 <div class="footer small">
   <div ng-if="resource.creatorName"

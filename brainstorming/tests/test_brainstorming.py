@@ -1,5 +1,5 @@
 from brainstorming.models import Brainstorming, EmailVerification
-from brainstorming.permissions import PERMISSION_MAP, PERMISSION_PROJECT, set_edit_permission, edit_mode
+from brainstorming.permissions import PERMISSION_MAP, PERMISSION_PROJECT, bs_set_edit_permission, edit_mode
 from brainstorming.serializers import BrainstormingSerializer
 from brainstorming.tests.factories import BrainstormingFactory
 from brainstorming.views import edit
@@ -23,7 +23,7 @@ class BrainstormingTestCase(unittest2.TestCase):
         serializer = BrainstormingSerializer(obj)
 
         # 'creatorEmail' should be write-only
-        self.assertEqual(set(['id', 'created', 'question', 'details', 'url', 'canEdit']),
+        self.assertEqual(set(['id', 'created', 'question', 'details', 'url', 'canEdit', 'detailsHTML']),
                          set(serializer.data.keys()))
 
     def test_creation(self):
@@ -71,7 +71,7 @@ class BrainstormingTestCase(unittest2.TestCase):
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
         # Owner can update
-        set_edit_permission(request, obj.pk)
+        bs_set_edit_permission(request, obj.pk)
 
         response = view(request, pk=obj.pk).render()
         self.assertEqual(response.status_code, status.HTTP_200_OK)

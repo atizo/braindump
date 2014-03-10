@@ -159,7 +159,13 @@ angular.module('braind')
           if (!ideaStore[bsid][iid].ratings) {
             ideaStore[bsid][iid].ratings = 0;
           }
-          ideaStore[bsid][iid].ratings = ideaStore[bsid][iid].ratings += 1;
+          if(ideaStore[bsid][iid].rated){
+            ideaStore[bsid][iid].rated = false;
+            ideaStore[bsid][iid].ratings = ideaStore[bsid][iid].ratings -= 1;
+          }else{
+            ideaStore[bsid][iid].rated = true;
+            ideaStore[bsid][iid].ratings = ideaStore[bsid][iid].ratings += 1;
+          }
         }
 
         return Restangular.one(ideasURL(bsid), iid).post('rate')

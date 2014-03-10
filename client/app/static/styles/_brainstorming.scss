@@ -1,21 +1,85 @@
 @import "compass/css3/transform";
 
 .idea-masonry {
-  .column {
-    display: inline-block;
-    vertical-align: top;
-  }
+  position: relative;
+  min-width: 100%;
+  height: 9999px; // force scrollbar for height calculation
+
   .masonry-brick {
+    visibility: hidden;
+    position: absolute;
+    @include translate(0, 0);
     background-color: #fff;
-    padding: $padding-large-vertical * 2;
     @include box-shadow(0 2px 1px rgba(0, 0, 0, 0.08));
     cursor: pointer;
+    /*
+    @include transition-timing-function(ease-out);
+    @include transition-duration(0.4s);
+    -webkit-transition-property: -webkit-transform;
+    -moz-transition-property: -moz-transform;
+    -ms-transition-property: -ms-transform;
+    -o-transition-property: -o-transform;
+    transition-property: transform;
+    */
+
+    div.color {
+      padding: $padding-large-vertical * 2;
+    }
+
+    &.show {
+      visibility: visible;
+    }
+  }
+}
+
+.limited .content {
+
+  div.fade-out {
+    height: 36px;
+
+    &.c1 {
+      @include background-image(linear-gradient(rgba(249, 132, 106, 0), rgba(249, 132, 106, 1)));
+    }
+
+    &.c2 {
+      @include background-image(linear-gradient(rgba(255, 201, 94, 0), rgba(255, 201, 94, 1)));
+    }
+
+    &.c3 {
+      @include background-image(linear-gradient(rgba(241, 244, 78, 0), rgba(241, 244, 78, 1)));
+    }
+
+    &.c4 {
+      @include background-image(linear-gradient(rgba(201, 235, 93, 0), rgba(201, 235, 93, 1)));
+    }
+
+    &.c5 {
+      @include background-image(linear-gradient(rgba(135, 214, 228, 0), rgba(135, 214, 228, 1)));
+    }
+
+    &.c6 {
+      @include background-image(linear-gradient(rgba(146, 229, 201, 0), rgba(146, 229, 201, 1)));
+    }
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
   }
 }
 
 bd-idea {
+  display: block;
+
+  a {
+    color: #666;
+    &:hover {
+      color: #333;
+    }
+  }
+
   .content {
     font-family: $font-family-serif;
+    position: relative;
 
     .title {
       font-weight: 700;
@@ -23,8 +87,13 @@ bd-idea {
     .title, .text {
       word-wrap: break-word;
     }
+
     pre {
       font-family: $font-family-serif;
+      margin: 0;
+    }
+
+    p {
       margin: 0;
     }
 
@@ -37,7 +106,7 @@ bd-idea {
     /* custom font for the idea cards */
     &.size-1, &.size-2, &.size-3, &.size-4, &.size-5 {
       font-family: $font-family-serif;
-      font-weight: 100;
+      font-weight: 300;
 
       .title {
         font-weight: 400;
@@ -72,35 +141,13 @@ bd-idea {
 }
 
 /* custom font sizes for the idea cards, with a wide and a narrow setting */
-.wide bd-idea .content {
+bd-idea .content {
   &.size-1 {
-    font-size: 14px;
-    line-height: 22px;
-  }
-  &.size-2 {
-    font-size: 18px;
-    line-height: 28px;
-  }
-  &.size-3 {
-    font-size: 24px;
-    line-height: 36px;
-  }
-  &.size-4 {
-    font-size: 36px;
-    line-height: 48px;
-  }
-  &.size-5 {
-    font-size: 48px;
-    line-height: 60px;
-  }
-}
-.narrow bd-idea .content {
-  &.size-1 {
-    font-size: 10px;
+    font-size: 13px;
     line-height: 16px;
   }
   &.size-2 {
-    font-size: 13px;
+    font-size: 15px;
     line-height: 22px;
   }
   &.size-3 {
@@ -117,10 +164,35 @@ bd-idea {
   }
 }
 
+@media (min-width: $screen-sm-min) {
+  bd-idea .content {
+    &.size-1 {
+      font-size: 14px;
+      line-height: 22px;
+    }
+    &.size-2 {
+      font-size: 18px;
+      line-height: 25px;
+    }
+    &.size-3 {
+      font-size: 24px;
+      line-height: 34px;
+    }
+    &.size-4 {
+      font-size: 36px;
+      line-height: 48px;
+    }
+    &.size-5 {
+      font-size: 48px;
+      line-height: 60px;
+    }
+  }
+}
+
 .modal-dialog {
   .tools {
     a {
-      margin-right:  $padding-large-horizontal * 2;
+      margin-right: $padding-large-horizontal * 2;
       color: #000;
       @include opacity(0.5);
 

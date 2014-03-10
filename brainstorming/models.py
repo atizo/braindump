@@ -13,6 +13,24 @@ CHARSET = '123456789abcdefghjkmnpqrstvwxzy'
 LENGTH = 12
 MAX_TRIES = 1024
 
+RED = 'f9846a'
+ORANGE = 'ffc95e'
+YELLOW = 'f1f44e'
+GREEN = 'c9eb5d'
+BLUE = '87d6e4'
+TURQUOISE = '92e5c9'
+
+IDEA_COLORS = [RED, ORANGE, YELLOW, GREEN, BLUE, TURQUOISE]
+
+IDEA_COLORS_CODES = {
+    RED: 'c1',
+    ORANGE: 'c2',
+    YELLOW: 'c3',
+    GREEN: 'c4',
+    BLUE: 'c5',
+    TURQUOISE: 'c6'
+}
+
 
 class Brainstorming(TimeStampedModel):
     id = models.SlugField(primary_key=True, editable=False, blank=True)
@@ -65,10 +83,15 @@ class Idea(TimeStampedModel):
     creator_name = models.CharField(max_length=200, blank=True)
     creator_ip = models.CharField(max_length=100, blank=True)
     ratings = models.IntegerField(default=0)
+    color = models.CharField(max_length=100, blank=True)
     #image = models.ImageField()
 
     def rate(self):
         self.ratings = F('ratings') + 1
+        self.save()
+
+    def unrate(self):
+        self.ratings = F('ratings') - 1
         self.save()
 
     class Meta:

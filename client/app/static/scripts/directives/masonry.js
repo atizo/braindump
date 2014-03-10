@@ -4,13 +4,13 @@
   angular.module('braind')
     .controller('MasonryCtrl', ['$scope', '$element', '$timeout', '$window', function ($scope, $element, $timeout, $window) {
       var bricks = {},
+        loadReg = false,
         destroyed = false,
         self = this,
-        timeout = null,
-        previousColumnsCount = null;
+        timeout = null;
 
-      this.minColumnWidth = 100;
-      this.gapPercentage = 5;
+      this.minColumnWidth = 220;
+      this.gap = 15;
 
       // Make sure it's only executed once within a reasonable time-frame in
       // case multiple elements are removed or added at once.
@@ -22,52 +22,46 @@
       };
 
       this.runMasonry = function () {
-        var columnsCount = Math.floor($element.width() / self.minColumnWidth) || 1,
+        var columnsCount = Math.floor($element.width() / ( self.minColumnWidth + self.gap)) || 1,
+          columnWidth = Math.floor(($element.width() - (columnsCount - 1) * self.gap) / columnsCount),
           columns = null,
           shortestColumn = null,
-          sortedBricks = null;
+          sortedBricks;
 
-        if (columnsCount !== previousColumnsCount ||
-            Object.keys(bricks).length !== $element.find('> .column > *').size()) {
-          columns = Array.apply(null, new Array(columnsCount)).map(Number.prototype.valueOf, 0);
+        columns = Array.apply(null, new Array(columnsCount)).map(Number.prototype.valueOf, 0);
 
-          while ($element.find('> .column').size() < columnsCount) {
-            // need to add columns
-            $element.append('<div class="column"></div>');
+        // sort bricks by index from ng-repeat
+        sortedBricks = _.toArray(bricks).sort(function (a, b) {
+          return a.scope().$index - b.scope().$index;
+        });
+
+        // apply calculated width
+        _.forOwn(sortedBricks, function (brick) {
+            brick.css('width', columnWidth + 'px');
           }
+        );
 
-          // sort bricks by index from ng-repeat
-          sortedBricks = _.toArray(bricks).sort(function (a, b) {
-            return a.scope().$index - b.scope().$index;
-          });
-
+        // move bricks after the new width is applied
+        var d = function () {
           _.forOwn(sortedBricks, function (brick) {
-              shortestColumn = columns.indexOf(Math.min.apply(Math, columns));
+            var brickHeight = brick.outerHeight(true);
+            shortestColumn = columns.indexOf(Math.min.apply(Math, columns));
+            brick.css('transform', 'translate(' + (shortestColumn * (columnWidth) + shortestColumn * self.gap) + 'px, ' + columns[shortestColumn] + 'px)');
 
-              // move brick to shortest column
-              $element.find('> .column:nth(' + shortestColumn + ')').append(brick);
-
-              columns[shortestColumn] += brick.outerHeight() + self.gapPercentage;
+            // todo: make this configurable
+            if(brickHeight >= 417){
+              brick.addClass('limited');
+            }else{
+              brick.removeClass('limited');
             }
-          );
 
-          // remove possible unused columns
-          $element.find('> .column:gt(' + (columnsCount - 1) + ')').remove();
+            columns[shortestColumn] += (brickHeight + self.gap);
+            brick.addClass('show');
+          });
+          $element.css('height', Math.max.apply(Math, columns) + 'px');
+        };
 
-          // apply new percentages
-          $element.find('> .column').css('width', (100 / columnsCount) + '%');
-          $element.find('> .column:lt(' + (columnsCount - 1) + ') > *').css('margin-right', self.gapPercentage + '%');
-          $element.find('> .column:nth(' + (columnsCount - 1) + ') > *').css('margin-right', '');
-          $element.find('> .column > *').css('margin-bottom', self.gapPercentage + '%');
-
-          // apply brick size classes
-          $element.find('> .column > *').toggleClass('narrow',
-            $element.width() / self.minColumnWidth % 1 <= 0.5);
-          $element.find('> .column > *').toggleClass('wide',
-            $element.width() / self.minColumnWidth % 1 > 0.5);
-
-          previousColumnsCount = columnsCount;
-        }
+        $timeout(d, 10);
       };
 
       this.appendBrick = function (element, id) {
@@ -81,6 +75,12 @@
         }
 
         self.scheduleMasonry();
+
+        // reload layout if all assets are loaded
+        if(!loadReg){
+          loadReg = true;
+          angular.element($window).load(self.scheduleMasonry);
+        }
       };
 
       this.removeBrick = function (id) {
@@ -97,15 +97,11 @@
         destroyed = true;
 
         angular.element($window).unbind('resize', self.scheduleMasonry);
+        angular.element($window).unbind('load', self.scheduleMasonry);
 
         $scope.$emit('masonry.destroyed');
 
         bricks = [];
-      };
-
-      this.reload = function () {
-        $element.masonry();
-        $scope.$emit('masonry.reloaded');
       };
 
       angular.element($window).bind('resize', self.scheduleMasonry);
@@ -116,12 +112,13 @@
         link: {
           pre: function preLink(scope, element, attrs, ctrl) {
             ctrl.minColumnWidth = parseInt(attrs.minColumnWidth, 10);
-            ctrl.gapPercentage = parseInt(attrs.gapPercentage, 10);
+            ctrl.gap = parseInt(attrs.gap, 10);
             scope.$on('$destroy', ctrl.destroy);
           }
         }
       };
-    }).directive('masonryBrick', function () {
+    })
+    .directive('masonryBrick', function () {
       return {
         restrict: 'AC',
         require: '^masonry',

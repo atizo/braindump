@@ -4,6 +4,8 @@ from rest_framework import permissions
 
 PERMISSION_MAP = 'drf_permission_map'
 PERMISSION_PROJECT = 'prj'
+OWN_IDEA = 'drf_idea_list'
+RATED_IDEAS = 'ratids'
 
 
 class BrainstromPermissions(permissions.BasePermission):
@@ -26,7 +28,7 @@ class BrainstromPermissions(permissions.BasePermission):
         return obj.pk in request.session.get(PERMISSION_MAP, {}).get(PERMISSION_PROJECT, [])
 
 
-def set_edit_permission(request, bsid):
+def bs_set_edit_permission(request, bsid):
     if PERMISSION_MAP not in request.session:
         request.session[PERMISSION_MAP] = {}
 
@@ -41,6 +43,27 @@ def set_edit_permission(request, bsid):
 def can_edit_bs(request, bsid):
     if request and PERMISSION_MAP in request.session and PERMISSION_PROJECT in request.session[PERMISSION_MAP]:
         return bsid in request.session[PERMISSION_MAP][PERMISSION_PROJECT]
+    return False
+
+
+def set_idea(request, iid):
+    if OWN_IDEA not in request.session:
+        request.session[OWN_IDEA] = []
+
+    if iid not in request.session[OWN_IDEA]:
+        request.session[OWN_IDEA].append(iid)
+        request.session.modified = True
+
+
+def get_is_own_idea(request, iid):
+    if request and OWN_IDEA in request.session:
+        return iid in request.session[OWN_IDEA]
+    return False
+
+
+def rated_idea(request, iid):
+    if request and RATED_IDEAS in request.session:
+        return iid in request.session[RATED_IDEAS]
     return False
 
 
