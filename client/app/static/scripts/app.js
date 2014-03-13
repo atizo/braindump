@@ -6,10 +6,12 @@ angular.module('braind', [
     'ngSanitize',
     'ngRoute',
     'ngAnimate',
+    'ngTouch',
     'restangular',
     'monospaced.elastic',
     'ui.bootstrap.modal',
     'ui.bootstrap.transition',
+    'angularFileUpload',
     'bdDirectives',
     'bdFilters'
   ])
@@ -66,5 +68,5 @@ angular.module('braind', [
       'email': angular.copy(window.email),
       'name': angular.copy(window.name)
     };
-  }]);
 
+  }]);

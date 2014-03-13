@@ -3,6 +3,7 @@ $icon-font-path: "/static/styles/fonts/";
 @import "compass/css3/images";
 @import "compass/css3/inline-block";
 @import "compass/css3/transition";
+@import "compass/css3/text-shadow";
 
 // Core variables and mixins
 @import "variables";
@@ -19,9 +20,6 @@ $icon-font-path: "/static/styles/fonts/";
 @import "forms";
 @import "buttons";
 @import "modals";
-
-// Components
-@import "sass-bootstrap/lib/glyphicons";
 
 // Utility classes
 @import "sass-bootstrap/lib/utilities";
@@ -40,46 +38,38 @@ html {
 
 body {
   height: 100%;
-  background-color: #DDD;
-  @include background-image(radial-gradient(center center, #FDFDFD, #DFDFDF));
+  background-color: #EAEAEA;
 }
 
-::-webkit-scrollbar {
-  height: 16px;
-  overflow: visible;
-  width: 16px;
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, .2);
-  background-clip: padding-box;
-  border: solid transparent;
-  border-width: 1px 1px 1px 6px;
-  min-height: 28px;
-  padding: 100px 0 0;
-  box-shadow: inset 1px 1px 0 rgba(0, 0, 0, .1), inset 0 -1px 0 rgba(0, 0, 0, .07);
-}
-
-::-webkit-scrollbar-button {
-  height: 0;
-  width: 0;
-}
-
-::-webkit-scrollbar-track {
-  background-clip: padding-box;
-  border: solid transparent;
-  border-width: 0 0 0 4px;
-}
-
-::-webkit-scrollbar-corner {
-  background: transparent;
-}
-
-h1, h2, h3, h4{
+h1, h2, h3, h4 {
   color: #D5453D;
 }
 
+// IE fix
+textarea {
+  min-height: 32px;
+}
+
+.gcnt {
+  min-height: 100%;
+  position: relative;
+  background-color: #EAEAEA;
+  @include background-image(radial-gradient(center center, #FDFDFD, #DFDFDF));
+  background-size: 100%;
+  background-position: center bottom;
+  background-repeat: no-repeat;
+}
+
+.topcnt {
+  padding-bottom: $footer-height;
+}
+
+@import "icons";
 @import "header";
+@import "footer";
 @import "start";
 @import "invite";
 @import "brainstorming";
+@import "scroll";
+@import "loader";
+@import "well";

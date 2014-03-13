@@ -1,0 +1,14 @@
+/* Custom page footer */
+.gcnt > .footer {
+  background-color: #EAEAEA;
+  border-top: 1px solid #DDD;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: $footer-height;
+
+  .container{
+    padding-top: $padding-base-vertical;
+  }
+}

@@ -1,0 +1,12 @@
+.well {
+  background-color: #EAEAEA;
+  padding: 20px;
+  margin: 20px auto;
+  -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 2px 1px rgba(0, 0, 0, 0.04);
+
+  &.well-limit{
+    max-width: 600px;
+  }
+
+}

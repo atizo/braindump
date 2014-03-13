@@ -1,15 +1,14 @@
-import random
-from api.fields import HTMLTextField, EscapedTextField
+from api.fields import HTMLTextField, EscapedTextField, HyphenatedTextField
 from brainstorming.models import Brainstorming, Idea, BrainstormingWatcher, IDEA_COLORS
-from brainstorming.permissions import can_edit_bs, rated_idea, get_is_own_idea
+from brainstorming.permissions import can_edit_brainstorming, rated_idea, can_edit_idea
 from rest_framework import serializers, fields
 from rest_framework.fields import DateTimeField
 
 
 class BrainstormingSerializer(serializers.ModelSerializer):
     created = DateTimeField(read_only=True)
-    question = fields.WritableField()
-    details = fields.WritableField(required=False)
+    question = HyphenatedTextField()
+    details = HyphenatedTextField(required=False)
     detailsHTML = HTMLTextField(source='details', read_only=True)
     creatorEmail = fields.EmailField(source='creator_email',
                                      write_only=True)
@@ -30,7 +29,7 @@ class BrainstormingSerializer(serializers.ModelSerializer):
         )
 
     def get_can_edit(self, obj):
-        return can_edit_bs(self.context.get('request', None), obj.pk)
+        return can_edit_brainstorming(self.context.get('request', None), obj.pk)
 
 
 class IdeaSerializer(serializers.ModelSerializer):
@@ -41,8 +40,10 @@ class IdeaSerializer(serializers.ModelSerializer):
     creatorName = fields.WritableField(source='creator_name', required=False)
     rated = serializers.SerializerMethodField('get_rated')
     color = fields.CharField(read_only=True)
+    canEdit = serializers.SerializerMethodField('get_can_edit')
+    image = serializers.ImageField(read_only=True)
     colorCode = serializers.SerializerMethodField('get_color_code')
-    isOwn = serializers.SerializerMethodField('get_is_own')
+    canEdit = serializers.SerializerMethodField('get_can_edit')
 
     class Meta:
         model = Idea
@@ -58,11 +59,12 @@ class IdeaSerializer(serializers.ModelSerializer):
             'rated',
             'color',
             'colorCode',
-            'isOwn'
+            'image',
+            'canEdit'
         )
 
-    def get_is_own(self, obj):
-        return get_is_own_idea(self.context.get('request', None), obj.pk)
+    def get_can_edit(self, obj):
+        return can_edit_idea(self.context.get('request', None), obj.pk)
 
     def get_rated(self, obj):
         return rated_idea(self.context.get('request', None), obj.pk)
@@ -71,6 +73,20 @@ class IdeaSerializer(serializers.ModelSerializer):
         if obj.color not in IDEA_COLORS:
             return 'c0'
         return 'c{0}'.format(IDEA_COLORS.index(obj.color) + 1)
+
+    def save(self, **kwargs):
+        request = self.context['request']
+
+        # add file
+        if 'imagefile' in request.FILES:
+            self.object.image = request.FILES.get('imagefile')
+
+        # remove file if filename in request is empty:
+        if 'imagefile' in request.DATA and not len(request.DATA['imagefile']):
+            self.object.image = None
+
+
+        return super(IdeaSerializer, self).save(**kwargs)
 
 
 class BrainstormingWatcherSerializer(serializers.ModelSerializer):

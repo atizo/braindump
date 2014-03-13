@@ -1,0 +1,19 @@
+<div class="image-upload">
+
+  <div ng-show="!showPreview" class="btn-file">
+    <button class="btn btn-borderless">
+      <span class="icon icon-image"></span> Choose an image
+    </button>
+    <input accept="image/*" type="file"/>
+  </div>
+
+  <img ng-show="showPreview" class="img-responsive" src="">
+
+  <div class="form-error-msg"
+       ng-if="error">
+    {{ error }}
+  </div>
+
+  <div ng-show="showPreview" ng-click="clear()" class="clear icon-close"></div>
+
+</div>

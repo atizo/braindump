@@ -9,52 +9,48 @@
     <title></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
+    <link href='http://fonts.googleapis.com/css?family=Roboto+Slab:300,400,700|Roboto:400' rel='stylesheet' type='text/css'>
     <!-- build:css({.tmp,app}) /static/styles/main.css -->
     <link rel="stylesheet" href="/styles/main.css">
     <!-- endbuild -->
-    <meta property="og:title" content="Brainstorming" />
-    <meta property="og:site_name" content="Braindump" />
-    <meta property="og:url" content="http://samples.ogp.me/136756249803614" />
-    <meta property="og:description" content="http://samples.ogp.me/390580850990722" />
-    <meta property="fb:app_id" content="123456" />
   </head>
   <body ng-app="braind">
-    <!--[if lt IE 7]>
+    <!--[if lt IE 9]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
-    <div ng-view></div>
-    <div class="footer">
-      <div class="container">
-        <small class="text-muted">braindump powered by <a href="http://www.atizo360.com">atizo 360°</a></small>
+    <div class="gcnt">
+      <div ng-show="showDeco" class="deco hl"></div>
+      <div ng-show="showDeco" class="defl"></div>
+      <div ng-show="showDeco" class="deco hr"></div>
+      <div class="topcnt" ng-view></div>
+      <div class="footer">
+        <div class="container">
+          <small class="text-muted">braindump powered by <a href="http://www.atizo360.com">atizo 360°</a></small>
+        </div>
       </div>
     </div>
 
-    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
-     <script>
-       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+     <!--
+    <script type="text/javascript">
 
-       ga('create', 'UA-XXXXX-X');
-       ga('send', 'pageview');
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-XXXXX-X']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
     </script>
+    -->
 
     <!--[if lt IE 9]>
     <script src="/static/bower_components/es5-shim/es5-shim.js"></script>
     <script src="/static/bower_components/json3/lib/json3.min.js"></script>
     <![endif]-->
-
-
-    <script src="//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js"></script>
-    <script>
-      WebFont.load({
-        google: {
-          families: ['Roboto Slab:300', 'Roboto Slab:400','Roboto Slab:700', 'Roboto']
-        }
-      });
-    </script>
 
     <script>
         window.brainstormingStore = {{ brainstormingStore|safe }};
@@ -66,20 +62,30 @@
         window.name = '{{ name }}';
     </script>
 
+    <script>
+      FileAPI = {
+          jsUrl: '/static/bower_components/ng-file-upload/FileAPI.min.js',
+          flashUrl: '/static/bower_components/ng-file-upload/FileAPI.flash.swf'
+      }
+    </script>
+
     <!-- build:js /static/scripts/vendor.js -->
     <script src="/static/bower_components/jquery/jquery.js"></script>
     <script src="/static/bower_components/lodash/dist/lodash.js"></script>
+    <script src="/static/bower_components/ng-file-upload/angular-file-upload-shim.min.js"></script>
     <script src="/static/bower_components/angular/angular.js"></script>
-    <script src="/static/bower_components/sass-bootstrap/dist/js/bootstrap.js"></script>
     <script src="/static/bower_components/angular-resource/angular-resource.js"></script>
     <script src="/static/bower_components/angular-cookies/angular-cookies.js"></script>
+    <script src="/static/bower_components/angular-touch/angular-touch.js"></script>
     <script src="/static/bower_components/angular-sanitize/angular-sanitize.js"></script>
     <script src="/static/bower_components/angular-route/angular-route.js"></script>
     <script src="/static/bower_components/angular-animate/angular-animate.js"></script>
+    <script src="/static/bower_components/ng-file-upload/angular-file-upload.min.js"></script>
     <script src="/static/bower_components/restangular/dist/restangular.js"></script>
     <script src="/static/bower_components/angular-elastic/elastic.js"></script>
     <script src="/static/bower_components/zeroclipboard/ZeroClipboard.js"></script>
     <script src="/static/bower_components/momentjs/moment.js"></script>
+    <script src="/static/scripts/vendor/placeholder.js"></script>
     <!-- endbuild -->
 
     <!-- build:js({.tmp,app}) /static/scripts/scripts.js -->
@@ -97,8 +103,9 @@
     <script src="/static/scripts/directives/bdclip.js"></script>
     <script src="/static/scripts/directives/bdheader.js"></script>
     <script src="/static/scripts/directives/bdidea.js"></script>
+    <script src="/static/scripts/directives/bdimage.js"></script>
     <script src="/static/scripts/directives/masonry.js"></script>
-    <script src="/static/scripts/filters/bdtoarray.js"></script>
+    <script src="/static/scripts/filters/bdfilters.js"></script>
     <script src="/static/scripts/bootstrap/modal.js"></script>
     <script src="/static/scripts/bootstrap/transition.js"></script>
     <!-- endbuild -->

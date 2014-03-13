@@ -2,7 +2,6 @@
 // Forms
 // --------------------------------------------------
 
-
 // Normalize non-controls
 //
 // Restyle and baseline non-control form elements.
@@ -30,7 +29,6 @@ label {
   margin-bottom: 5px;
   font-weight: bold;
 }
-
 
 // Normalize form controls
 
@@ -91,7 +89,6 @@ output {
   color: $input-color;
   vertical-align: middle;
 }
-
 
 // Common form controls
 //
@@ -156,7 +153,6 @@ textarea.form-control {
   height: auto;
 }
 
-
 // Form groups
 //
 // Designed to help with the organization and spacing of vertical forms. For
@@ -165,7 +161,6 @@ textarea.form-control {
 .form-group {
   margin-bottom: 15px;
 }
-
 
 // Checkboxes and radios
 //
@@ -186,6 +181,7 @@ textarea.form-control {
     cursor: pointer;
   }
 }
+
 .radio input[type="radio"],
 .radio-inline input[type="radio"],
 .checkbox input[type="checkbox"],
@@ -193,6 +189,7 @@ textarea.form-control {
   float: left;
   margin-left: -20px;
 }
+
 .radio + .radio,
 .checkbox + .checkbox {
   margin-top: -5px; // Move up sibling radios or checkboxes for tighter spacing
@@ -208,6 +205,7 @@ textarea.form-control {
   font-weight: normal;
   cursor: pointer;
 }
+
 .radio-inline + .radio-inline,
 .checkbox-inline + .checkbox-inline {
   margin-top: 0;
@@ -235,7 +233,6 @@ input[type="checkbox"],
 
 @include input-size('.input-lg', $input-height-large, $padding-large-vertical, $padding-large-horizontal, $font-size-large, $line-height-large, $border-radius-large);
 
-
 // Form control feedback states
 //
 // Apply contextual and semantic states to individual form controls.
@@ -244,15 +241,16 @@ input[type="checkbox"],
 .has-warning {
   @include form-control-validation($state-warning-text, $state-warning-text, $state-warning-bg);
 }
+
 // Error
 .has-error {
   @include form-control-validation($state-danger-text, $state-danger-text, $state-danger-bg);
 }
+
 // Success
 .has-success {
   @include form-control-validation($state-success-text, $state-success-text, $state-success-bg);
 }
-
 
 // Static form control text
 //
@@ -262,7 +260,6 @@ input[type="checkbox"],
 .form-control-static {
   margin-bottom: 0; // Remove default margin from `p`
 }
-
 
 // Help text
 //
@@ -275,8 +272,6 @@ input[type="checkbox"],
   margin-bottom: 10px;
   color: lighten($text-color, 25%); // lighten the text some for contrast
 }
-
-
 
 // Inline forms
 //
@@ -294,7 +289,7 @@ input[type="checkbox"],
   // Kick in the inline
   @media (min-width: $screen-sm) {
     // Inline-block all the things for "inline"
-    .form-group  {
+    .form-group {
       display: inline-block;
       margin-bottom: 0;
       vertical-align: middle;
@@ -322,7 +317,6 @@ input[type="checkbox"],
     }
   }
 }
-
 
 // Horizontal forms
 //
@@ -359,6 +353,48 @@ input[type="checkbox"],
   }
 }
 
-.input-bold{
+.input-bold {
   font-weight: 700;
+}
+
+.image-upload {
+  position: relative;
+  border: 1px #AAA dashed;
+  height: 140px;
+  text-align: center;
+  overflow: hidden;
+  margin-bottom: 15px;
+
+  img {
+    width: 100%;
+  }
+
+  .btn-file {
+    margin: 50px;
+    overflow: hidden;
+    position: relative;
+    vertical-align: middle;
+    > input {
+      position: absolute;
+      top: 0;
+      left: 0;
+      margin: 0;
+      @include opacity(0);
+      font-size: 23px;
+      direction: ltr;
+      cursor: pointer;
+    }
+  }
+
+  .clear {
+    position: absolute;
+    right: $padding-large-horizontal;
+    bottom: $padding-large-vertical;
+    width: 18px;
+    height: 19px;
+    color: #ffffff;
+    @include text-shadow(rgba(black, 0.9) 0px 0px 4px);
+    cursor: pointer;
+  }
+
 }

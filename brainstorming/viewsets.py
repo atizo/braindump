@@ -2,7 +2,8 @@ import random
 
 from brainstorming.models import Brainstorming, Idea, IDEA_COLORS
 from brainstorming.notifications import toggle_notification
-from brainstorming.permissions import BrainstromPermissions, edit_mode, bs_set_edit_permission, RATED_IDEAS, set_idea
+from brainstorming.permissions import BrainstormPermissions, edit_mode, brainstorming_set_edit_perm, RATED_IDEAS, \
+    idea_set_edit_perm, IdeaPermissions
 from brainstorming.serializers import BrainstormingSerializer, IdeaSerializer, BrainstormingWatcherSerializer
 from brainstorming.user_session import update_bs_history
 from django.db.models import Count
@@ -17,7 +18,7 @@ SESSION_COLOR = 'prj_id_color'
 class BrainstormingViewSet(viewsets.ModelViewSet):
     queryset = Brainstorming.objects.all()
     serializer_class = BrainstormingSerializer
-    permission_classes = (BrainstromPermissions, )
+    permission_classes = (BrainstormPermissions, )
 
     def pre_save(self, obj):
         # store user's ip address
@@ -28,7 +29,7 @@ class BrainstormingViewSet(viewsets.ModelViewSet):
     def post_save(self, obj, created=False):
         # remember email for next time
         self.request.session['email'] = obj.creator_email
-        bs_set_edit_permission(self.request, obj.pk)
+        brainstorming_set_edit_perm(self.request, obj.pk)
         update_bs_history(self.request.session, obj.pk)
 
         return super(BrainstormingViewSet, self).post_save(obj, created)
@@ -58,6 +59,7 @@ class IdeaViewSet(viewsets.ModelViewSet):
     queryset = Idea.objects.all()
     serializer_class = IdeaSerializer
     paginate_by = None
+    permission_classes = (IdeaPermissions, )
 
     def get_queryset(self):
         queryset = super(IdeaViewSet, self).get_queryset()
@@ -132,7 +134,6 @@ class IdeaViewSet(viewsets.ModelViewSet):
         return super(IdeaViewSet, self).pre_save(obj)
 
     def post_save(self, obj, created=False):
-        # remember email for next time
-        set_idea(self.request, obj.pk)
+        idea_set_edit_perm(self.request, obj.pk)
 
         return super(IdeaViewSet, self).post_save(obj, created)

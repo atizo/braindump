@@ -1,10 +1,13 @@
+import os
 import random
+from django.conf import settings
+
 from django.db.models import F
 
 import re
 from braindump.env import get_full_url
 from django.db import models
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from django_extensions.db.models import TimeStampedModel
 
@@ -13,12 +16,12 @@ CHARSET = '123456789abcdefghjkmnpqrstvwxzy'
 LENGTH = 12
 MAX_TRIES = 1024
 
-RED = 'f9846a'
-ORANGE = 'ffc95e'
-YELLOW = 'f1f44e'
-GREEN = 'c9eb5d'
-BLUE = '87d6e4'
-TURQUOISE = '92e5c9'
+RED = '#f9846a'
+ORANGE = '#ffc95e'
+YELLOW = '#f1f44e'
+GREEN = '#c9eb5d'
+BLUE = '#87d6e4'
+TURQUOISE = '#92e5c9'
 
 IDEA_COLORS = [RED, ORANGE, YELLOW, GREEN, BLUE, TURQUOISE]
 
@@ -72,8 +75,15 @@ class Brainstorming(TimeStampedModel):
 def send_new_mail(sender, instance, created, **kwargs):
     if created:
         from brainstorming.notifications import new_brainstorming
+
         BrainstormingWatcher.objects.create(brainstorming=instance, email=instance.creator_email)
         new_brainstorming(instance)
+
+
+def get_upload_to(path):
+    if settings.DEBUG:
+        return os.path.join('uploads/', path)
+    return path
 
 
 class Idea(TimeStampedModel):
@@ -84,7 +94,7 @@ class Idea(TimeStampedModel):
     creator_ip = models.CharField(max_length=100, blank=True)
     ratings = models.IntegerField(default=0)
     color = models.CharField(max_length=100, blank=True)
-    #image = models.ImageField()
+    image = models.ImageField(upload_to=get_upload_to('images'), null=True)
 
     def rate(self):
         self.ratings = F('ratings') + 1
@@ -96,6 +106,12 @@ class Idea(TimeStampedModel):
 
     class Meta:
         ordering = ['-created']
+
+
+@receiver(post_delete, sender=Idea)
+def remove_files(sender, instance=None, **kwargs):
+    if instance.image:
+        instance.image.delete(False)
 
 
 class BrainstormingWatcher(TimeStampedModel):

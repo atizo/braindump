@@ -8,7 +8,8 @@
 </div>
 
 <div class="container start text-center">
-  <form name="form" class="well text-left" role="form" ng-submit="create()" novalidate>
+
+  <form name="form" class="well well-limit text-left" role="form" ng-submit="create()" novalidate style="position: relative;">
     <input ng-model="formData.question" ng-click="fullform=true" type="text" class="form-control input-bold"
            placeholder="Ask a question to start" required="required">
 
@@ -24,11 +25,18 @@
       </div>
       <button ng-disabled="form.$invalid" type="submit" class="btn btn-info">Create</button>
     </div>
+    <div ng-show="!fullform" class="demo">
+      <div>or</div>
+      <a href="">View example</a>
+    </div>
+    <div ng-show="loading" class="loader-over">
+      <div class="loader"></div>
+    </div>
   </form>
 
-  <h3>Recent brainstormings</h3>
+  <h3 ng-show="rb">Recent brainstormings</h3>
 
   <div ng-repeat="b in rb">
-    <a class="btn btn-link" href="{{ b.url }}">{{ b.question }}</a>
+    <a class="btn btn-link" href="{{ b.url }}">{{ b.question | bdCut:true:40:' ...' }}</a>
   </div>
 </div>

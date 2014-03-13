@@ -1,10 +1,11 @@
 'use strict';
 
 angular.module('braind')
-  .controller('BrainstormingCtrl', ['$scope', '$routeParams', '$location', '$modal', 'brainstormingService', 'bdDate',
-    function ($scope, $routeParams, $location, $modal, brainstormingService, bdDate) {
+  .controller('BrainstormingCtrl', ['$scope', '$routeParams', '$location', '$modal', '$upload', 'brainstormingService', 'bdDate',
+    function ($scope, $routeParams, $location, $modal, $upload, brainstormingService, bdDate) {
 
       var bsid = $routeParams.brainstorming;
+      $scope.file = null;
 
       brainstormingService.get(bsid).then(function (obj) {
         obj.createdFormatted = bdDate.format(obj.created);
@@ -28,7 +29,7 @@ angular.module('braind')
       });
 
       $scope.create = function () {
-        brainstormingService.postIdea(bsid, $scope.formData).then(function () {
+        brainstormingService.postIdea(bsid, $scope.formData, $scope.file).then(function () {
           $scope.user.name = $scope.formData.creatorName;
           $scope.reset();
           $scope.fullform = false;
@@ -47,8 +48,8 @@ angular.module('braind')
       };
 
       $scope.toolBar = [
-        {href: '/' + bsid + '/notification', class: 'star'},
-        {href: '/' + bsid + '/edit', class: 'edit'}
+        {href: '/' + bsid + '/notification', 'class': 'icon-star', title: 'Notifcations'},
+        {href: '/' + bsid + '/edit', 'class': 'icon-pencil', title: 'Edit'}
       ];
 
       $scope.reset = function () {
@@ -70,12 +71,12 @@ angular.module('braind')
       };
 
       $scope.rate = function () {
-        if (!$scope.idea.isOwn) {
+        if (!$scope.idea.canEdit) {
           brainstormingService.rateIdea($scope.idea.brainstorming, $scope.idea.id);
         }
       };
 
-      $scope.delete = function () {
+      $scope.deleteIdea = function () {
         if ($window.confirm('Do you really want to delete this idea?')) {
           brainstormingService.deleteIdea($scope.idea.brainstorming, $scope.idea.id);
           $modalInstance.close();

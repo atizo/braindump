@@ -4,7 +4,7 @@ import logging
 from braindump.functions import get_object_or_None
 from brainstorming.email_verification import get_verified_email
 from brainstorming.models import Brainstorming, Idea, BrainstormingWatcher
-from brainstorming.permissions import bs_set_edit_permission
+from brainstorming.permissions import brainstorming_set_edit_perm
 from brainstorming.serializers import BrainstormingSerializer, IdeaSerializer
 from brainstorming.user_session import update_bs_history, BS_HISTORY_KEY
 from django.core.serializers.json import DjangoJSONEncoder
@@ -109,7 +109,7 @@ def edit(request, brainstorming_id):
     try:
         email = get_verified_email(request)
         if email:
-            bs_set_edit_permission(request, brainstorming_id)
+            brainstorming_set_edit_perm(request, brainstorming_id)
         context = _get_context(request, brainstorming_id)
     except ValueError, ve:
         context = _get_context(request, brainstorming_id)

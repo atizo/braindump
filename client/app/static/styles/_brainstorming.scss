@@ -12,19 +12,6 @@
     background-color: #fff;
     @include box-shadow(0 2px 1px rgba(0, 0, 0, 0.08));
     cursor: pointer;
-    /*
-    @include transition-timing-function(ease-out);
-    @include transition-duration(0.4s);
-    -webkit-transition-property: -webkit-transform;
-    -moz-transition-property: -moz-transform;
-    -ms-transition-property: -ms-transform;
-    -o-transition-property: -o-transform;
-    transition-property: transform;
-    */
-
-    div.color {
-      padding: $padding-large-vertical * 2;
-    }
 
     &.show {
       visibility: visible;
@@ -67,7 +54,7 @@
   }
 }
 
-bd-idea {
+.bd-idea {
   display: block;
 
   a {
@@ -125,6 +112,10 @@ bd-idea {
     .rate-up {
       color: #000;
       @include opacity(0.5);
+
+      i{
+        font-size: 16px;
+      }
 
       &:hover {
         @include opacity(1);
@@ -184,7 +175,7 @@ bd-idea .content {
     }
     &.size-5 {
       font-size: 48px;
-      line-height: 60px;
+      line-height: 58px;
     }
   }
 }

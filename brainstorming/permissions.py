@@ -4,11 +4,11 @@ from rest_framework import permissions
 
 PERMISSION_MAP = 'drf_permission_map'
 PERMISSION_PROJECT = 'prj'
-OWN_IDEA = 'drf_idea_list'
+PERMISSION_IDEA = 'idea'
 RATED_IDEAS = 'ratids'
 
 
-class BrainstromPermissions(permissions.BasePermission):
+class BrainstormPermissions(permissions.BasePermission):
     def has_permission(self, request, view):
         # List action is allowed only to admin users
         if view.action == 'list':
@@ -28,7 +28,20 @@ class BrainstromPermissions(permissions.BasePermission):
         return obj.pk in request.session.get(PERMISSION_MAP, {}).get(PERMISSION_PROJECT, [])
 
 
-def bs_set_edit_permission(request, bsid):
+class IdeaPermissions(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        # Allows access to admin users
+        if request.user and request.user.is_staff:
+            return True
+        # Read and create permissions are allowed to any request,
+        # so we'll always allow GET, HEAD, OPTIONS or POST requests
+        if request.method in permissions.SAFE_METHODS + ['POST']:
+            return True
+
+        return obj.pk in request.session.get(PERMISSION_MAP, {}).get(PERMISSION_IDEA, [])
+
+
+def brainstorming_set_edit_perm(request, bsid):
     if PERMISSION_MAP not in request.session:
         request.session[PERMISSION_MAP] = {}
 
@@ -40,24 +53,27 @@ def bs_set_edit_permission(request, bsid):
         request.session.modified = True
 
 
-def can_edit_bs(request, bsid):
+def idea_set_edit_perm(request, iid):
+    if PERMISSION_MAP not in request.session:
+        request.session[PERMISSION_MAP] = {}
+
+    if PERMISSION_IDEA not in request.session[PERMISSION_MAP]:
+        request.session[PERMISSION_MAP][PERMISSION_IDEA] = []
+
+    if iid not in request.session[PERMISSION_MAP][PERMISSION_IDEA]:
+        request.session[PERMISSION_MAP][PERMISSION_IDEA].append(iid)
+        request.session.modified = True
+
+
+def can_edit_brainstorming(request, bsid):
     if request and PERMISSION_MAP in request.session and PERMISSION_PROJECT in request.session[PERMISSION_MAP]:
         return bsid in request.session[PERMISSION_MAP][PERMISSION_PROJECT]
     return False
 
 
-def set_idea(request, iid):
-    if OWN_IDEA not in request.session:
-        request.session[OWN_IDEA] = []
-
-    if iid not in request.session[OWN_IDEA]:
-        request.session[OWN_IDEA].append(iid)
-        request.session.modified = True
-
-
-def get_is_own_idea(request, iid):
-    if request and OWN_IDEA in request.session:
-        return iid in request.session[OWN_IDEA]
+def can_edit_idea(request, iid):
+    if request and PERMISSION_MAP in request.session and PERMISSION_IDEA in request.session[PERMISSION_MAP]:
+        return iid in request.session[PERMISSION_MAP][PERMISSION_IDEA]
     return False
 
 

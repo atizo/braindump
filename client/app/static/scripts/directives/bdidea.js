@@ -4,7 +4,7 @@ angular.module('braind')
   .directive('bdIdea', ['brainstormingService', function (brainstormingService) {
 
     return {
-      restrict: 'E',
+      restrict: 'C',
       templateUrl: '/static/views/directives/bdidea.html',
       scope:{
         resource: '=',
@@ -39,7 +39,7 @@ angular.module('braind')
 
         scope.rate = function (event) {
           event.stopPropagation();
-          if(!scope.resource.isOwn){
+          if(!scope.resource.canEdit){
             brainstormingService.rateIdea(scope.resource.brainstorming, scope.resource.id);
           }
         };

@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('braind')
-  .factory('brainstormingService', ['Restangular', '$q', 'brainstormingStore', 'ideaStore', 'recentBrainstormings',
-    function (Restangular, $q, brainstormingStore, ideaStore, recentBrainstormings) {
+  .factory('brainstormingService', ['Restangular', '$q', '$upload', 'brainstormingStore', 'ideaStore', 'recentBrainstormings',
+    function (Restangular, $q, $upload, brainstormingStore, ideaStore, recentBrainstormings) {
       var brainstormingRoute = 'api/brainstormings';
 
       function ideasURL(bsid) {
@@ -96,8 +96,8 @@ angular.module('braind')
       };
 
       bsResource.update = function (bsid, data) {
-        return bsResource.get(bsid).then(function (bs){
-          return bs.patch(data).then(function(updatedBS){
+        return bsResource.get(bsid).then(function (bs) {
+          return bs.patch(data).then(function (updatedBS) {
             // add to store
             addRecentBrainstorming(updatedBS.id);
             brainstormingStore[updatedBS.id] = updatedBS;
@@ -132,14 +132,37 @@ angular.module('braind')
         }
       };
 
-      bsResource.postIdea = function (bsid, data) {
+      bsResource.postIdea = function (bsid, data, file) {
+        if (file) {
+          return $upload.upload({
+            url: ideasURL(bsid),
+            data: data,
+            file: file,
+            fileFormDataName: 'imagefile'
+          }).then(function (resp) {
+            return addIdeaToStore(bsid, Restangular.restangularizeElement(null,
+              resp.data, ideasURL(bsid)));
+          });
+        }
         return Restangular.all(ideasURL(bsid)).post(data)
           .then(function (idea) {
             return addIdeaToStore(bsid, idea);
           });
       };
 
-      bsResource.updateIdea = function (bsid, iid, data) {
+      bsResource.updateIdea = function (bsid, iid, data, file) {
+        if (file) {
+          return $upload.upload({
+            url: ideasURL(bsid) + '/' + iid,
+            data: data,
+            file: file,
+            method: 'PUT',
+            fileFormDataName: 'imagefile'
+          }).then(function (resp) {
+            return addIdeaToStore(bsid, Restangular.restangularizeElement(null,
+              resp.data, ideasURL(bsid)));
+          });
+        }
         return Restangular.one(ideasURL(bsid), iid).patch(data)
           .then(function (idea) {
             return updateIdeaInStore(bsid, idea);
@@ -159,10 +182,10 @@ angular.module('braind')
           if (!ideaStore[bsid][iid].ratings) {
             ideaStore[bsid][iid].ratings = 0;
           }
-          if(ideaStore[bsid][iid].rated){
+          if (ideaStore[bsid][iid].rated) {
             ideaStore[bsid][iid].rated = false;
             ideaStore[bsid][iid].ratings = ideaStore[bsid][iid].ratings -= 1;
-          }else{
+          } else {
             ideaStore[bsid][iid].rated = true;
             ideaStore[bsid][iid].ratings = ideaStore[bsid][iid].ratings += 1;
           }

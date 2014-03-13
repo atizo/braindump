@@ -311,7 +311,9 @@ module.exports = function (grunt) {
               'views/**',
               'bower_components/es5-shim/es5-shim.js',
               'bower_components/json3/lib/json3.min.js',
-              'bower_components/zeroclipboard/ZeroClipboard.swf'
+              'bower_components/zeroclipboard/ZeroClipboard.swf',
+              'bower_components/ng-file-upload/FileAPI.min.js',
+              'bower_components/ng-file-upload/FileAPI.flash.swf'
             ]
           },
           {

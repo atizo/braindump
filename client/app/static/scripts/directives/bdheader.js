@@ -4,9 +4,9 @@ angular.module('braind')
   .directive('bdHeader', [function () {
 
     return {
-      restrict: 'E',
+      restrict: 'EA',
       templateUrl: '/static/views/directives/bdheader.html',
-      scope:{
+      scope: {
         title: '@',
         action: '&',
         tools: '=',

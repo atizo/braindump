@@ -1,28 +1,7 @@
-@font-face {
-  font-family: 'icomoon';
-  src: url('#{$icon-font-path}/icomoon.eot');
-  src: url('#{$icon-font-path}/icomoon.eot?#iefix') format('embedded-opentype'), url('#{$icon-font-path}/icomoon.woff') format('woff'), url('#{$icon-font-path}/icomoon.ttf') format('truetype'), url('#{$icon-font-path}/icomoon.svg#icomoon') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}
-
-[class^="icon-"], [class*=" icon-"] {
-  font-family: 'icomoon';
-  speak: none;
-  font-style: normal;
-  font-weight: normal;
-  font-variant: normal;
-  text-transform: none;
-  line-height: 1;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-.icon-logo:before {
-  content: "\e600";
-}
-
 .header {
+  background-image: image-url("/static/images/header_bg.jpg");
+  background-size: 100% 100%;
+
   @include background-image(linear-gradient(left, #e5703b, #c14754));
   position: relative;
   overflow: hidden;
@@ -49,8 +28,11 @@
     top: -60%;
   }
 
+
   .bar {
     z-index: 3;
+    background-image: image-url("/static/images/header_bar.jpg");
+    background-size: 100% 100%;
     @include background-image(linear-gradient(rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.10)));
     font-size: $font-size-h4;
     font-family: 'Roboto Slab', serif;

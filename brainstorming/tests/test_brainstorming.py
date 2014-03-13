@@ -1,5 +1,5 @@
 from brainstorming.models import Brainstorming, EmailVerification
-from brainstorming.permissions import PERMISSION_MAP, PERMISSION_PROJECT, bs_set_edit_permission, edit_mode
+from brainstorming.permissions import PERMISSION_MAP, PERMISSION_PROJECT, brainstorming_set_edit_perm, edit_mode
 from brainstorming.serializers import BrainstormingSerializer
 from brainstorming.tests.factories import BrainstormingFactory
 from brainstorming.views import edit
@@ -71,7 +71,7 @@ class BrainstormingTestCase(unittest2.TestCase):
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
         # Owner can update
-        bs_set_edit_permission(request, obj.pk)
+        brainstorming_set_edit_perm(request, obj.pk)
 
         response = view(request, pk=obj.pk).render()
         self.assertEqual(response.status_code, status.HTTP_200_OK)

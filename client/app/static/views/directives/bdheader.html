@@ -7,8 +7,8 @@
       <a ng-if="title" href="{{ href }}"> {{ title }}</a>
 
       <div ng-if="tools" class="tools pull-right">
-        <a ng-repeat="tool in tools" class="btn btn-link" href="{{ tool.href }}"><span
-                class="glyphicon glyphicon-{{ tool.class }}"></span></a>
+        <a title="{{ tool.title }}" ng-repeat="tool in tools" class="btn btn-link" href="{{ tool.href }}"><span
+                class="{{ tool.class }}"></span></a>
       </div>
     </div>
   </div>
