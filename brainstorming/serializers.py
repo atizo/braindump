@@ -67,7 +67,8 @@ class IdeaSerializer(serializers.ModelSerializer):
         return can_edit_idea(self.context.get('request', None), obj.pk)
 
     def get_image(self, obj):
-        return obj.image.url
+        if obj.image:
+            return obj.image.url
 
     def get_rated(self, obj):
         return rated_idea(self.context.get('request', None), obj.pk)
