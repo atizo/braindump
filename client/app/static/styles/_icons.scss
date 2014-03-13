@@ -1,12 +1,9 @@
 @font-face {
-	font-family: 'icomoon';
-	src:url('#{$icon-font-path}icomoon.eot?1pw9pj');
-	src:url('#{$icon-font-path}icomoon.eot?#iefix1pw9pj') format('embedded-opentype'),
-		url('#{$icon-font-path}icomoon.woff?1pw9pj') format('woff'),
-		url('#{$icon-font-path}icomoon.ttf?1pw9pj') format('truetype'),
-		url('#{$icon-font-path}icomoon.svg?1pw9pj#icomoon') format('svg');
-	font-weight: normal;
-	font-style: normal;
+  font-family: 'icomoon';
+  src: url('#{$icon-font-path}icomoon.eot');
+  src: url('#{$icon-font-path}icomoon.eot?#iefix') format('embedded-opentype'), url('#{$icon-font-path}icomoon.woff') format('woff'), url('#{$icon-font-path}icomoon.ttf') format('truetype'), url('#{$icon-font-path}icomoon.svg#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
 }
 
 [class^="icon-"], [class*=" icon-"] {
