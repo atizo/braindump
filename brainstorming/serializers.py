@@ -41,7 +41,7 @@ class IdeaSerializer(serializers.ModelSerializer):
     rated = serializers.SerializerMethodField('get_rated')
     color = fields.CharField(read_only=True)
     canEdit = serializers.SerializerMethodField('get_can_edit')
-    image = serializers.ImageField(read_only=True)
+    image = serializers.SerializerMethodField('get_image')
     colorCode = serializers.SerializerMethodField('get_color_code')
     canEdit = serializers.SerializerMethodField('get_can_edit')
 
@@ -65,6 +65,9 @@ class IdeaSerializer(serializers.ModelSerializer):
 
     def get_can_edit(self, obj):
         return can_edit_idea(self.context.get('request', None), obj.pk)
+
+    def get_image(self, obj):
+        return obj.image.url
 
     def get_rated(self, obj):
         return rated_idea(self.context.get('request', None), obj.pk)

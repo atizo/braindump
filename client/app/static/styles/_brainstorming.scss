@@ -64,6 +64,10 @@
     }
   }
 
+  img{
+    width: 100%;
+  }
+
   .content {
     font-family: $font-family-serif;
     position: relative;
@@ -132,7 +136,7 @@
 }
 
 /* custom font sizes for the idea cards, with a wide and a narrow setting */
-bd-idea .content {
+.bd-idea .content {
   &.size-1 {
     font-size: 13px;
     line-height: 16px;
@@ -156,7 +160,7 @@ bd-idea .content {
 }
 
 @media (min-width: $screen-sm-min) {
-  bd-idea .content {
+  .bd-idea .content {
     &.size-1 {
       font-size: 14px;
       line-height: 22px;
