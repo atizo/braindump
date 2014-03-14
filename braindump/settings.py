@@ -169,6 +169,8 @@ if not DEBUG:
     AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
     AWS_S3_FILE_OVERWRITE = False
 
+    THUMBNAIL_DEFAULT_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+
     CACHES = {
         'default': {
             'BACKEND': 'django_bmemcached.memcached.BMemcached',
