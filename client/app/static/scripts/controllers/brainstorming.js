@@ -48,9 +48,11 @@ angular.module('braind')
       };
 
       $scope.toolBar = [
-        {href: '/' + bsid + '/notification', 'class': 'icon-star', title: 'Notifcations'},
-        {href: '/' + bsid + '/edit', 'class': 'icon-pencil', title: 'Edit'}
+        {href: '/' + bsid + '/export', 'class': 'icon-download', title: 'Export', target: '_self'},
+        {href: '/' + bsid + '/notification', 'class': 'icon-star', title: 'Notifcations'}
       ];
+
+      $scope.editLink = '/' + bsid + '/edit';
 
       $scope.reset = function () {
         $scope.formData = {

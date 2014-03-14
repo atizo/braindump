@@ -4,8 +4,11 @@
 
   <div ng-if="brainstorming.detailsHTML"
        ng-bind-html="brainstorming.detailsHTML"></div>
-  <div ng-bind="brainstorming.createdFormatted" class="text-muted small"></div>
 
+  <div>
+    <span ng-bind="brainstorming.createdFormatted" class="text-muted small"></span>
+    <a title="Edit" class="edit-link" ng-href="{{ editLink }}"><span class="icon-pencil"></span></a>
+  </div>
 
   <form name="form" class="well well-limit text-left" role="form" ng-submit="create()" novalidate>
 

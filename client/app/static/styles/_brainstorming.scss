@@ -1,5 +1,9 @@
 @import "compass/css3/transform";
 
+a.edit-link{
+  padding-left: $padding-large-vertical;
+}
+
 .idea-masonry {
   position: relative;
   min-width: 100%;

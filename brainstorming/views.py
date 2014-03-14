@@ -151,6 +151,7 @@ def export(request, brainstorming_id):
     sheet.set_column(1, 1, 20)
     sheet.set_column(2, 2, 40)
     sheet.set_column(5, 5, 20)
+    sheet.set_column(6, 6, 50)
 
     for i, idea in enumerate(Idea.objects.filter(brainstorming=bs), 1):
         sheet.write(i, 0, idea.pk)
