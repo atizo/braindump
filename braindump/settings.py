@@ -92,9 +92,9 @@ THUMBNAIL_ALIASES = {
 THUMBNAIL_CACHE_DIMENSIONS = True
 
 THUMBNAIL_OPTIMIZE_COMMAND = {
-    'png': '/usr/bin/optipng {filename}',
-    'gif': '/usr/bin/optipng {filename}',
-    'jpeg': '/usr/bin/jpegoptim {filename}'
+    'png': 'optipng {filename}',
+    'gif': 'optipng {filename}',
+    'jpeg': 'jpegtran -optimize -progressive -copy none {filename} > {filename}'
 }
 
 
