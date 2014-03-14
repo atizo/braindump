@@ -28,6 +28,8 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django_extensions',
     'rest_framework',
+    'easy_thumbnails',
+    'easy_thumbnails.optimize',
     'storages',
     'south',
     'django_nose',
@@ -77,6 +79,23 @@ STATIC_URL = '/static/'
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
+# Thumbnails
+THUMBNAIL_ALIASES = {
+    '': {
+        'preview': {'size': (640, 400), 'crop': True},
+        'large': {'size': (1920, 1920), 'crop': 'scale'},
+    },
+}
+
+THUMBNAIL_CACHE_DIMENSIONS = True
+
+THUMBNAIL_OPTIMIZE_COMMAND = {
+    'png': '/usr/bin/optipng {filename}',
+    'gif': '/usr/bin/optipng {filename}',
+    'jpeg': '/usr/bin/jpegoptim {filename}'
+}
+
 
 if DEBUG:
     STATICFILES_DIRS = (

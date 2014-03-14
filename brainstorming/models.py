@@ -1,9 +1,8 @@
-import os
 import random
+
+import os
 from django.conf import settings
-
 from django.db.models import F
-
 import re
 from braindump.env import get_full_url
 from django.db import models
@@ -80,10 +79,28 @@ def send_new_mail(sender, instance, created, **kwargs):
         new_brainstorming(instance)
 
 
-def get_upload_to(path):
+def path_and_rename(path):
     if settings.DEBUG:
-        return os.path.join('uploads/', path)
-    return path
+        path = os.path.join('uploads/', path)
+
+    def wrapper(instance, filename):
+        ext = filename.split('.')[-1]
+
+        loop_num = 0
+        filename = None
+        while not filename:
+            if loop_num < MAX_TRIES:
+                newid = ''.join(random.sample(CHARSET, LENGTH))
+                if not Idea.objects.filter(image__iendswith=newid).exists():
+                    filename = newid
+                loop_num += 1
+            else:
+                raise ValueError("Couldn't generate a unique code.")
+
+        # return the whole path to the file
+        return os.path.join(path, '{}.{}'.format(newid, ext))
+
+    return wrapper
 
 
 class Idea(TimeStampedModel):
@@ -94,7 +111,7 @@ class Idea(TimeStampedModel):
     creator_ip = models.CharField(max_length=100, blank=True)
     ratings = models.IntegerField(default=0)
     color = models.CharField(max_length=100, blank=True)
-    image = models.ImageField(upload_to=get_upload_to('images'), null=True)
+    image = models.ImageField(upload_to=path_and_rename('images'), null=True)
 
     def rate(self):
         self.ratings = F('ratings') + 1

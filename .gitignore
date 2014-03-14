@@ -41,3 +41,4 @@ venv
 *.pyc
 staticfiles
 settings_local.py
+uploads

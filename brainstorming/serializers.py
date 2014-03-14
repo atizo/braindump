@@ -1,6 +1,7 @@
 from api.fields import HTMLTextField, EscapedTextField, HyphenatedTextField
 from brainstorming.models import Brainstorming, Idea, BrainstormingWatcher, IDEA_COLORS
 from brainstorming.permissions import can_edit_brainstorming, rated_idea, can_edit_idea
+from easy_thumbnails.files import get_thumbnailer
 from rest_framework import serializers, fields
 from rest_framework.fields import DateTimeField
 
@@ -42,6 +43,7 @@ class IdeaSerializer(serializers.ModelSerializer):
     color = fields.CharField(read_only=True)
     canEdit = serializers.SerializerMethodField('get_can_edit')
     image = serializers.SerializerMethodField('get_image')
+    preview = serializers.SerializerMethodField('get_preview')
     colorCode = serializers.SerializerMethodField('get_color_code')
     canEdit = serializers.SerializerMethodField('get_can_edit')
 
@@ -60,6 +62,7 @@ class IdeaSerializer(serializers.ModelSerializer):
             'color',
             'colorCode',
             'image',
+            'preview',
             'canEdit'
         )
 
@@ -68,7 +71,11 @@ class IdeaSerializer(serializers.ModelSerializer):
 
     def get_image(self, obj):
         if obj.image:
-            return obj.image.url
+            return get_thumbnailer(obj.image)['large'].url
+
+    def get_preview(self, obj):
+        if obj.image:
+            return get_thumbnailer(obj.image)['preview'].url
 
     def get_rated(self, obj):
         return rated_idea(self.context.get('request', None), obj.pk)
@@ -88,7 +95,6 @@ class IdeaSerializer(serializers.ModelSerializer):
         # remove file if filename in request is empty:
         if 'imagefile' in request.DATA and not len(request.DATA['imagefile']):
             self.object.image = None
-
 
         return super(IdeaSerializer, self).save(**kwargs)
 
