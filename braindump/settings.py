@@ -15,6 +15,7 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+ADMINS = (('Reto Aebersold', 'aeby@atizo.com'), )
 
 # Application definition
 
