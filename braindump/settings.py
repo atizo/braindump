@@ -144,8 +144,21 @@ if not DEBUG:
     )
 
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+
     AWS_ACCESS_KEY = os.environ.get('AWS_ACCESS_KEY_ID')
     AWS_SECRET_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
     AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+    AWS_S3_FILE_OVERWRITE = False
+
+    CACHES = {
+        'default': {
+            'BACKEND': 'django_bmemcached.memcached.BMemcached',
+            'LOCATION': os.environ.get('MEMCACHEDCLOUD_SERVERS').split(','),
+            'OPTIONS': {
+                'username': os.environ.get('MEMCACHEDCLOUD_USERNAME'),
+                'password': os.environ.get('MEMCACHEDCLOUD_PASSWORD')
+            }
+        }
+    }
 
 SITE_ID = 1

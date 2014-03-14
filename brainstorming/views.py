@@ -11,7 +11,13 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.shortcuts import render
 from django.http import Http404
 from django.views.decorators.csrf import ensure_csrf_cookie
+from django.http import HttpResponse
+from xlsxwriter.workbook import Workbook
 
+try:
+    import cStringIO as StringIO
+except ImportError:
+    import StringIO
 
 logger = logging.getLogger(__name__)
 
@@ -116,3 +122,23 @@ def edit(request, brainstorming_id):
         _set_error(context, ve.message)
 
     return render(request, 'index.html', context)
+
+
+def export(request, brainstorming_id):
+    if not Brainstorming.objects.filter(pk=brainstorming_id).exists():
+        raise Http404
+
+    # create a workbook in memory
+    output = StringIO.StringIO()
+
+    book = Workbook(output)
+    sheet = book.add_worksheet('test')
+    sheet.write(0, 0, 'Hello, world!')
+    book.close()
+
+    # construct response
+    output.seek(0)
+    response = HttpResponse(output.read(), mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+    response['Content-Disposition'] = "attachment; filename=test.xlsx"
+
+    return response

@@ -39,7 +39,7 @@ angular.module('braind')
             modelCtrl.$setViewValue('');
             modelCtrl.$setValidity('', false);
             scope.showPreview = false;
-            scope.error = 'Ungültiges Bild (max. 3MB)';
+            scope.error = 'Invalid image (max. 3MB)';
           });
         }
 
