@@ -61,7 +61,7 @@
           $element.css('height', Math.max.apply(Math, columns) + 'px');
         };
 
-        $timeout(d, 10);
+        $timeout(d, 1);
       };
 
       this.appendBrick = function (element, id) {
@@ -80,6 +80,7 @@
         if(!loadReg){
           loadReg = true;
           angular.element($window).load(self.scheduleMasonry);
+          $window.fontcall = self.scheduleMasonry;
         }
       };
 
