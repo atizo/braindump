@@ -90,6 +90,7 @@ div.start {
   -o-animation: flash 7s ease-out infinite;
   animation: flash 7s ease-out infinite;
   position: absolute;
+  @include opacity(0);
   @include translate(-50%, 0);
   left: 50%;
   top: 0;
