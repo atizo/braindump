@@ -1,4 +1,5 @@
 import random
+from django.utils.html import strip_tags
 
 import os
 from django.conf import settings
@@ -60,11 +61,14 @@ class Brainstorming(TimeStampedModel):
     def get_absolute_url(self):
         return get_full_url(self.id)
 
+    def disable_url(self):
+        return get_full_url('{}/{}'.format(self.pk, 'notification'))
+
     def get_safe_question(self):
         """
         Transform text links to prevent them from being linkified by mail clients
         """
-        return re.sub(r'http(s)?://(www\.)?', '', self.question)
+        return re.sub(r'http(s)?://(www\.)?', '', strip_tags(self.question))
 
     class Meta:
         ordering = ['-created']
@@ -120,6 +124,15 @@ class Idea(TimeStampedModel):
     def unrate(self):
         self.ratings = F('ratings') - 1
         self.save()
+
+    def get_safe_text(self):
+        """
+        Transform text links to prevent them from being linkified by mail clients
+        """
+        return re.sub(r'http(s)?://(www\.)?', '', strip_tags(self.text))
+
+    def get_absolute_url(self):
+        return get_full_url('{}/{}'.format(self.brainstorming.pk, self.pk))
 
     class Meta:
         ordering = ['-created']

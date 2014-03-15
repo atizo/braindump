@@ -1,7 +1,7 @@
 import random
 
-from brainstorming.models import Brainstorming, Idea, IDEA_COLORS
-from brainstorming.notifications import toggle_notification
+from brainstorming.models import Brainstorming, Idea, IDEA_COLORS, BrainstormingWatcher
+from brainstorming.notifications import toggle_notification, new_idea
 from brainstorming.permissions import BrainstormPermissions, edit_mode, brainstorming_set_edit_perm, RATED_IDEAS, \
     idea_set_edit_perm, IdeaPermissions
 from brainstorming.serializers import BrainstormingSerializer, IdeaSerializer, BrainstormingWatcherSerializer
@@ -135,5 +135,10 @@ class IdeaViewSet(viewsets.ModelViewSet):
 
     def post_save(self, obj, created=False):
         idea_set_edit_perm(self.request, obj.pk)
+
+        # send mails
+        mails = BrainstormingWatcher.objects.filter(brainstorming=obj.brainstorming) \
+            .exclude(email=self.request.session.get('email', '')).values_list('email', flat=True)
+        new_idea(obj, mails)
 
         return super(IdeaViewSet, self).post_save(obj, created)
