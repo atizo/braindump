@@ -353,6 +353,14 @@ input[type="checkbox"],
   }
 }
 
+form.well {
+  position: relative;
+}
+
+a.form-cancel {
+  padding-left: 2 * $padding-large-horizontal;
+}
+
 .input-bold {
   font-weight: 700;
 }

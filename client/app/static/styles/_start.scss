@@ -36,7 +36,7 @@ div.start {
   }
 }
 
-@-webkit-keyframes rotating {
+@-webkit-keyframes flash {
   0% {
     @include opacity(0.25);
   }
@@ -64,10 +64,10 @@ div.start {
 }
 
 .defl {
-  -webkit-animation: rotating 8s ease-out infinite;
-  -moz-animation: rotating 8s ease-out infinite;
-  -o-animation: rotating 8s ease-out infinite;
-  animation: rotating 8s ease-out infinite;
+  -webkit-animation: flash 8s ease-out infinite;
+  -moz-animation: flash 8s ease-out infinite;
+  -o-animation: flash 8s ease-out infinite;
+  animation: flash 8s ease-out infinite;
   position: absolute;
   @include translate(-50%, 0);
   left: 50%;

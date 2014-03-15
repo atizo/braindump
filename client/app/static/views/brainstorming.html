@@ -25,9 +25,13 @@
                placeholder="Name (optional)">
       </div>
 
-      <div bd-upload file="file" ng-model="ipIdeaAddCtrl.idea.image.src.large"></div>
+      <div bd-upload file="file" ng-model="formData.image"></div>
 
       <button ng-disabled="form.$invalid" type="submit" class="btn btn-info">Add</button>
+      <a ng-click="formCancel()" class="form-cancel" href="">Cancel</a>
+    </div>
+    <div ng-show="loading" class="loader-over">
+      <div class="loader"></div>
     </div>
   </form>
 
