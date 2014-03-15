@@ -38,47 +38,82 @@ div.start {
 
 @-webkit-keyframes flash {
   0% {
-    @include opacity(0.25);
+    @include opacity(0);
   }
   50% {
-    @include opacity(0.25);
+    @include opacity(0);
   }
   51% {
     @include opacity(0.9);
   }
   52% {
-    @include opacity(0.25);
+    @include opacity(0);
   }
   53% {
-    @include opacity(0.25);
+    @include opacity(0);
   }
   54% {
     @include opacity(1);
   }
-  62% {
-    @include opacity(0.25);
+  64% {
+    @include opacity(0);
   }
   100% {
-    @include opacity(0.25);
+    @include opacity(0);
+  }
+}
+
+@-webkit-keyframes darken {
+  0% {
+    @include opacity(0);
+  }
+  35% {
+    @include opacity(0.0);
+  }
+  51% {
+    @include opacity(0.07);
+  }
+  64% {
+    @include opacity(0.07);
+  }
+  88% {
+    @include opacity(0);
+  }
+  100% {
+    @include opacity(0);
   }
 }
 
 .defl {
-  -webkit-animation: flash 8s ease-out infinite;
-  -moz-animation: flash 8s ease-out infinite;
-  -o-animation: flash 8s ease-out infinite;
-  animation: flash 8s ease-out infinite;
+  -webkit-animation: flash 7s ease-out infinite;
+  -moz-animation: flash 7s ease-out infinite;
+  -o-animation: flash 7s ease-out infinite;
+  animation: flash 7s ease-out infinite;
   position: absolute;
   @include translate(-50%, 0);
   left: 50%;
   top: 0;
   max-width: 150px;
-  width: 26%;
+  width: 18%;
   height: 100%;
   background-image: image-url('/static/images/flash.png');
   background-repeat: no-repeat;
-  background-position: 0 340px;
+  background-position: 0 326px;
   background-size: 100%;
+}
+
+.dsky{
+  -webkit-animation: darken 7s ease-out infinite;
+  -moz-animation: darken 7s ease-out infinite;
+  -o-animation: darken 7s ease-out infinite;
+  animation: darken 7s ease-out infinite;
+  @include opacity(0);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #222;
 }
 
 .deco {
