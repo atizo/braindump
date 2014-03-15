@@ -19,32 +19,28 @@ angular.module('braind')
       priority: 100,
 
       link: function (scope, element, attr, ctrl) {
-        var modelCtrl = ctrl,
-          input = element.find('input'),
+        var input = element.find('input'),
           img = element.find('img'),
-          reader = new FileReader(),
-          showInitialSrc = $parse(attr.showInitialSrc)(scope),
-          initialSrc = $parse(attr.ngModel)(scope);
+          reader = new FileReader();
 
-        modelCtrl.$name = 'image';
+        ctrl.$name = 'image';
 
-        // display image initially, if available
-        if (showInitialSrc && initialSrc) {
-          img.attr('src', initialSrc);
-          scope.showPreview = true;
-        }
+        ctrl.$render = function () {
+          img.attr('src', ctrl.$viewValue);
+          scope.showPreview = !!ctrl.$viewValue;
+        };
 
         function showError() {
           scope.$apply(function () {
-            modelCtrl.$setViewValue('');
-            modelCtrl.$setValidity('', false);
+            ctrl.$setViewValue('');
+            ctrl.$setValidity('', false);
             scope.showPreview = false;
             scope.error = 'Invalid image (max. 3MB)';
           });
         }
 
         scope.clear = function () {
-          modelCtrl.$setViewValue('');
+          ctrl.$setViewValue('');
           scope.showPreview = false;
         };
 
@@ -56,7 +52,7 @@ angular.module('braind')
               createImage(ev.target.result, angular.noop);
               img.attr('src', ev.target.result);
               scope.$apply(function () {
-                modelCtrl.$setViewValue(ev.target.result);
+                ctrl.$setViewValue(ev.target.result);
                 $parse(attr.file).assign(scope, file);
                 scope.showPreview = true;
                 scope.error = '';

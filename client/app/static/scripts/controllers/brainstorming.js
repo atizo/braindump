@@ -29,11 +29,19 @@ angular.module('braind')
       });
 
       $scope.create = function () {
+        $scope.loading = true;
         brainstormingService.postIdea(bsid, $scope.formData, $scope.file).then(function () {
           $scope.user.name = $scope.formData.creatorName;
           $scope.reset();
           $scope.fullform = false;
+        })['finally'](function () {
+          $scope.loading = false;
         });
+      };
+
+      $scope.formCancel = function () {
+        $scope.fullform = false;
+        $scope.reset();
       };
 
       $scope.openDetail = function (idea) {
@@ -55,7 +63,9 @@ angular.module('braind')
       $scope.editLink = '/' + bsid + '/edit';
 
       $scope.reset = function () {
+        $scope.file = null;
         $scope.formData = {
+          image: '',
           title: '',
           text: '',
           creatorName: $scope.user.name
