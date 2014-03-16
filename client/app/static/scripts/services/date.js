@@ -1,32 +1,23 @@
 'use strict';
 
 angular.module('braind')
-  .factory('bdDate', ['$window',
-    function ($window) {
-      var service = {};
+  .factory('bdDate', ['$window', '$timeout', '$exceptionHandler',
+    function ($window, $timeout, $exceptionHandler) {
+      var service = {},
+        registry = {};
 
-      service.formatFromNow = function (value) {
-        var m, howOld,
-          secondsUntilUpdate = null,
-          fromNow = null,
+      var isOld = function (value) {
+        return Math.abs($window.moment().diff($window.moment(value), 'minute')) >= 22 * 60;
+      };
+
+      var getFormatted = function (value) {
+        var m,
+          fromNow,
           now = new Date();
 
-        // parse to date if not already is
-        if (!angular.isDate(value)) {
-          value = new Date(value);
-        }
-
         m = $window.moment(value);
-        howOld = Math.abs($window.moment().diff(m, 'minute'));
 
-        if (howOld < 22 * 60) {
-          if (howOld < 1) {
-            secondsUntilUpdate = 1;
-          } else if (howOld < 50) {
-            secondsUntilUpdate = 30;
-          } else if (howOld < 22 * 60) {
-            secondsUntilUpdate = 300;
-          }
+        if (!isOld(value)) {
           fromNow = m.fromNow();
         } else {
           if (m.year() === now.getFullYear()) {
@@ -35,10 +26,53 @@ angular.module('braind')
             fromNow = m.format('D. MMM YYYY HH:mm');
           }
         }
+        return fromNow;
+      };
 
-        return {
-          'fromNow': fromNow,
-          'secondsUntilUpdate': secondsUntilUpdate
+      var update = function () {
+        _.forOwn(registry, function (listeners, value) {
+          var i, length;
+          for (i = 0, length = listeners.length; i < length; i++) {
+
+            // if listeners were deregistered, defragment the array
+            if (!listeners[i]) {
+              listeners.splice(i, 1);
+              i--;
+              length--;
+              continue;
+            }
+            try {
+              listeners[i].apply(null, [getFormatted(value)]);
+            } catch (e) {
+              $exceptionHandler(e);
+            }
+          }
+        });
+
+        $timeout(update, 30 * 1000);
+      };
+
+      $timeout(update, 1000);
+
+      service.formatFromNow = function (value, cb) {
+        if (!angular.isDate(value)) {
+          value = new Date(value);
+        }
+
+        cb.apply(null, [getFormatted(value)]);
+
+        if (isOld(value)) {
+          return angular.noop;
+        }
+
+        var valueListeners = registry[value];
+        if (!valueListeners) {
+          registry[value] = valueListeners = [];
+        }
+        valueListeners.push(cb);
+
+        return function () {
+          valueListeners[indexOf(valueListeners, cb)] = null;
         };
       };
 
