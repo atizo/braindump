@@ -6,11 +6,8 @@ angular.module('braind', [
     'ngSanitize',
     'ngRoute',
     'ngAnimate',
-    'ngTouch',
     'restangular',
     'monospaced.elastic',
-    'ui.bootstrap.modal',
-    'ui.bootstrap.transition',
     'angularFileUpload',
     'bdDirectives',
     'bdFilters'
