@@ -6,6 +6,7 @@ angular.module('braind')
 
       var bsid = $routeParams.brainstorming;
       $scope.file = null;
+      $rootScope.showDeco = false;
 
       brainstormingService.get(bsid).then(function (obj) {
         obj.createdFormatted = bdDate.format(obj.created);

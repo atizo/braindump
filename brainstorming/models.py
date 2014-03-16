@@ -132,7 +132,7 @@ class Idea(TimeStampedModel):
         return re.sub(r'http(s)?://(www\.)?', '', strip_tags(self.text))
 
     def get_absolute_url(self):
-        return get_full_url('{}/{}'.format(self.brainstorming.pk, self.pk))
+        return self.brainstorming.get_absolute_url()
 
     class Meta:
         ordering = ['-created']

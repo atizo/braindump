@@ -24,8 +24,6 @@ angular.module('braind')
         };
       };
 
-      $scope.showDeco = true;
-
       brainstormingService.getRecent().then(function (recentBS) {
         $scope.rb = recentBS;
         $rootScope.showDeco = !recentBS.length;
