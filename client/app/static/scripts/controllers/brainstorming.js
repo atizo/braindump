@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('braind')
-  .controller('BrainstormingCtrl', ['$scope', '$routeParams', '$location', '$modal', '$upload', 'brainstormingService', 'bdDate',
-    function ($scope, $routeParams, $location, $modal, $upload, brainstormingService, bdDate) {
+  .controller('BrainstormingCtrl', ['$scope', '$routeParams', '$location', '$rootScope', '$upload', 'brainstormingService', 'bdDate',
+    function ($scope, $routeParams, $location, $rootScope, $upload, brainstormingService, bdDate) {
 
       var bsid = $routeParams.brainstorming;
       $scope.file = null;
@@ -44,14 +44,10 @@ angular.module('braind')
         $scope.reset();
       };
 
-      $scope.openDetail = function (idea) {
-        var modalScope = $scope.$new();
-        modalScope.idea = idea;
-        $modal.open({
-          templateUrl: '/static/views/idea-modal.html',
-          controller: 'IdeaDetailCtrl',
-          scope: modalScope,
-          animate: false
+      $scope.openDetail = function (evt) {
+        var ss = angular.element(evt.target).closest('div.bd-idea').attr('iid');
+        brainstormingService.getIdea(bsid, ss).then(function (idea) {
+          $rootScope.$broadcast('bd:mopen', idea);
         });
       };
 
@@ -74,32 +70,38 @@ angular.module('braind')
 
       $scope.reset();
     }])
-  .controller('IdeaDetailCtrl', ['$scope', '$modalInstance', '$window', '$timeout', 'brainstormingService',
-    function ($scope, $modalInstance, $window, $timeout, brainstormingService) {
-      $scope.editMode = false;
+  .controller('IdeaDetailCtrl', ['$scope', '$window', '$rootScope', '$timeout', 'brainstormingService',
+    function ($scope, $window, $rootScope, $timeout, brainstormingService) {
+
+      $rootScope.$on('bd:mopen', function (data, idea) {
+        $scope.ideaDetail = idea;
+        $scope.editMode = false;
+      });
+
 
       $scope.close = function () {
-        $modalInstance.close();
+        $rootScope.$broadcast('bd:mclose');
       };
 
       $scope.rate = function () {
-        if (!$scope.idea.canEdit) {
-          brainstormingService.rateIdea($scope.idea.brainstorming, $scope.idea.id);
+        if (!$scope.ideaDetail.canEdit) {
+          brainstormingService.rateIdea($scope.ideaDetail.brainstorming, $scope.ideaDetail.id);
         }
       };
 
       $scope.deleteIdea = function () {
         if ($window.confirm('Do you really want to delete this idea?')) {
-          brainstormingService.deleteIdea($scope.idea.brainstorming, $scope.idea.id);
-          $modalInstance.close();
+          brainstormingService.deleteIdea($scope.ideaDetail.brainstorming, $scope.ideaDetail.id);
+          $rootScope.$broadcast('bd:mclose');
         }
       };
 
       $scope.startEdit = function () {
         var doc = angular.element($window.document);
 
-        $scope.formData = _.clone($scope.idea);
+        $scope.formData = _.clone($scope.ideaDetail);
         $scope.editMode = true;
+        $scope.img = {imageFile: null};
 
         // select first field with content, after digest loop is finished
         $timeout(function () {
@@ -116,9 +118,17 @@ angular.module('braind')
       };
 
       $scope.saveEdit = function () {
-        brainstormingService.updateIdea($scope.idea.brainstorming, $scope.idea.id, $scope.formData).then(function () {
+        $scope.loading = true;
+        brainstormingService.updateIdea($scope.ideaDetail.brainstorming,
+            $scope.ideaDetail.id,
+            $scope.formData,
+            $scope.img.imageFile)
+          .then(function () {
           $scope.user.name = $scope.formData.creatorName;
           $scope.editMode = false;
+          $rootScope.$broadcast('bd:updateLayout');
+        })['finally'](function () {
+          $scope.loading = false;
         });
       };
     }]);

@@ -35,10 +35,10 @@
     </div>
   </form>
 
-  <div class="idea-masonry" masonry min-column-width="220" gap="15">
+  <div class="idea-masonry" masonry min-column-width="220" gap="15" ng-click="openDetail($event)">
     <div ng-repeat="idea in ideas track by idea.id"
          class="masonry-brick">
-      <div class="bd-idea" resource="idea" limit-text="true" dynamic-text-size="true" ng-click="openDetail(idea)"></div>
+      <div class="bd-idea" resource="idea" iid="{{ idea.id }}" limit="true" dynamic-text-size="true"></div>
     </div>
   </div>
 </div>

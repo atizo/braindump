@@ -19,7 +19,6 @@ $icon-font-path: "/static/styles/fonts/";
 @import "sass-bootstrap/lib/grid";
 @import "forms";
 @import "buttons";
-@import "modals";
 
 // Utility classes
 @import "sass-bootstrap/lib/utilities";
@@ -73,3 +72,4 @@ textarea {
 @import "scroll";
 @import "loader";
 @import "well";
+@import "modal";

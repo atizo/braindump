@@ -2,7 +2,7 @@
   'use strict';
 
   angular.module('braind')
-    .controller('MasonryCtrl', ['$scope', '$element', '$timeout', '$window', function ($scope, $element, $timeout, $window) {
+    .controller('MasonryCtrl', ['$rootScope', '$scope', '$element', '$timeout', '$window', function ($rootScope, $scope, $element, $timeout, $window) {
       var bricks = {},
         loadReg = false,
         destroyed = false,
@@ -12,6 +12,8 @@
       this.minColumnWidth = 220;
       this.gap = 15;
 
+
+
       // Make sure it's only executed once within a reasonable time-frame in
       // case multiple elements are removed or added at once.
       this.scheduleMasonry = function () {
@@ -20,6 +22,8 @@
         }
         timeout = $timeout(self.runMasonry, 30);
       };
+
+      $rootScope.$on('bd:updateLayout', this.scheduleMasonry);
 
       this.runMasonry = function () {
         var columnsCount = Math.floor($element.width() / ( self.minColumnWidth + self.gap)) || 1,

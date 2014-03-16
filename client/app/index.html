@@ -36,25 +36,25 @@
 <div class="bd-modal">
   <div class="bd-modal-dialog" ng-controller="IdeaDetailCtrl">
     <div class="bd-modal-content" ng-style="{'background-color': ideaDetail.color}">
-      <div ng-if="!editMode">
+      <div ng-show="!editMode">
         <div class="height-limit">
           <div class="bd-idea" resource="ideaDetail" hide-ratings="true" ng-show="!editMode"></div>
         </div>
-        <div>
+        <div class="toolbar">
           <div class="pull-left tools" ng-show="ideaDetail.id">
             <a href="" alt="Rate up" title="Rate up" ng-click="rate()">
               <i class="icon-thumbs-up"></i>
               <span class="small" ng-bind="ideaDetail.ratings"></span>
             </a>
-            <a href="" alt="Edit" title="Edit" ng-click="startEdit()">
+            <a ng-show="ideaDetail.canEdit" href="" alt="Edit" title="Edit" ng-click="startEdit()">
               <i class="icon-pencil"></i>
             </a>
-            <a href="" alt="Delete" title="Delete" ng-click="deleteIdea(idc.idea.id)">
+            <a ng-show="ideaDetail.canEdit" href="" alt="Delete" title="Delete" ng-click="deleteIdea(idc.idea.id)">
               <i class="icon-remove"></i>
             </a>
           </div>
 
-          <button class="btn btn-primary" ng-click="close()">Done</button>
+          <button class="btn btn-default pull-right" ng-click="close()">Done</button>
         </div>
       </div>
 
@@ -69,13 +69,17 @@
                       class="text form-control msd-elastic" placeholder="Text" required="required"></textarea>
           </div>
           <div class="form-group">
-            <input ng-model="idc.formData.creatorName" type="text" class="form-control"
+            <input ng-model="formData.creatorName" type="text" class="form-control"
                    placeholder="Name (optional)">
           </div>
+          <div bd-upload file="img.imageFile" ng-model="formData.image"></div>
+          <div ng-show="loading" class="loader-over">
+            <div class="loader"></div>
+          </div>
         </div>
-        <div class="modal-footer">
-          <button class="btn btn-default" ng-click="idc.cancelEdit()">Cancel</button>
-          <button ng-disabled="modeditform.$invalid" type="submit" class="btn btn-primary">Save</button>
+        <div class="toolbar">
+          <a class="pull-right cancel" href="" ng-click="cancelEdit()">Cancel</a>
+          <button ng-disabled="modeditform.$invalid" type="submit" class="btn btn-default pull-right">Save</button>
         </div>
       </form>
     </div>
@@ -142,9 +146,15 @@
 
 
 <script>
-  window.addEventListener('load', function () {
-    FastClick.attach(document.body);
-  }, false);
+  if (window.addEventListener) {
+    window.addEventListener('load', function () {
+      FastClick.attach(document.body);
+    }, false);
+  } else {
+    window.attachEvent('load', function () {
+      FastClick.attach(document.body);
+    });
+  }
 </script>
 
 

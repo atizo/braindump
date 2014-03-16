@@ -8,7 +8,7 @@ angular.module('braind')
       templateUrl: '/static/views/directives/bdidea.html',
       scope:{
         resource: '=',
-        limitText: '@',
+        limit: '@',
         dynamicTextSize: '@',
         hideRatings: '@'
       },

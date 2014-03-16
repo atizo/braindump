@@ -1,6 +1,6 @@
 @import "compass/css3/transform";
 
-a.edit-link{
+a.edit-link {
   padding-left: $padding-large-vertical;
 }
 
@@ -23,9 +23,14 @@ a.edit-link{
   }
 }
 
-.limited .content {
+div.fade-out {
+  display: none;
+}
+
+.limited .limit, .limit-img {
 
   div.fade-out {
+    display: block;
     height: 36px;
 
     &.c1 {
@@ -68,8 +73,32 @@ a.edit-link{
     }
   }
 
-  img{
+  img {
     width: 100%;
+  }
+
+  .cindent {
+    padding: 15px;
+  }
+
+  .limit {
+
+    &.limit-img {
+      .text {
+        max-height: 160px - $padding-large-vertical * 2;
+      }
+    }
+
+    .text {
+      min-height: 100px - $padding-large-vertical * 2;
+      max-height: 360px - $padding-large-vertical * 2;
+      overflow: hidden;
+    }
+
+    .image-mask {
+      max-height: 200px;
+      overflow: hidden;
+    }
   }
 
   .content {
@@ -90,12 +119,6 @@ a.edit-link{
 
     p {
       margin: 0;
-    }
-
-    &.limit-text {
-      min-height: 100px - $padding-large-vertical * 2;
-      max-height: 360px - $padding-large-vertical * 2;
-      overflow: hidden;
     }
 
     /* custom font for the idea cards */
@@ -121,7 +144,7 @@ a.edit-link{
       color: #000;
       @include opacity(0.5);
 
-      i{
+      i {
         font-size: 16px;
       }
 
@@ -188,8 +211,25 @@ a.edit-link{
   }
 }
 
-.modal-dialog {
+.bd-modal-dialog {
+
+  .toolbar {
+    padding: 0px 15px 10px;
+    @include clearfix;
+
+    a.cancel {
+      padding: 6px 0 0 20px;
+      color: $text-color;
+    }
+  }
+
+  .modal-body {
+    padding: 15px;
+    padding-bottom: 0;
+  }
+
   .tools {
+    padding-top: 5px;
     a {
       margin-right: $padding-large-horizontal * 2;
       color: #000;
@@ -199,18 +239,9 @@ a.edit-link{
         @include opacity(1);
       }
 
-      .glyphicon {
+      [class^="icon-"] {
         font-size: $font-size-large;
       }
-    }
-  }
-
-  form {
-    .modal-body {
-      background-color: $well-bg;
-    }
-    .modal-footer {
-      margin-top: 0;
     }
   }
 }
