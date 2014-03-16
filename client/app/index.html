@@ -2,133 +2,191 @@
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title></title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width">
-    <!--<link href='http://fonts.googleapis.com/css?family=Roboto+Slab:300,400,700|Roboto:400' rel='stylesheet' type='text/css'>-->
-    <!-- build:css({.tmp,app}) /static/styles/main.css -->
-    <link rel="stylesheet" href="/styles/main.css">
-    <!-- endbuild -->
-  </head>
-  <body ng-app="braind">
-    <!--[if lt IE 9]>
+<!--[if gt IE 8]><!-->
+<html class="no-js"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
+  <!-- build:css({.tmp,app}) /static/styles/main.css -->
+  <link rel="stylesheet" href="/styles/main.css">
+  <!-- endbuild -->
+</head>
+<body ng-app="braind">
+<!--[if lt IE 9]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
-    <div class="gcnt">
-      <div ng-cloak ng-show="showDeco" class="dsky"></div>
-      <div ng-cloak ng-show="showDeco" class="deco hl"></div>
-      <div ng-cloak ng-show="showDeco" class="defl"></div>
-      <div ng-cloak ng-show="showDeco" class="deco hr"></div>
-      <div class="topcnt" ng-view></div>
-      <div class="footer">
-        <div class="container">
-          <small class="text-muted">braindump powered by <a href="http://www.atizo360.com">atizo 360°</a></small>
+<div class="gcnt">
+  <div ng-cloak ng-show="showDeco" class="dsky"></div>
+  <div ng-cloak ng-show="showDeco" class="deco hl"></div>
+  <div ng-cloak ng-show="showDeco" class="defl"></div>
+  <div ng-cloak ng-show="showDeco" class="deco hr"></div>
+  <div class="topcnt" ng-view></div>
+  <div class="footer">
+    <div class="container">
+      <small class="text-muted">braindump powered by <a href="http://www.atizo360.com">atizo 360°</a></small>
+    </div>
+  </div>
+</div>
+
+<div class="bd-backdrop"></div>
+<div class="bd-modal">
+  <div class="bd-modal-dialog" ng-controller="IdeaDetailCtrl">
+    <div class="bd-modal-content" ng-style="{'background-color': ideaDetail.color}">
+      <div ng-if="!editMode">
+        <div class="height-limit">
+          <div class="bd-idea" resource="ideaDetail" hide-ratings="true" ng-show="!editMode"></div>
+        </div>
+        <div>
+          <div class="pull-left tools" ng-show="ideaDetail.id">
+            <a href="" alt="Rate up" title="Rate up" ng-click="rate()">
+              <i class="icon-thumbs-up"></i>
+              <span class="small" ng-bind="ideaDetail.ratings"></span>
+            </a>
+            <a href="" alt="Edit" title="Edit" ng-click="startEdit()">
+              <i class="icon-pencil"></i>
+            </a>
+            <a href="" alt="Delete" title="Delete" ng-click="deleteIdea(idc.idea.id)">
+              <i class="icon-remove"></i>
+            </a>
+          </div>
+
+          <button class="btn btn-primary" ng-click="close()">Done</button>
         </div>
       </div>
+
+      <form ng-if="editMode" name="modeditform" role="form" ng-submit="saveEdit()" novalidate>
+        <div class="modal-body">
+          <div class="form-group">
+            <input ng-model="formData.title" type="text" class="title form-control input-bold"
+                   placeholder="Title (optional)">
+          </div>
+          <div class="form-group">
+            <textarea rows="1" ng-model="formData.text"
+                      class="text form-control msd-elastic" placeholder="Text" required="required"></textarea>
+          </div>
+          <div class="form-group">
+            <input ng-model="idc.formData.creatorName" type="text" class="form-control"
+                   placeholder="Name (optional)">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-default" ng-click="idc.cancelEdit()">Cancel</button>
+          <button ng-disabled="modeditform.$invalid" type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
     </div>
+  </div>
+</div>
 
-     <!--
-    <script type="text/javascript">
+<!--
+<script type="text/javascript">
 
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-XXXXX-X']);
-      _gaq.push(['_trackPageview']);
+ var _gaq = _gaq || [];
+ _gaq.push(['_setAccount', 'UA-XXXXX-X']);
+ _gaq.push(['_trackPageview']);
 
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
+ (function() {
+   var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+   ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+   var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+ })();
 
-    </script>
-    -->
+</script>
+-->
 
-    <!--[if lt IE 9]>
+<!--[if lt IE 9]>
     <script src="/static/bower_components/es5-shim/es5-shim.js"></script>
     <script src="/static/bower_components/json3/lib/json3.min.js"></script>
     <![endif]-->
 
-    <script>
-        window.brainstormingStore = {{ brainstormingStore|safe }};
-        window.ideaStore = {{ ideaStore|safe }};
-        window.recentBrainstormings = {{ recentBrainstormings|safe }};
-        window.errorMsg = '{{ errorMsg|safe }}';
-        window.infoMsg = '{{ infoMsg|safe }}';
-        window.email = '{{ email }}';
-        window.name = '{{ name }}';
-        window.fontcall = null;
-    </script>
+<script>
+  window.brainstormingStore = {{ brainstormingStore|safe }};
+  window.ideaStore = {{ ideaStore|safe }};
+  window.recentBrainstormings = {{ recentBrainstormings|safe }};
+  window.errorMsg = '{{ errorMsg|safe }}';
+  window.infoMsg = '{{ infoMsg|safe }}';
+  window.email = '{{ email }}';
+  window.name = '{{ name }}';
+  window.fontcall = null;
+</script>
 
-    <script type="text/javascript">
-      WebFontConfig = {
-        google: { families: [ 'Roboto+Slab:400,700,300:latin', 'Roboto::latin' ] },
-        fontactive: function(fontFamily, fontDescription) {
-          if(window.fontcall){
-            window.fontcall();
-          }
-        }
-      };
-      (function() {
-        var wf = document.createElement('script');
-        wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
-          '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
-        wf.type = 'text/javascript';
-        wf.async = 'true';
-        var s = document.getElementsByTagName('script')[0];
-        s.parentNode.insertBefore(wf, s);
-      })(); </script>
-
-    <script>
-      FileAPI = {
-          jsUrl: '/static/bower_components/ng-file-upload/FileAPI.min.js',
-          flashUrl: '/static/bower_components/ng-file-upload/FileAPI.flash.swf'
+<script type="text/javascript">
+  WebFontConfig = {
+    google: { families: [ 'Roboto+Slab:400,700,300:latin', 'Roboto::latin' ] },
+    fontactive: function (fontFamily, fontDescription) {
+      if (window.fontcall) {
+        window.fontcall();
       }
-    </script>
+    }
+  };
+  (function () {
+    var wf = document.createElement('script');
+    wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+            '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+    wf.type = 'text/javascript';
+    wf.async = 'true';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(wf, s);
+  })(); </script>
 
-    <!-- build:js /static/scripts/vendor.js -->
-    <script src="/static/bower_components/jquery/jquery.js"></script>
-    <script src="/static/bower_components/lodash/dist/lodash.js"></script>
-    <script src="/static/bower_components/ng-file-upload/angular-file-upload-shim.min.js"></script>
-    <script src="/static/bower_components/angular/angular.js"></script>
-    <script src="/static/bower_components/angular-resource/angular-resource.js"></script>
-    <script src="/static/bower_components/angular-cookies/angular-cookies.js"></script>
-    <script src="/static/bower_components/angular-touch/angular-touch.js"></script>
-    <script src="/static/bower_components/angular-sanitize/angular-sanitize.js"></script>
-    <script src="/static/bower_components/angular-route/angular-route.js"></script>
-    <script src="/static/bower_components/angular-animate/angular-animate.js"></script>
-    <script src="/static/bower_components/ng-file-upload/angular-file-upload.min.js"></script>
-    <script src="/static/bower_components/restangular/dist/restangular.js"></script>
-    <script src="/static/bower_components/angular-elastic/elastic.js"></script>
-    <script src="/static/bower_components/zeroclipboard/ZeroClipboard.js"></script>
-    <script src="/static/bower_components/momentjs/moment.js"></script>
-    <script src="/static/scripts/vendor/placeholder.js"></script>
-    <!-- endbuild -->
+<script>
+  FileAPI = {
+    jsUrl: '/static/bower_components/ng-file-upload/FileAPI.min.js',
+    flashUrl: '/static/bower_components/ng-file-upload/FileAPI.flash.swf'
+  }
+</script>
 
-    <!-- build:js({.tmp,app}) /static/scripts/scripts.js -->
-    <script src="/static/scripts/app.js"></script>
-    <script src="/static/scripts/controllers/start.js"></script>
-    <script src="/static/scripts/controllers/invite.js"></script>
-    <script src="/static/scripts/controllers/brainstorming.js"></script>
-    <script src="/static/scripts/controllers/notification.js"></script>
-    <script src="/static/scripts/controllers/edit.js"></script>
-    <script src="/static/scripts/controllers/glitch.js"></script>
-    <script src="/static/scripts/services/brainstorming.js"></script>
-    <script src="/static/scripts/services/date.js"></script>
-    <script src="/static/scripts/services/message.js"></script>
-    <script src="/static/scripts/directives/fromnow.js"></script>
-    <script src="/static/scripts/directives/bdclip.js"></script>
-    <script src="/static/scripts/directives/bdheader.js"></script>
-    <script src="/static/scripts/directives/bdidea.js"></script>
-    <script src="/static/scripts/directives/bdimage.js"></script>
-    <script src="/static/scripts/directives/masonry.js"></script>
-    <script src="/static/scripts/filters/bdfilters.js"></script>
-    <script src="/static/scripts/bootstrap/modal.js"></script>
-    <script src="/static/scripts/bootstrap/transition.js"></script>
-    <!-- endbuild -->
+
+<script>
+  window.addEventListener('load', function () {
+    FastClick.attach(document.body);
+  }, false);
+</script>
+
+
+<!-- build:js /static/scripts/vendor.js -->
+<script src="/static/bower_components/jquery/jquery.js"></script>
+<script src="/static/bower_components/lodash/dist/lodash.js"></script>
+<script src="/static/bower_components/fastclick/lib/fastclick.js"></script>
+<script src="/static/bower_components/ng-file-upload/angular-file-upload-shim.min.js"></script>
+<script src="/static/bower_components/angular/angular.js"></script>
+<script src="/static/bower_components/angular-resource/angular-resource.js"></script>
+<script src="/static/bower_components/angular-cookies/angular-cookies.js"></script>
+<script src="/static/bower_components/angular-sanitize/angular-sanitize.js"></script>
+<script src="/static/bower_components/angular-route/angular-route.js"></script>
+<script src="/static/bower_components/angular-animate/angular-animate.js"></script>
+<script src="/static/bower_components/ng-file-upload/angular-file-upload.min.js"></script>
+<script src="/static/bower_components/restangular/dist/restangular.js"></script>
+<script src="/static/bower_components/angular-elastic/elastic.js"></script>
+<script src="/static/bower_components/zeroclipboard/ZeroClipboard.js"></script>
+<script src="/static/bower_components/momentjs/moment.js"></script>
+<script src="/static/scripts/vendor/placeholder.js"></script>
+<!-- endbuild -->
+
+
+<!-- build:js({.tmp,app}) /static/scripts/scripts.js -->
+<script src="/static/scripts/app.js"></script>
+<script src="/static/scripts/controllers/start.js"></script>
+<script src="/static/scripts/controllers/invite.js"></script>
+<script src="/static/scripts/controllers/brainstorming.js"></script>
+<script src="/static/scripts/controllers/notification.js"></script>
+<script src="/static/scripts/controllers/edit.js"></script>
+<script src="/static/scripts/controllers/glitch.js"></script>
+<script src="/static/scripts/services/brainstorming.js"></script>
+<script src="/static/scripts/services/date.js"></script>
+<script src="/static/scripts/services/message.js"></script>
+<script src="/static/scripts/directives/fromnow.js"></script>
+<script src="/static/scripts/directives/bdclip.js"></script>
+<script src="/static/scripts/directives/bdheader.js"></script>
+<script src="/static/scripts/directives/bdidea.js"></script>
+<script src="/static/scripts/directives/bdimage.js"></script>
+<script src="/static/scripts/directives/masonry.js"></script>
+<script src="/static/scripts/directives/modal.js"></script>
+<script src="/static/scripts/filters/bdfilters.js"></script>
+<!-- endbuild -->
 </body>
 </html>
