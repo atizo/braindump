@@ -1,0 +1,54 @@
+.modal-open{
+  overflow: hidden;
+}
+
+.bd-backdrop {
+  display: none;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1040;
+  background-color: black;
+  @include opacity(0.5);
+}
+
+.bd-modal {
+  display: none;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1050;
+  -webkit-overflow-scrolling: touch;
+  outline: 0;
+
+  .bd-modal-dialog {
+    @include translate(-50%, -50%);
+    left: 50%;
+    top: 50%;
+    width: 96%;
+    max-width: 600px;
+    position: absolute;
+
+    .bd-modal-content {
+      position: relative;
+      background-color: white;
+      border: 1px solid #999999;
+      border: 1px solid rgba(0, 0, 0, 0.2);
+      -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+      background-clip: padding-box;
+      outline: none;
+
+      .height-limit{
+        overflow: hidden;
+        overflow-y: auto;
+      }
+    }
+
+  }
+}
