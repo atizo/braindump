@@ -1,0 +1,12 @@
+A new idea has been posted at the brainstorming "{{brain.get_safe_question}}":
+
+{{ idea.get_safe_text }}
+
+{%if idea.creator_name %}
+-- by {{ idea.creator_name }}
+
+{%endif%}
+{{ idea.get_absolute_url }}
+
+
+(If you'd like to unsubscribe and stop receiving these emails click here: {{brain.disable_url}})
