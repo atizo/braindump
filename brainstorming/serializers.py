@@ -93,7 +93,7 @@ class IdeaSerializer(serializers.ModelSerializer):
             self.object.image = request.FILES.get('imagefile')
 
         # remove file if filename in request is empty:
-        if 'image' in request.DATA and not len(request.DATA['image']):
+        if 'image' in request.DATA and not len(request.DATA['image'] or ''):
             self.object.image = None
 
         return super(IdeaSerializer, self).save(**kwargs)
