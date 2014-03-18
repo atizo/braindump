@@ -31,14 +31,14 @@
               maxContainer.css('max-height', (vh - 80 - 46) + 'px');
             };
 
-            $rootScope.$on('bd:mopen', function (event, user) {
+            $rootScope.$on('bd:mopen', function () {
               setMaxHeight();
               element.css('display', 'block');
               angular.element('.bd-backdrop').css('display', 'block');
               angular.element('body').addClass('modal-open');
             });
 
-            $rootScope.$on('bd:mclose', function (event, user) {
+            $rootScope.$on('bd:mclose', function () {
               closeModal();
             });
 

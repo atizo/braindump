@@ -159,7 +159,7 @@ angular.module('braind')
             method: 'PUT',
             fileFormDataName: 'imagefile'
           }).then(function (resp) {
-            return addIdeaToStore(bsid, Restangular.restangularizeElement(null,
+            return updateIdeaInStore(bsid, Restangular.restangularizeElement(null,
               resp.data, ideasURL(bsid)));
           });
         }
