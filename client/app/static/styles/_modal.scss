@@ -16,7 +16,8 @@
 
 .bd-modal {
   display: none;
-  overflow: hidden;
+  overflow: auto;
+  overflow-y: scroll;
   position: fixed;
   top: 0;
   right: 0;
@@ -27,12 +28,13 @@
   outline: 0;
 
   .bd-modal-dialog {
-    @include translate(-50%, -50%);
-    left: 50%;
-    top: 50%;
+    //@include translate(-50%, -50%);
+    //margin-left: 50%;
+    //top: 50%;
+    margin: 40px auto;
     width: 96%;
     max-width: 600px;
-    position: absolute;
+    position: relative;
 
     .bd-modal-content {
       position: relative;

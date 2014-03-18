@@ -28,7 +28,7 @@
             var setMaxHeight = function () {
               var maxContainer = element.find('.height-limit');
               var vh = angular.element($window).height();
-              maxContainer.css('max-height', (vh - vh * 0.02 - 100) + 'px');
+              maxContainer.css('max-height', (vh - 80 - 46) + 'px');
             };
 
             $rootScope.$on('bd:mopen', function (event, user) {
