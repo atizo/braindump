@@ -1,4 +1,5 @@
-<div ng-style="{'background-color': resource.color}" ng-class="[limit ? 'limit' : '', limit && resource.preview ? 'limit-img' : '']">
+<div ng-style="{'background-color': resource.color}"
+     ng-class="[limit ? 'limit' : '', limit && resource.preview ? 'limit-img' : '']">
   <div ng-if="limit" class="image-mask" ng-show="resource.preview">
     <img class="img-responsive" ng-src="{{ resource.preview }}">
   </div>
@@ -14,10 +15,11 @@
       <div class="fade-out {{ resource.colorCode }}"></div>
     </div>
     <div class="footer small">
-      <div ng-if="resource.creatorName"
-           class="name">by <span ng-bind="resource.creatorName"></span></div>
+      <div class="name">
+        #{{ resource.number }} <span ng-if="resource.creatorName"> - by {{ resource.creatorName }}</span>
+      </div>
       <div bd-from-now="{{ resource.created }}"
-                   class="date"></div>
+           class="date"></div>
       <a href="" alt="Rate up" title="Rate up" ng-click="rate($event)" class="rate-up"
          ng-if="resource.id && !hideRatings">
         <i class="icon-thumbs-up"></i>

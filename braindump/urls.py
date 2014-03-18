@@ -11,7 +11,7 @@ urlpatterns = patterns('',
                        url(r'', include('api.urls')),
 
                        # admin interface
-                       url(r'^admin/', include(admin.site.urls)),
+                       url(r'^nooo/', include(admin.site.urls)),
 
                        # root files
                        url(r'^(?P<path>favicon\.ico|apple-touch-icon\.png)$',

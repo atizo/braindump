@@ -1,12 +1,12 @@
 import random
-from django.utils.html import strip_tags
 
+from django.utils.html import strip_tags
 import os
 from django.conf import settings
 from django.db.models import F
 import re
 from braindump.env import get_full_url
-from django.db import models
+from django.db import models, transaction
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from django_extensions.db.models import TimeStampedModel
@@ -41,6 +41,7 @@ class Brainstorming(TimeStampedModel):
     creator_email = models.EmailField()
     creator_ip = models.CharField(max_length=100, blank=True)
     details = models.TextField(blank=True)
+    idea_sequence = models.IntegerField(default=0)
 
     def __unicode__(self):
         return u'{question} ({id})'.format(question=self.question, id=self.id)
@@ -75,7 +76,7 @@ class Brainstorming(TimeStampedModel):
 
 
 @receiver(post_save, sender=Brainstorming)
-def send_new_mail(sender, instance, created, **kwargs):
+def brainstorming_init(sender, instance, created, **kwargs):
     if created:
         from brainstorming.notifications import new_brainstorming
 
@@ -89,7 +90,6 @@ def path_and_rename(path):
 
     def wrapper(instance, filename):
         ext = filename.split('.')[-1]
-
         loop_num = 0
         filename = None
         while not filename:
@@ -116,6 +116,7 @@ class Idea(TimeStampedModel):
     ratings = models.IntegerField(default=0)
     color = models.CharField(max_length=100, blank=True)
     image = models.ImageField(upload_to=path_and_rename('images'), null=True)
+    number = models.IntegerField(default=0)
 
     def rate(self):
         self.ratings = F('ratings') + 1
@@ -134,8 +135,21 @@ class Idea(TimeStampedModel):
     def get_absolute_url(self):
         return self.brainstorming.get_absolute_url()
 
+    def __unicode__(self):
+        return u'{text} ({number})'.format(text=self.text[:20], number=self.number)
+
     class Meta:
         ordering = ['-created']
+
+
+@receiver(post_save, sender=Idea)
+def idea_init(sender, instance, created, **kwargs):
+    if created:
+        with transaction.atomic():
+            instance.brainstorming.idea_sequence = F('idea_sequence') + 1
+            instance.brainstorming.save()
+            instance.number = Brainstorming.objects.get(pk=instance.brainstorming.pk).idea_sequence
+            instance.save()
 
 
 @receiver(post_delete, sender=Idea)

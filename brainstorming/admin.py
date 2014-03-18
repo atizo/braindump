@@ -3,11 +3,15 @@ from brainstorming.models import Brainstorming, Idea, BrainstormingWatcher, Emai
 
 
 class BrainstormingAdmin(admin.ModelAdmin):
+    list_display = ('question', 'creator_email', 'idea_sequence', 'created')
     readonly_fields = ('id', 'created', 'modified', 'creator_ip')
+    search_fields = ['question', 'details', 'creator_email']
 
 
 class IdeaAdmin(admin.ModelAdmin):
+    list_display = ('text', 'number', 'brainstorming', 'creator_name', 'ratings', 'created')
     readonly_fields = ('id', 'created', 'modified', 'creator_ip')
+    search_fields = ['text', 'title', 'creator_name', 'brainstorming__question']
 
 
 class BrainstormingWatcherAdmin(admin.ModelAdmin):

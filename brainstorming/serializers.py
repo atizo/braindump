@@ -46,11 +46,13 @@ class IdeaSerializer(serializers.ModelSerializer):
     preview = serializers.SerializerMethodField('get_preview')
     colorCode = serializers.SerializerMethodField('get_color_code')
     canEdit = serializers.SerializerMethodField('get_can_edit')
+    number = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Idea
         fields = (
             'id',
+            'number',
             'created',
             'brainstorming',
             'title',
