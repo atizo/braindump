@@ -1,7 +1,7 @@
 import json
 import logging
-from braindump.env import get_full_url
 
+from braindump.env import get_full_url
 from braindump.functions import get_object_or_None
 from brainstorming.email_verification import get_verified_email
 from brainstorming.models import Brainstorming, Idea, BrainstormingWatcher
@@ -14,6 +14,7 @@ from django.http import Http404
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.http import HttpResponse
 from xlsxwriter.workbook import Workbook
+from pytz import timezone
 
 
 try:
@@ -132,6 +133,8 @@ def export(request, brainstorming_id):
 
     bs = Brainstorming.objects.get(pk=brainstorming_id)
 
+    user_tz = timezone(request.COOKIES.get('timezone', ''))
+
     # create a workbook in memory
     output = StringIO.StringIO()
 
@@ -140,7 +143,7 @@ def export(request, brainstorming_id):
     bold = book.add_format({'bold': True})
     date_format = book.add_format({'num_format': 'dd/mm/yy HH:mm'})
 
-    sheet.write(0, 0, 'Id', bold)
+    sheet.write(0, 0, 'Number', bold)
     sheet.write(0, 1, 'Title', bold)
     sheet.write(0, 2, 'Text', bold)
     sheet.write(0, 3, 'Author', bold)
@@ -154,12 +157,12 @@ def export(request, brainstorming_id):
     sheet.set_column(6, 6, 50)
 
     for i, idea in enumerate(Idea.objects.filter(brainstorming=bs), 1):
-        sheet.write(i, 0, idea.pk)
+        sheet.write(i, 0, idea.number)
         sheet.write(i, 1, idea.title)
         sheet.write(i, 2, idea.text)
         sheet.write(i, 3, idea.creator_name or ' ')
         sheet.write_number(i, 4, idea.ratings)
-        sheet.write_datetime(i, 5, idea.created.replace(tzinfo=None), date_format)
+        sheet.write_datetime(i, 5, idea.created.astimezone(user_tz).replace(tzinfo=None), date_format)
         if idea.image:
             sheet.write_url(i, 6, get_full_url(idea.image.url))
 
