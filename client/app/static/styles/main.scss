@@ -51,6 +51,7 @@ textarea {
 
 .gcnt {
   min-height: 100%;
+  height: auto !important;
   position: relative;
   background-color: #EAEAEA;
   @include background-image(radial-gradient(center center, #FDFDFD, #DFDFDF));

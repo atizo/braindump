@@ -47,9 +47,11 @@ angular.module('braind')
 
       $scope.openDetail = function (evt) {
         var ss = angular.element(evt.target).closest('div.bd-idea').attr('iid');
-        brainstormingService.getIdea(bsid, ss).then(function (idea) {
-          $rootScope.$broadcast('bd:mopen', idea);
-        });
+        if (ss) {
+          brainstormingService.getIdea(bsid, ss).then(function (idea) {
+            $rootScope.$broadcast('bd:mopen', idea);
+          });
+        }
       };
 
       $scope.toolBar = [
@@ -125,10 +127,10 @@ angular.module('braind')
             $scope.formData,
             $scope.img.imageFile)
           .then(function () {
-          $scope.user.name = $scope.formData.creatorName;
-          $scope.editMode = false;
-          $rootScope.$broadcast('bd:updateLayout');
-        })['finally'](function () {
+            $scope.user.name = $scope.formData.creatorName;
+            $scope.editMode = false;
+            $rootScope.$broadcast('bd:updateLayout');
+          })['finally'](function () {
           $scope.loading = false;
         });
       };
