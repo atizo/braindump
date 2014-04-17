@@ -271,6 +271,7 @@ input[type="checkbox"],
   margin-top: 5px;
   margin-bottom: 10px;
   color: lighten($text-color, 25%); // lighten the text some for contrast
+  font-size: $font-size-small;
 }
 
 // Inline forms
