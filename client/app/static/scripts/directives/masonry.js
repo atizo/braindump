@@ -13,7 +13,6 @@
       this.gap = 15;
 
 
-
       // Make sure it's only executed once within a reasonable time-frame in
       // case multiple elements are removed or added at once.
       this.scheduleMasonry = function () {
@@ -53,9 +52,9 @@
             brick.css('transform', 'translate(' + (shortestColumn * (columnWidth) + shortestColumn * self.gap) + 'px, ' + columns[shortestColumn] + 'px)');
 
             // todo: make this configurable
-            if(brickHeight >= 417){
+            if (brickHeight >= 417) {
               brick.addClass('limited');
-            }else{
+            } else {
               brick.removeClass('limited');
             }
 
@@ -80,8 +79,12 @@
 
         self.scheduleMasonry();
 
+        element.imagesLoaded(function () {
+          self.scheduleMasonry();
+        });
+
         // reload layout if all assets are loaded
-        if(!loadReg){
+        if (!loadReg) {
           loadReg = true;
           angular.element($window).load(self.scheduleMasonry);
           $window.fontcall = self.scheduleMasonry;

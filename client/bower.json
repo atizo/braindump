@@ -24,6 +24,6 @@
     "angular-scenario": "~1.2.11"
   },
   "resolutions": {
-    "angular": "1.2.15-build.2369+sha.d07101d"
+    "angular": "1.2.16"
   }
 }
