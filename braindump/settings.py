@@ -184,3 +184,4 @@ if not DEBUG:
     }
 
 SITE_ID = 1
+DEMO_PROJECT = os.environ.get('BS_DEMO_ID', 'dqjezb4fapsy')

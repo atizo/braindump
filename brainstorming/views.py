@@ -8,6 +8,7 @@ from brainstorming.models import Brainstorming, Idea, BrainstormingWatcher
 from brainstorming.permissions import brainstorming_set_edit_perm
 from brainstorming.serializers import BrainstormingSerializer, IdeaSerializer
 from brainstorming.user_session import update_bs_history, BS_HISTORY_KEY
+from django.conf import settings
 from django.core.serializers.json import DjangoJSONEncoder
 from django.shortcuts import render
 from django.http import Http404
@@ -28,8 +29,11 @@ logger = logging.getLogger(__name__)
 def _get_context(request, brainstorming_id=None):
     # copy history pks to append current
     bs_pks = request.session.get(BS_HISTORY_KEY, [])[:]
+    demo_pk = settings.DEMO_PROJECT
     if brainstorming_id:
         bs_pks.append(brainstorming_id)
+    if Brainstorming.objects.filter(pk=demo_pk).exists():
+        bs_pks.append(demo_pk)
     brainstorming_serializer = BrainstormingSerializer(Brainstorming.objects.filter(pk__in=bs_pks), many=True,
                                                        context={'request': request})
     brainstorming_store = {}
@@ -50,6 +54,7 @@ def _get_context(request, brainstorming_id=None):
         'brainstormingStore': json.dumps(brainstorming_store, cls=DjangoJSONEncoder),
         'ideaStore': json.dumps(idea_store, cls=DjangoJSONEncoder),
         'recentBrainstormings': json.dumps(request.session.get(BS_HISTORY_KEY, []), cls=DjangoJSONEncoder),
+        'demoBrainstorming': demo_pk,
         'errorMsg': '',
         'infoMsg': ''
     }
@@ -171,6 +176,6 @@ def export(request, brainstorming_id):
     # construct response
     output.seek(0)
     response = HttpResponse(output.read(), mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-    response['Content-Disposition'] = "attachment; filename=test.xlsx"
+    response['Content-Disposition'] = "attachment; filename=ideas.xlsx"
 
     return response

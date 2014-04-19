@@ -25,6 +25,15 @@ TURQUOISE = '#92e5c9'
 
 IDEA_COLORS = [RED, ORANGE, YELLOW, GREEN, BLUE, TURQUOISE]
 
+IDEA_COLOR_CHOICES = [
+    (RED, 'RED'),
+    (ORANGE, 'ORANGE'),
+    (YELLOW, 'YELLOW'),
+    (GREEN, 'GREEN'),
+    (BLUE, 'BLUE'),
+    (TURQUOISE, 'TURQUOISE')
+]
+
 IDEA_COLORS_CODES = {
     RED: 'c1',
     ORANGE: 'c2',
@@ -114,7 +123,7 @@ class Idea(TimeStampedModel):
     creator_name = models.CharField(max_length=200, blank=True)
     creator_ip = models.CharField(max_length=100, blank=True)
     ratings = models.IntegerField(default=0)
-    color = models.CharField(max_length=100, blank=True)
+    color = models.CharField(max_length=100, blank=True, choices=IDEA_COLOR_CHOICES)
     image = models.ImageField(upload_to=path_and_rename('images'), null=True)
     number = models.IntegerField(default=0)
 

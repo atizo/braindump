@@ -53,17 +53,21 @@ angular.module('braind', [
       $provide.constant('recentBrainstormings', angular.copy(window.recentBrainstormings));
       $provide.constant('errorMsg', angular.copy(window.errorMsg));
       $provide.constant('infoMsg', angular.copy(window.infoMsg));
+      $provide.constant('demoBrainstorming', angular.copy(window.demoBrainstorming));
     }])
 
-  .run(['$rootScope', '$location', 'errorMsg', function ($rootScope, $location, errorMsg) {
+  .run(['$rootScope', '$location', 'errorMsg', 'demoBrainstorming',
+    function ($rootScope, $location, errorMsg, demoBrainstorming) {
 
-    if (errorMsg && errorMsg.length > 0) {
-      $location.path('/glitch').replace();
-    }
+      if (errorMsg && errorMsg.length > 0) {
+        $location.path('/glitch').replace();
+      }
 
-    $rootScope.user = {
-      'email': angular.copy(window.email),
-      'name': angular.copy(window.name)
-    };
+      $rootScope.demoBrainstorming = demoBrainstorming;
 
-  }]);
+      $rootScope.user = {
+        'email': angular.copy(window.email),
+        'name': angular.copy(window.name)
+      };
+
+    }]);
