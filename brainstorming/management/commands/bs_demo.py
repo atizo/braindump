@@ -12,25 +12,74 @@ from django.core.management.base import BaseCommand, CommandError
 
 IDEAS = [
     {
-        'title': u'Idee 1',
-        'text': u'Lorem Ipsum',
-        'creator_name': u'Reto',
+        'title': u'',
+        'text': u'Go Surfing',
+        'creator_name': u'Chris',
         'color': IDEA_COLORS[0],
         'image': ''
     },
     {
         'title': u'',
-        'text': u'Alles mit Bild ist gut und schön',
-        'creator_name': u'Hans',
+        'text': u'Have a Potluck',
+        'creator_name': u'Chris',
+        'color': IDEA_COLORS[0],
+        'image': 'idea2.jpg'
+    },
+    {
+        'title': u'ForestJump',
+        'text': u"Let's go up the Trees!",
+        'creator_name': u'Adrian',
         'color': IDEA_COLORS[1],
-        'image': 'idea1.jpg'
+        'image': 'idea3.jpg'
+    },
+    {
+        'title': u'Gold Prospector',
+        'text': u"Gold panning",
+        'creator_name': u'Dan',
+        'color': IDEA_COLORS[2],
+        'image': 'idea4.jpg'
+    },
+    {
+        'title': u'River Boat Trip',
+        'text': u"Two boats, one team, tons of beer!",
+        'creator_name': u'Adrian',
+        'color': IDEA_COLORS[1],
+        'image': 'idea5.jpg'
     },
     {
         'title': u'',
-        'text': u'Ne andere mit Bild und Link http://www.noo.com und so',
-        'creator_name': u'Fritz',
+        'text': u"BIG BBQ",
+        'creator_name': u'Dan',
         'color': IDEA_COLORS[2],
-        'image': 'idea2.jpg'
+        'image': 'idea6.jpg'
+    },
+    {
+        'title': u'cooking with Kumar',
+        'text': u"We are all cooking a great ayurvedan buffet. Then we are inviting all our family members and eat together. Let's meet on another level!",
+        'creator_name': u'Pascal',
+        'color': IDEA_COLORS[3],
+        'image': 'idea7.jpg'
+    },
+    {
+        'title': u'Team goes outdoor',
+        'text': u"Outdoor-Event with the whole team!",
+        'creator_name': u'Pascal',
+        'color': IDEA_COLORS[3],
+        'image': 'idea8.jpg'
+    },
+    {
+        'title': u"hike'n'cheese",
+        'text': u"We go hiking in the alps and high above the sea of clouds we are trying this delicious alp cheese",
+        'creator_name': u'Pascal',
+        'color': IDEA_COLORS[3],
+        'image': 'idea9.jpg'
+    },
+    {
+        'title': u"Wine and Champagne Tasting",
+        'text': u"Enjoy wine and champagne after a relaxing walk...",
+        'creator_name': u'',
+        'color': IDEA_COLORS[4],
+        'image': 'idea10.jpg'
     }
 ]
 
