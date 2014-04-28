@@ -80,6 +80,7 @@
         self.scheduleMasonry();
 
         element.imagesLoaded(function () {
+          console.info('loaded');
           self.scheduleMasonry();
         });
 
