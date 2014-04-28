@@ -79,10 +79,12 @@
 
         self.scheduleMasonry();
 
-        element.imagesLoaded(function () {
-          console.info('loaded');
-          self.scheduleMasonry();
-        });
+        $timeout(function () {
+          element.find('img').load(function () {
+            self.scheduleMasonry();
+          });
+        }, 10);
+
 
         // reload layout if all assets are loaded
         if (!loadReg) {
