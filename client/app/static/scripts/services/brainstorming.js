@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('braind')
-  .factory('brainstormingService', ['Restangular', '$q', '$upload', 'brainstormingStore', 'ideaStore', 'recentBrainstormings',
-    function (Restangular, $q, $upload, brainstormingStore, ideaStore, recentBrainstormings) {
+  .factory('brainstormingService', ['Restangular', '$q', '$upload', 'brainstormingStore', 'ideaStore', 'recentBrainstormings', 'demoBrainstorming',
+    function (Restangular, $q, $upload, brainstormingStore, ideaStore, recentBrainstormings, demoBrainstorming) {
       var brainstormingRoute = 'api/brainstormings';
 
       function ideasURL(bsid) {
@@ -10,8 +10,10 @@ angular.module('braind')
       }
 
       function addRecentBrainstorming(bsid) {
-        recentBrainstormings = _.without(recentBrainstormings, bsid);
-        recentBrainstormings.unshift(bsid);
+        if (bsid && bsid !== demoBrainstorming) {
+          recentBrainstormings = _.without(recentBrainstormings, bsid);
+          recentBrainstormings.unshift(bsid);
+        }
         return recentBrainstormings;
       }
 
