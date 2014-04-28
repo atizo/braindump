@@ -24,6 +24,7 @@ module.exports = function (config) {
       'app/static/bower_components/restangular/dist/restangular.js',
       'app/static/bower_components/zeroclipboard/ZeroClipboard.js',
       'app/static/bower_components/ng-clip/src/ngClip.js',
+      'app/static/bower_components/ng-file-upload/angular-file-upload.js',
       'app/static/scripts/*.js',
       'app/static/scripts/**/*.js',
       'test/mock/**/*.js',
